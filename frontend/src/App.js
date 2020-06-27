@@ -3,10 +3,8 @@ import React from 'react';
 import axios from 'axios';
 import {
   Route,
-  Redirect, Switch
+  Switch
 } from "react-router-dom";
-
-import SockJS from 'sockjs-client'
 
 import Room from './Room'
 
@@ -49,7 +47,7 @@ export class Home extends React.Component {
 
     const response = makeGetRequest(`joinRoom?id=${this.state.code}`);
     response.then(res => {
-      this.props.history.push('/room', { id: this.state.code })
+      this.props.history.push(`/room/`, { id: this.state.code })
     })
   }
 
@@ -58,7 +56,7 @@ export class Home extends React.Component {
     event.preventDefault();
     response.then(res => {
       console.log(res);
-      this.props.history.push(`/room`, { id: res })
+      this.props.history.push(`/room/`, { id: res })
     });
   }
 
@@ -66,7 +64,7 @@ export class Home extends React.Component {
     try {
       this.clientRef.sendMessage("/app/update", JSON.stringify(msg));
       return true;
-    } catch(e) {
+    } catch (e) {
       return false;
     }
   }
