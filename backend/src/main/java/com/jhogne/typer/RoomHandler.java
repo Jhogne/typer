@@ -30,9 +30,16 @@ public class RoomHandler {
     public static boolean leaveRoom(String id) {
         if(rooms.containsKey(id)) {
             rooms.get(id).decreaseMembers();
+            if(rooms.get(id).getMembers() <= 0) {
+                deleteRoom(id);
+            }
             return true;
         }
         return false;
+    }
+
+    public static void deleteRoom(String id) {
+        rooms.remove(id);
     }
 
     private static String generateId() {
