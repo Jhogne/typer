@@ -42,6 +42,10 @@ public class RoomHandler {
         rooms.remove(id);
     }
 
+    public static void setWinner(String id, String wpm) {
+        rooms.get(id).setWinnerWPM(wpm);
+    }
+
     private static String generateId() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
         Random rng = new Random();

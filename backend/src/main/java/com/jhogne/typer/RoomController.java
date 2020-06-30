@@ -31,4 +31,11 @@ public class RoomController {
     public void update(@DestinationVariable String roomId) {
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
+
+    @MessageMapping("/room/{roomId}/victory")
+    public void victory(@DestinationVariable String roomId, String wpm) {
+        System.out.println("Victory in rom: " + roomId + " WPM: " + wpm);
+        RoomHandler.setWinner(roomId, wpm);
+        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+    }
 }

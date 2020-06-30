@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Room {
     private String id;
     private int members;
+    private String text;
+    private String winnerWPM = null;
 
     public Room(String id) {
         this.id = id;
@@ -14,6 +16,7 @@ public class Room {
     public Room(String id, int members) {
         this.id = id;
         this.members = members;
+        this.text = "This is the default game text that will be used until proper texts are available.";
     }
 
     public String getId() {
@@ -24,6 +27,10 @@ public class Room {
         return members;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public boolean increaseMembers(){
         members++;
         return true;
@@ -32,6 +39,14 @@ public class Room {
     public boolean decreaseMembers() {
         members--;
         return true;
+    }
+
+    public String getWinnerWPM() {
+        return winnerWPM;
+    }
+
+    public void setWinnerWPM(String winnerWPM) {
+        this.winnerWPM = winnerWPM;
     }
 
     @Override

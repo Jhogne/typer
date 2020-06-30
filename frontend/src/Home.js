@@ -4,7 +4,7 @@ import axios from 'axios';
 
 async function makeGetRequest(location) {
 
-    let res = await axios.get('http://localhost:8080/' + location);
+    let res = await axios.get('http://192.168.1.137:8080/' + location);
     let data = res.data;
     return data;
   }
@@ -38,8 +38,7 @@ export class Home extends React.Component {
       const response = makeGetRequest('createRoom');
       event.preventDefault();
       response.then(res => {
-        console.log(res);
-        this.props.history.push(`/room/`, { id: res })
+        this.props.history.push(`/room/`, { id: res})
       });
     }
   
