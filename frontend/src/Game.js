@@ -27,23 +27,24 @@ class Game extends React.Component {
       var d = new Date();
       this.setState({ start: d.getTime() });
     }
-    if (this.state.remaining[0] === lastInput) {
+    if (this.state.remaining.slice(0,currentWord.length) === currentWord) {
       if (lastInput === " " || lastInput === ".") {
         words++;
+        var newRemaning = this.state.remaining.slice(currentWord.length, this.state.remaining.length);
         currentWord = "";
+        if (newRemaning === "") {
+          sendMessage(
+            this.props.clientRef,
+            `/room/${this.props.id}/victory`,
+            this.props.memberId
+          );
+        }
+        this.setState({
+          correct: this.state.correct.concat(lastInput),
+          remaining: newRemaning,
+        });
+
       }
-      var newRemaning = this.state.remaining.slice(1);
-      if (newRemaning === "") {
-        sendMessage(
-          this.props.clientRef,
-          `/room/${this.props.id}/victory`,
-          this.props.memberId
-        );
-      }
-      this.setState({
-        correct: this.state.correct.concat(lastInput),
-        remaining: newRemaning,
-      });
     }
     this.setState({ wpm: this.getWPM(), currentWord: currentWord });
   }
