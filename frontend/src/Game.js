@@ -8,31 +8,29 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      winner: "",
-      input: "",
       correct: "",
       start: "",
       wpm: 0,
       remaining: this.props.text,
-      lastWord: "",
+      currentWord: "",
     };
+    originalText = this.state.remaining;
+
     this.handleChange = this.handleChange.bind(this);
     this.getWPM = this.getWPM.bind(this);
-
-    originalText = this.state.remaining;
   }
 
   handleChange(event) {
-    const input = event.target.value[event.target.value.length - 1];
-    var lastWord = event.target.value;
+    const lastInput = event.target.value[event.target.value.length - 1];
+    var currentWord = event.target.value;
     if (this.state.remaining === originalText) {
       var d = new Date();
       this.setState({ start: d.getTime() });
     }
-    if (this.state.remaining[0] === input) {
-      if (input === " " || input === ".") {
+    if (this.state.remaining[0] === lastInput) {
+      if (lastInput === " " || lastInput === ".") {
         words++;
-        lastWord = "";
+        currentWord = "";
       }
       var newRemaning = this.state.remaining.slice(1);
       if (newRemaning === "") {
@@ -41,17 +39,13 @@ class Game extends React.Component {
           `/room/${this.props.id}/victory`,
           this.props.memberId
         );
-        console.log("You won!");
-        console.log(
-          `You typed ${words} words in ${words / this.state.wpm} minutes`
-        );
       }
       this.setState({
-        correct: this.state.correct.concat(input),
+        correct: this.state.correct.concat(lastInput),
         remaining: newRemaning,
       });
     }
-    this.setState({ input: input, wpm: this.getWPM(), lastWord: lastWord });
+    this.setState({ wpm: this.getWPM(), currentWord: currentWord });
   }
 
   getWPM() {
@@ -72,7 +66,7 @@ class Game extends React.Component {
         <input
           type="text"
           disabled={this.props.disabled}
-          value={this.state.lastWord}
+          value={this.state.currentWord}
           onChange={this.handleChange}
         />
       </div>
