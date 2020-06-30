@@ -1,64 +1,74 @@
-import React from 'react'
+import React from "react";
+
+import { sendMessage } from "./ApiRequests";
 
 var originalText;
 var words = 0;
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {winner:'',input:'', correct:'', start:'', wpm:0, remaining:this.props.text, lastWord:''}
+    this.state = {
+      correct: "",
+      start: "",
+      wpm: 0,
+      remaining: this.props.text,
+      currentWord: "",
+    };
+    originalText = this.state.remaining;
+
     this.handleChange = this.handleChange.bind(this);
     this.getWPM = this.getWPM.bind(this);
-    this.sendMessage = this.sendMessage.bind(this);
-
-    originalText = this.state.remaining;
   }
 
   handleChange(event) {
-    const input = event.target.value[event.target.value.length-1];
-    var lastWord = event.target.value;
-    if(this.state.remaining === originalText) {
+    const lastInput = event.target.value[event.target.value.length - 1];
+    var currentWord = event.target.value;
+    if (this.state.remaining === originalText) {
       var d = new Date();
-      this.setState({start:d.getTime()})
+      this.setState({ start: d.getTime() });
     }
-    if(this.state.remaining[0] === input) {
-      if(input === ' ' || input === '.') {
+    if (this.state.remaining[0] === lastInput) {
+      if (lastInput === " " || lastInput === ".") {
         words++;
-        lastWord = '';
+        currentWord = "";
       }
       var newRemaning = this.state.remaining.slice(1);
-      if(newRemaning === '') {
-        this.sendMessage(`/app/room/${this.props.id}/victory`, this.props.memberId);
-        console.log("You won!");
-        console.log(`You typed ${words} words in ${words / this.state.wpm} minutes`);  
+      if (newRemaning === "") {
+        sendMessage(
+          this.props.clientRef,
+          `/room/${this.props.id}/victory`,
+          this.props.memberId
+        );
       }
-      this.setState({correct:this.state.correct.concat(input), remaining:newRemaning});
+      this.setState({
+        correct: this.state.correct.concat(lastInput),
+        remaining: newRemaning,
+      });
     }
-    this.setState({input:input, wpm:this.getWPM(), lastWord:lastWord});
-  }
-
-  sendMessage = (location, msg) => {
-    try {
-      this.props.clientRef.sendMessage(location, JSON.stringify(msg));
-      return true;
-    } catch (e) {
-      return false;
-    }
+    this.setState({ wpm: this.getWPM(), currentWord: currentWord });
   }
 
   getWPM() {
     var d = new Date();
-    var end = d.getTime()
-    var time = end-this.state.start;
-    var minutes = time/60000;
+    var end = d.getTime();
+    var time = end - this.state.start;
+    var minutes = time / 60000;
     return words / minutes;
   }
 
   render() {
-    return(
+    return (
       <div>
         <p>{this.state.remaining}</p>
-        <p>{this.state.correct} | WPM: {this.state.wpm} </p>
-        <input type='text' disabled={this.props.disabled} value={this.state.lastWord} onChange={this.handleChange}/>
+        <p>
+          {this.state.correct} | WPM: {this.state.wpm}{" "}
+        </p>
+        <input
+          type="text"
+          disabled={this.props.disabled}
+          value={this.state.currentWord}
+          onChange={this.handleChange}
+        />
       </div>
     );
   }
