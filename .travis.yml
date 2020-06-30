@@ -3,3 +3,6 @@ jdk: openjdk14
 
 before_script:
   - cd backend
+
+notifications:
+  email: false
