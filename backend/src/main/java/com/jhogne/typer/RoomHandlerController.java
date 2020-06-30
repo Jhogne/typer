@@ -12,22 +12,19 @@ import java.util.Random;
 public class RoomHandlerController {
 
     @GetMapping("/createRoom")
-    private String createRoom() {
+    private RoomMessage createRoom() {
         return RoomHandler.createRoom();
     }
 
     @GetMapping("/joinRoom")
-    private boolean joinRoom(@RequestParam(value = "id") String id) throws Exception{
-        if(RoomHandler.joinRoom(id)){
-            return true;
-        }
-        throw new Exception("Bad things happened");
+    private int joinRoom(@RequestParam(value = "id") String roomId) throws Exception{
+        return RoomHandler.joinRoom(roomId);
     }
 
     @GetMapping("/leaveRoom")
-    private Room leaveRoom(@RequestParam(value = "id") String id) throws Exception{
-        if(RoomHandler.leaveRoom(id)){
-            return RoomHandler.getRoom(id);
+    private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "memberId") int memberId ) throws Exception{
+        if(RoomHandler.leaveRoom(roomId, memberId)){
+            return RoomHandler.getRoom(roomId);
         }
         throw new Exception("Bad things happened");
     }

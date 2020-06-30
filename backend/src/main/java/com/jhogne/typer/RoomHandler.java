@@ -6,32 +6,33 @@ import java.util.Random;
 public class RoomHandler {
     private static HashMap<String, Room> rooms = new HashMap<>();
 
-    public static String createRoom(){
-        String id = generateId();
-        while(rooms.containsKey(id)) {
-            id = generateId();
+    public static RoomMessage createRoom(){
+        String roomId = generateId();
+        while(rooms.containsKey(roomId)) {
+            roomId = generateId();
         }
-        rooms.put(id, new Room(id,1));
-        return id;
+        Room room = new Room(roomId);
+        int memberId = room.addMember();
+        rooms.put(roomId, room);
+        return new RoomMessage(roomId, memberId);
     }
 
     public static Room getRoom(String id){
         return rooms.getOrDefault(id, null);
     }
 
-    public static boolean joinRoom(String id) {
-        if(rooms.containsKey(id)) {
-            rooms.get(id).increaseMembers();
-            return true;
+    public static int joinRoom(String roomId) {
+        if(rooms.containsKey(roomId)) {
+            return rooms.get(roomId).addMember();
         }
-        return false;
+        return -1;
     }
 
-    public static boolean leaveRoom(String id) {
-        if(rooms.containsKey(id)) {
-            rooms.get(id).decreaseMembers();
-            if(rooms.get(id).getMembers() <= 0) {
-                deleteRoom(id);
+    public static boolean leaveRoom(String roomId, int memberId) {
+        if(rooms.containsKey(roomId)) {
+            rooms.get(roomId).decreaseMembers(memberId);
+            if(rooms.get(roomId).getMemberAmount() <= 0) {
+                deleteRoom(roomId);
             }
             return true;
         }
@@ -42,8 +43,8 @@ public class RoomHandler {
         rooms.remove(id);
     }
 
-    public static void setWinner(String id, String wpm) {
-        rooms.get(id).setWinnerWPM(wpm);
+    public static void setWinner(String id, int winner) {
+        rooms.get(id).setWinner(winner);
     }
 
     private static String generateId() {

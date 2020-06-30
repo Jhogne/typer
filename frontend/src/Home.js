@@ -30,7 +30,7 @@ export class Home extends React.Component {
   
       const response = makeGetRequest(`joinRoom?id=${this.state.code}`);
       response.then(res => {
-        this.props.history.push(`/room/`, { id: this.state.code })
+        this.props.history.push(`/room/`, { roomId: this.state.code, memberId:res })
       })
     }
   
@@ -38,7 +38,8 @@ export class Home extends React.Component {
       const response = makeGetRequest('createRoom');
       event.preventDefault();
       response.then(res => {
-        this.props.history.push(`/room/`, { id: res})
+        console.log(res);
+        this.props.history.push(`/room/`, { roomId: res.roomId, memberId: res.memberId})
       });
     }
   

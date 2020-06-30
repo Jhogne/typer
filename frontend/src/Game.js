@@ -5,18 +5,17 @@ var words = 0;
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {input:'', correct:'', start:'', wpm:0, remaining:this.props.text, lastWord:''}
+    this.state = {winner:'',input:'', correct:'', start:'', wpm:0, remaining:this.props.text, lastWord:''}
     this.handleChange = this.handleChange.bind(this);
     this.getWPM = this.getWPM.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-
 
     originalText = this.state.remaining;
   }
 
   handleChange(event) {
     const input = event.target.value[event.target.value.length-1];
-    var lastWord = this.state.lastWord + input;
+    var lastWord = event.target.value;
     if(this.state.remaining === originalText) {
       var d = new Date();
       this.setState({start:d.getTime()})
@@ -26,12 +25,13 @@ class Game extends React.Component {
         words++;
         lastWord = '';
       }
-      this.setState({correct:this.state.correct.concat(input), remaining:this.state.remaining.slice(1)});
-    }
-    if(this.state.remaining === '') {
-      this.sendMessage(`/app/room/${this.props.id}/victory`, this.getWPM());
-      console.log("You won!");
-      console.log(`You typed ${words} words in ${words / this.state.wpm} minutes`);
+      var newRemaning = this.state.remaining.slice(1);
+      if(newRemaning === '') {
+        this.sendMessage(`/app/room/${this.props.id}/victory`, this.props.memberId);
+        console.log("You won!");
+        console.log(`You typed ${words} words in ${words / this.state.wpm} minutes`);  
+      }
+      this.setState({correct:this.state.correct.concat(input), remaining:newRemaning});
     }
     this.setState({input:input, wpm:this.getWPM(), lastWord:lastWord});
   }
@@ -58,7 +58,7 @@ class Game extends React.Component {
       <div>
         <p>{this.state.remaining}</p>
         <p>{this.state.correct} | WPM: {this.state.wpm} </p>
-        <input type='text' value={this.state.input} onChange={this.handleChange}/>
+        <input type='text' disabled={this.props.disabled} value={this.state.lastWord} onChange={this.handleChange}/>
       </div>
     );
   }
