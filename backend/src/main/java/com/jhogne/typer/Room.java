@@ -55,6 +55,10 @@ public class Room {
         this.winner = winner;
     }
 
+    public void reset(){
+        setWinner(-1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

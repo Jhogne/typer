@@ -46,11 +46,16 @@ class Game extends React.Component {
     }
 
     if(idx === this.props.text.length) {
-        console.log("You won!");
-        console.log("WPM: " + this.getWPM());
-        idx = 0;
-        words = 0;
-        newWord = "";
+      console.log("You won!");
+      console.log("WPM: " + this.getWPM());
+      idx = 0;
+      words = 0;
+      newWord = "";
+      sendMessage(
+        this.props.clientRef,
+        `/room/${this.props.id}/victory`,
+        this.props.memberId
+      );
     }
     this.setState({currentWord:newWord});
   }

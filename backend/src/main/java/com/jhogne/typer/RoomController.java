@@ -39,4 +39,9 @@ public class RoomController {
         RoomHandler.setWinner(roomId, winner);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
-}
+
+    @MessageMapping("/room/{roomId}/reset")
+    public void reset(@DestinationVariable String roomId) {
+        RoomHandler.resetRoom(roomId);
+        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+    }}
