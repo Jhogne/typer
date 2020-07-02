@@ -71,7 +71,7 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        <p>{this.state.remaining}</p>
+        <p>{this.props.text}</p>
         <p>
           {this.props.text.slice(0,idx)} | WPM: {this.getWPM()}
         </p>
