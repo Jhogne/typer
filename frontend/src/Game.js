@@ -2,9 +2,12 @@ import React from "react";
 
 import { sendMessage } from "./ApiRequests";
 
+import "./Game.css"
 var originalText;
 var words;
 var idx = 0;
+var wordStart = 0;
+var error = false;
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +21,7 @@ class Game extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.getWPM = this.getWPM.bind(this);
     this.reset = this.reset.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
 
     this.reset();
   }
@@ -36,15 +40,19 @@ class Game extends React.Component {
       var d = new Date();
       this.state.start = d.getTime();
     }
-    var wordStart = Math.max(0,idx-newWord.length+1);
-    if(this.props.text.slice(wordStart, idx+1) === newWord && newWord.length != 0){
-        idx++;
-      if((lastInput === ' ' || lastInput === '.')){  
-        newWord = "";
-        words++;
-      } 
+    if(this.props.text.slice(wordStart, wordStart + newWord.length) === newWord){
+        error = false;
+        if(newWord.length != 0) {
+          idx = wordStart + newWord.length; 
+          if((lastInput === ' ' || lastInput === '.')){  
+            newWord = "";
+            words++;
+            wordStart = idx;
+          }     
+        }
+    } else {
+      error = true;
     }
-
     if(idx === this.props.text.length) {
       console.log("You won!");
       console.log("WPM: " + this.getWPM());
@@ -57,7 +65,19 @@ class Game extends React.Component {
         this.props.memberId
       );
     }
+    console.log(idx)
     this.setState({currentWord:newWord});
+  }
+
+  onKeyDown(event) {
+    if (event.keyCode === 8) {
+      console.log('--------delete--------');
+      var newWord = event.target.value;
+      var wordStart = Math.max(0,idx-newWord.length+1);
+      console.log("Expect: " + this.props.text.slice(wordStart, idx+1));
+      console.log('----------------------');
+
+    }
   }
 
   getWPM() {
@@ -68,13 +88,20 @@ class Game extends React.Component {
     return words / minutes;
   }
 
+  divideText(){
+    return(
+      <>
+        <span className="correct">{this.props.text.slice(0,idx)}</span>
+        <span className={error ? "error" : "remaining"}>{this.props.text.slice(idx,this.props.text.length)}</span>
+      </>
+    )
+  }
+
   render() {
     return (
       <div>
-        <p>{this.props.text}</p>
-        <p>
-          {this.props.text.slice(0,idx)} | WPM: {this.getWPM()}
-        </p>
+        <p className="default">{this.divideText() }</p>
+        <p> WPM: {this.getWPM()}</p>
         <input
           type="text"
           disabled={this.props.disabled}
