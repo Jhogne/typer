@@ -1,11 +1,11 @@
 .default {
-    color:grey;
+  color: grey;
 }
 
 .correct {
-    color:green;
+  color: green;
 }
 
 .error {
-    color: red;
+  color: red;
 }
