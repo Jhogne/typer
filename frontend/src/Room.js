@@ -16,6 +16,7 @@ class Room extends React.Component {
     };
     this.updateRoom = this.updateRoom.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   componentWillUnmount() {
@@ -45,6 +46,10 @@ class Room extends React.Component {
       : "";
   }
 
+  resetGame() {
+    sendMessage(this.clientRef, `/room/${this.state.roomId}/reset`, "Hello");
+  }
+
   render() {
     return (
       <div>
@@ -61,8 +66,9 @@ class Room extends React.Component {
             id={this.state.roomId}
           />
         )}
+        <button type="button" onClick={this.resetGame}> Play again</button>
         <SockJsClient
-          url={"http://192.168.1.137:8080/endpoint"}
+          url={"http://192.168.1.136:8080/endpoint"}
           topics={[`/topic/room/${this.state.roomId}`]}
           onMessage={this.handleMessage}
           ref={(client) => {

@@ -3,7 +3,8 @@ import React from "react";
 import { sendMessage } from "./ApiRequests";
 
 var originalText;
-var words = 0;
+var words;
+var idx = 0;
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -12,41 +13,46 @@ class Game extends React.Component {
       start: "",
       wpm: 0,
       remaining: this.props.text,
-      currentWord: "",
+      currentWord: ""
     };
-    originalText = this.state.remaining;
-
     this.handleChange = this.handleChange.bind(this);
     this.getWPM = this.getWPM.bind(this);
+    this.reset = this.reset.bind(this);
+
+    this.reset();
+  }
+
+  reset() {
+    //this.setState({correct:"", start:"", wpm:0, remaining:this.props.text,currentWord:""})
+    originalText = this.state.remaining;
+    words = 0;
   }
 
   handleChange(event) {
-    const lastInput = event.target.value[event.target.value.length - 1];
-    var currentWord = event.target.value;
-    if (this.state.remaining === originalText) {
-      var d = new Date();
-      this.setState({ start: d.getTime() });
-    }
-    if (this.state.remaining.slice(0,currentWord.length) === currentWord) {
-      if (lastInput === " " || lastInput === ".") {
-        words++;
-        var newRemaning = this.state.remaining.slice(currentWord.length, this.state.remaining.length);
-        currentWord = "";
-        if (newRemaning === "") {
-          sendMessage(
-            this.props.clientRef,
-            `/room/${this.props.id}/victory`,
-            this.props.memberId
-          );
-        }
-        this.setState({
-          correct: this.state.correct.concat(lastInput),
-          remaining: newRemaning,
-        });
+    var newWord = event.target.value;
+    var lastInput = event.target.value[event.target.value.length - 1];
 
-      }
+    if(idx === 0) {
+      var d = new Date();
+      this.state.start = d.getTime();
     }
-    this.setState({ wpm: this.getWPM(), currentWord: currentWord });
+    var wordStart = Math.max(0,idx-newWord.length+1);
+    if(this.props.text.slice(wordStart, idx+1) === newWord && newWord.length != 0){
+        idx++;
+      if((lastInput === ' ' || lastInput === '.')){  
+        newWord = "";
+        words++;
+      } 
+    }
+
+    if(idx === this.props.text.length) {
+        console.log("You won!");
+        console.log("WPM: " + this.getWPM());
+        idx = 0;
+        words = 0;
+        newWord = "";
+    }
+    this.setState({currentWord:newWord});
   }
 
   getWPM() {
@@ -62,7 +68,7 @@ class Game extends React.Component {
       <div>
         <p>{this.state.remaining}</p>
         <p>
-          {this.state.correct} | WPM: {this.state.wpm}{" "}
+          {this.props.text.slice(0,idx)} | WPM: {this.getWPM()}
         </p>
         <input
           type="text"
