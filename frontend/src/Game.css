@@ -1,11 +1,46 @@
+p {
+  font-size: 32px;
+  font-family: monospace;
+}
+
 .default {
-  color: grey;
+  color: #555555;
 }
 
 .correct {
-  color: green;
+  color: #00c400;
 }
 
 .error {
   color: red;
+}
+
+.input {
+  color: #999999 !important;
+}
+
+.mainCard {
+  width: 900px;
+  margin-bottom: 5px;
+}
+
+.input input {
+  color:#eeeeee;
+}
+
+.input .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+
+.input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2px;
 }

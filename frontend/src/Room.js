@@ -53,9 +53,9 @@ class Room extends React.Component {
   render() {
     return (
       <div>
-        <h1>
+        <h6>
           This is room "{this.state.roomId}" with {this.state.amount} member(s)
-        </h1>
+        </h6>
         <h3>{this.getWinner()}</h3>
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
@@ -68,7 +68,7 @@ class Room extends React.Component {
         )}
         <button type="button" onClick={this.resetGame}> Play again</button>
         <SockJsClient
-          url={"http://192.168.1.136:8080/endpoint"}
+          url={"http://192.168.1.139:8080/endpoint"}
           topics={[`/topic/room/${this.state.roomId}`]}
           onMessage={this.handleMessage}
           ref={(client) => {

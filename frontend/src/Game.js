@@ -1,8 +1,9 @@
 import React from "react";
 
 import { sendMessage } from "./ApiRequests";
-
 import "./Game.css";
+
+import { Card, TextField} from '@material-ui/core'
 
 var words = 0;
 var idx = 0;
@@ -81,14 +82,25 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>
-        <p className="default">{this.divideText()}</p>
-        <p> WPM: {this.getWPM()}</p>
-        <input
+      <div className="root">
+        <Card className="mainCard">
+          <p className="default">{this.divideText()}</p>
+          <p> WPM: {this.getWPM()}</p>
+        </Card>
+        <TextField
+          className="input"
           type="text"
           disabled={this.props.disabled}
           value={this.state.currentWord}
           onChange={this.handleChange}
+          fullWidth
+          variant="outlined"
+          InputProps={{
+        style: {
+            color: "red"
+        }
+    }}
+
         />
       </div>
     );
