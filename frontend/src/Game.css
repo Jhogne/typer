@@ -36,18 +36,26 @@ span {
 
 .input input {
   color:#eeeeee;
+  height: 50px;
+  font-size: 34px;
+  ;
 }
 
 .input .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: #f48fb1;
+  border-width: 3px;
 }
 
 .input:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: #f48fb1;
+  border-width: 3px;
+
 }
 
 .input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
   border-color: #f48fb1;
+  border-width: 3px;
+
 }
 
 .root {
