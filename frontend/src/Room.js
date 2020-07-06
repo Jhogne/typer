@@ -3,6 +3,13 @@ import SockJsClient from "react-stomp";
 
 import Game from "./Game";
 import { sendMessage } from "./ApiRequests";
+import { Typography, Button } from "@material-ui/core";
+import { createMuiTheme } from '@material-ui/core/styles';
+import PlayerProgress from './PlayerProgress';
+import "./Room.css"
+
+
+
 
 class Room extends React.Component {
   constructor(props) {
@@ -52,21 +59,23 @@ class Room extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="root">
+        <div className="content">
         <h6>
           This is room "{this.state.roomId}" with {this.state.amount} member(s)
         </h6>
-        <h3>{this.getWinner()}</h3>
+        <PlayerProgress/>
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
             memberId={this.state.memberId}
-            disabled={this.state.winner !== -1}
+            finished={this.state.winner !== -1}
             text={this.state.text}
             clientRef={this.clientRef}
             id={this.state.roomId}
           />
         )}
-        <button type="button" onClick={this.resetGame}> Play again</button>
+        <Typography variant="h4" className="result">{this.getWinner()}</Typography>
+        {!this.state.winner && <Button className="reset" color="secondary" variant="outlined" onClick={this.resetGame}> Play again</Button>}
         <SockJsClient
           url={"http://192.168.1.139:8080/endpoint"}
           topics={[`/topic/room/${this.state.roomId}`]}
@@ -77,6 +86,7 @@ class Room extends React.Component {
           onConnect={this.updateRoom}
           debug={false}
         />
+        </div>
       </div>
     );
   }
