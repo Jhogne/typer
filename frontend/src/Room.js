@@ -8,6 +8,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import PlayerProgress from './PlayerProgress';
 import "./Room.css"
 
+import Standings from "./Standings"
+
 class Room extends React.Component {
   constructor(props) {
     super(props);
@@ -67,7 +69,7 @@ class Room extends React.Component {
         <h6>
           This is room "{this.state.roomId}" with {this.state.amount} member(s)
         </h6>
-        {players}
+        <Standings className="standings" players={this.state.members} myId={this.state.memberId}/>
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
             memberId={this.state.memberId}

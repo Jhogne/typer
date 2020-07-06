@@ -1,11 +1,11 @@
 .default.default {
   color: #d0d0d0;
-  font-size:36px;
+  font-size:34px;
 }
 
 .correct {
   color: #f48fb1;
-  font-size:36px;
+  font-size:34px;
   border-right:2px solid;
   margin-right:-2px;
 }
@@ -17,16 +17,16 @@ span {
 
 .error {
   color: #f44336;
-  font-size:36px;
+  font-size:34px;
 }
 
 .remaining {
-  font-size:36px;
+  font-size:34px;
 }
 
 .input {
   color: #d0d0d0 !important;
-  width: 70%;
+  width: 100%;
 }
 
 .mainCard {

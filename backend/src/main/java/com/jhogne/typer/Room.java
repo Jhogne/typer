@@ -62,7 +62,7 @@ public class Room {
     public void updatePlayer(PlayerMessage newState) {
         for(Player p : members) {
             if(p.getId() == (newState.getPlayerId())){
-                p.setProgress(newState.getCompleted().length() * 100 / this.text.length());
+                p.setProgress(newState.getCompleted().length() * 100  / this.text.length());
                 p.setWpm(newState.getWpm());
             }
         }

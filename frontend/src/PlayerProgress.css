@@ -1,3 +1,7 @@
 .foo {
-   width:100%;
+   width: 100%;
+}
+
+.MuiLinearProgress-root {
+    height: 7px !important;
 }
