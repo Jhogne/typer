@@ -8,9 +8,6 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import PlayerProgress from './PlayerProgress';
 import "./Room.css"
 
-
-
-
 class Room extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +17,7 @@ class Room extends React.Component {
       roomId: this.props.location.state.roomId,
       amount: 1,
       text: "",
+      members: []
     };
     this.updateRoom = this.updateRoom.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
@@ -39,11 +37,13 @@ class Room extends React.Component {
   }
 
   handleMessage(msg) {
+    console.log(msg);
     this.setState({
       winner: msg.winner,
       roomId: msg.roomId,
       amount: msg.memberAmount,
       text: msg.text,
+      members: msg.members
     });
   }
 
@@ -58,13 +58,16 @@ class Room extends React.Component {
   }
 
   render() {
+    const players = this.state.members.map((player) =>
+      <PlayerProgress key={player.id} you={player.id === this.state.memberId} id={player.id} progress={player.progress} wpm={player.wpm} />
+    );
     return (
       <div className="root">
         <div className="content">
         <h6>
           This is room "{this.state.roomId}" with {this.state.amount} member(s)
         </h6>
-        <PlayerProgress/>
+        {players}
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
             memberId={this.state.memberId}

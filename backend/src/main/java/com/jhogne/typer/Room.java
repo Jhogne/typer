@@ -8,12 +8,12 @@ public class Room {
     private String roomId;
     private String text;
     private int winner = -1;
-    private List<Integer> members;
+    private List<Player> members;
 
     public Room(String roomId) {
         this.roomId = roomId;
         this.members = new ArrayList<>();
-        this.text = "This is the default game text that will be used until proper texts are available.";
+        this.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
     }
 
     public String getRoomId() {
@@ -24,7 +24,7 @@ public class Room {
         return members.size();
     }
 
-    public List<Integer> getMembers(){
+    public List<Player> getMembers(){
         return members;
     }
 
@@ -35,10 +35,10 @@ public class Room {
     public int addMember(){
         int newId = 0;
         if(!members.isEmpty()) {
-            newId = members.get(members.size() - 1) + 1;
+            newId = members.size();
         }
         System.out.println(newId);
-        members.add(newId);
+        members.add(new Player(newId));
         return newId;
     }
 
@@ -57,6 +57,15 @@ public class Room {
 
     public void reset(){
         setWinner(-1);
+    }
+
+    public void updatePlayer(PlayerMessage newState) {
+        for(Player p : members) {
+            if(p.getId() == (newState.getPlayerId())){
+                p.setProgress(newState.getCompleted().length() * 100 / this.text.length());
+                p.setWpm(newState.getWpm());
+            }
+        }
     }
 
     @Override

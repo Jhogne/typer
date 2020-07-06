@@ -10,9 +10,12 @@ const styles = props => ({
     colorPrimary: {
       backgroundColor: '#222222',
     },
-    barColorPrimary: {
+    barColorPrimaryYou: {
       backgroundColor: '#f48fb1',
-    }
+    },
+    barColorPrimaryOpponent: {
+        backgroundColor: '#90caf9',
+      }
   });
 
 class PlayerProgress extends React.Component {
@@ -20,7 +23,7 @@ class PlayerProgress extends React.Component {
   const { classes } = this.props;
   return (
     <div className="foo">
-      <LinearProgress className="bar" variant="determinate" value={50} classes={{colorPrimary: classes.colorPrimary, barColorPrimary: classes.barColorPrimary}} />
+      <LinearProgress className="bar" variant="determinate" value={this.props.progress} classes={{colorPrimary: classes.colorPrimary, barColorPrimary: this.props.you ? classes.barColorPrimaryYou: classes.barColorPrimaryOpponent}} />
     </div>
   );
   }

@@ -41,6 +41,11 @@ class Game extends React.Component {
           newWord = "";
           words++;
           wordStart = idx;
+          this.setState({wpm:this.getWPM()});
+          sendMessage(
+            this.props.clientRef, 
+            `/room/${this.props.id}/postState`,
+            {playerId:this.props.memberId, completed:this.props.text.slice(0,idx), wpm:this.state.wpm},)
         }
       }
     } else {
@@ -86,7 +91,6 @@ class Game extends React.Component {
       <div className="root">
         <div className="promptBox">
           <Typography variant="body1" className="default">{this.divideText()}</Typography>
-          <p> WPM: {this.getWPM()}</p>
         </div>
         {!this.props.finished && <TextField
           className="input"
