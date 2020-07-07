@@ -1,0 +1,17 @@
+.standingsRoot{
+    width: 80%;
+}
+
+p.myText {
+    color: #f48fb1;
+    font-size: 24px;
+}
+
+p.opponentText {
+    font-size: 24px;
+    color: #90caf9;
+}
+
+.player {
+    padding-bottom: 15px;
+}

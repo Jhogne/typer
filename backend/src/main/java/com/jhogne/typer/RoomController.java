@@ -29,7 +29,12 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/update")
     public void update(@DestinationVariable String roomId) {
-        System.out.println("Updating room " + roomId);
+        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+    }
+
+    @MessageMapping("/room/{roomId}/postState")
+    public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
+        RoomHandler.getRoom(roomId).updatePlayer(msg);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
 
@@ -39,4 +44,9 @@ public class RoomController {
         RoomHandler.setWinner(roomId, winner);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
-}
+
+    @MessageMapping("/room/{roomId}/reset")
+    public void reset(@DestinationVariable String roomId) {
+        RoomHandler.resetRoom(roomId);
+        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+    }}

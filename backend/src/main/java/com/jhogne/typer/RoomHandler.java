@@ -47,6 +47,10 @@ public class RoomHandler {
         rooms.get(id).setWinner(winner);
     }
 
+    public static void resetRoom(String id) {
+        rooms.get(id).reset();
+    }
+
     private static String generateId() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
         Random rng = new Random();
