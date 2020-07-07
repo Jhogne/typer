@@ -68,6 +68,15 @@ public class Room {
         }
     }
 
+    public Player getMember(int playerId) {
+        for (Player p : members) {
+            if(p.getId() == playerId) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
