@@ -1,5 +1,9 @@
 language: java
-jdk: openjdk14
+dist: xenial
+jdk: oraclejdk14
 
 before_script:
   - cd backend
+
+notifications:
+  email: false
