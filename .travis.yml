@@ -1,6 +1,6 @@
 language: java
 dist: xenial
-jdk: openjdk14
+jdk: oraclejdk14
 
 before_script:
   - cd backend
