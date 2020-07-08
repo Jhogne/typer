@@ -19,7 +19,8 @@ class Room extends React.Component {
       roomId: this.props.location.state.roomId,
       amount: 1,
       text: "",
-      members: []
+      members: [],
+      standings: [],
     };
     this.updateRoom = this.updateRoom.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
@@ -39,30 +40,62 @@ class Room extends React.Component {
   }
 
   handleMessage(msg) {
-    console.log(msg);
     this.setState({
       winner: msg.winner,
       roomId: msg.roomId,
       amount: msg.memberAmount,
       text: msg.text,
-      members: msg.members
+      members: msg.members,
+      standings: msg.standings
     });
   }
 
-  getWinner() {
-    return this.state.winner !== -1
-      ? `The winner is: ${this.state.winner}`
-      : "";
+  getMyWpm() {
+    var mywpm = 0;
+    this.state.members.forEach( player => {
+      if(player.id === this.state.memberId) {
+        mywpm = player.wpm;
+      }
+    })
+    return mywpm;
   }
 
   resetGame() {
-    sendMessage(this.clientRef, `/room/${this.state.roomId}/reset`, "Hello");
+    console.log(this.getMyWpm);
+    sendMessage(this.clientRef, `/room/${this.state.roomId}/postState`, {playerId:this.state.memberId, completed:this.state.text, wpm:this.getMyWpm(), ready:true});
+  }
+
+  getPlacement() {
+    return this.state.standings.includes(this.state.memberId) ? 
+       this.prettyPlacement(this.state.standings.indexOf(this.state.memberId)) 
+       : "";
+  }
+
+  prettyPlacement(number) {
+    switch(number) {
+      case 0:
+        return "Winner"
+      case 1:
+        return "Second place"
+      case 2:
+        return "Third place"
+      case 3:
+        return "Fourth place"
+    }
+  }
+
+  getReady() {
+    var ready = []
+    this.state.members.forEach(p => {
+      if(p.ready) {
+        ready.push(p.id)
+      }
+    });
+    
+    return ready;
   }
 
   render() {
-    const players = this.state.members.map((player) =>
-      <PlayerProgress key={player.id} you={player.id === this.state.memberId} id={player.id} progress={player.progress} wpm={player.wpm} />
-    );
     return (
       <div className="root">
         <div className="content">
@@ -73,14 +106,14 @@ class Room extends React.Component {
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
             memberId={this.state.memberId}
-            finished={this.state.winner !== -1}
+            finished={this.state.standings.includes(this.state.memberId)}
             text={this.state.text}
             clientRef={this.clientRef}
             id={this.state.roomId}
           />
         )}
-        <Typography variant="h4" className="result">{this.getWinner()}</Typography>
-        {!this.state.winner && <Button className="reset" color="secondary" variant="outlined" onClick={this.resetGame}> Play again</Button>}
+        <Typography variant="h4" className="result">{this.getPlacement()}</Typography>
+        {this.state.members.length === this.state.standings.length && <Button className="reset" color="secondary" variant="outlined" onClick={this.resetGame}> Ready</Button>}
         <SockJsClient
           url={"http://192.168.1.139:8080/endpoint"}
           topics={[`/topic/room/${this.state.roomId}`]}

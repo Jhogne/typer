@@ -4,6 +4,7 @@ public class Player {
     private int id;
     private long progress;
     private long wpm;
+    private boolean ready = true;
 
     public Player(int id) {
         this.id = id;
@@ -27,6 +28,14 @@ public class Player {
 
     public long getWpm() {
         return wpm;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }
 

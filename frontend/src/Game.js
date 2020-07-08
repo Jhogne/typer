@@ -45,7 +45,7 @@ class Game extends React.Component {
           sendMessage(
             this.props.clientRef, 
             `/room/${this.props.id}/postState`,
-            {playerId:this.props.memberId, completed:this.props.text.slice(0,idx), wpm:this.state.wpm},)
+            {playerId:this.props.memberId, completed:this.props.text.slice(0,idx), wpm:this.state.wpm, ready:false},)
         }
       }
     } else {
@@ -60,7 +60,7 @@ class Game extends React.Component {
       wordStart = 0;
       sendMessage(
         this.props.clientRef,
-        `/room/${this.props.id}/victory`,
+        `/room/${this.props.id}/finish`,
         this.props.memberId
       );
     }
@@ -90,7 +90,7 @@ class Game extends React.Component {
     return (
       <div className="root">
         <div className="promptBox">
-          <Typography variant="body1" className="default">{this.divideText()}</Typography>
+          {!this.props.finished && <Typography variant="body1" className="default">{this.divideText()}</Typography>}
         </div>
         {!this.props.finished && <TextField
           className="input"

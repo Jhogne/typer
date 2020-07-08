@@ -7,13 +7,14 @@ import java.util.Objects;
 public class Room {
     private String roomId;
     private String text;
-    private int winner = -1;
     private List<Player> members;
+    private List<Integer> standings;
 
     public Room(String roomId) {
         this.roomId = roomId;
         this.members = new ArrayList<>();
-        this.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+        this.standings = new ArrayList<>();
+        this.text = "Testing text pls ignore.";
     }
 
     public String getRoomId() {
@@ -37,7 +38,6 @@ public class Room {
         if(!members.isEmpty()) {
             newId = members.size();
         }
-        System.out.println(newId);
         members.add(new Player(newId));
         return newId;
     }
@@ -47,16 +47,12 @@ public class Room {
         return true;
     }
 
-    public int getWinner() {
-        return winner;
-    }
-
-    public void setWinner(int winner) {
-        this.winner = winner;
-    }
-
     public void reset(){
-        setWinner(-1);
+        // Set text to new one here
+        standings = new ArrayList<>();
+        for(Player p : members) {
+            p.setReady(false);
+        }
     }
 
     public void updatePlayer(PlayerMessage newState) {
@@ -64,6 +60,13 @@ public class Room {
             if(p.getId() == (newState.getPlayerId())){
                 p.setProgress(newState.getCompleted().length() * 100  / this.text.length());
                 p.setWpm(newState.getWpm());
+                p.setReady(newState.isReady());
+                for(Player q : members) {
+                    if(!q.isReady()) {
+                        return;
+                    }
+                }
+                reset();
             }
         }
     }
@@ -75,6 +78,18 @@ public class Room {
             }
         }
         return null;
+    }
+
+    public void playerFinished(int playerId) {
+        for(Player p : members) {
+            if(p.getId() == playerId) {
+                standings.add(p.getId());
+            }
+        }
+    }
+
+    public List<Integer> getStandings() {
+        return standings;
     }
 
     @Override
