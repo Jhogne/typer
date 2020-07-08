@@ -39,13 +39,16 @@ public class RoomHandler {
         return false;
     }
 
+    public static void playerFinished(String roomId, int memberId) {
+        if(rooms.containsKey(roomId)) {
+            rooms.get(roomId).playerFinished(memberId);
+        }
+    }
+
     public static void deleteRoom(String id) {
         rooms.remove(id);
     }
 
-    public static void setWinner(String id, int winner) {
-        rooms.get(id).setWinner(winner);
-    }
 
     public static void resetRoom(String id) {
         rooms.get(id).reset();

@@ -34,14 +34,15 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/postState")
     public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
+        System.out.println(msg);
         RoomHandler.getRoom(roomId).updatePlayer(msg);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
 
-    @MessageMapping("/room/{roomId}/victory")
-    public void victory(@DestinationVariable String roomId, int winner) {
-        System.out.println(winner + " won in room " + roomId);
-        RoomHandler.setWinner(roomId, winner);
+    @MessageMapping("/room/{roomId}/finish")
+    public void finish(@DestinationVariable String roomId, int player) {
+        System.out.println("Winner: " + player);
+        RoomHandler.playerFinished(roomId, player);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
 

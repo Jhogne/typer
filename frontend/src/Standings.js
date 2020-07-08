@@ -4,6 +4,8 @@ import PlayerProgress from "./PlayerProgress";
 import { Container, Grid, Typography } from "@material-ui/core"
 import "./Standings.css"
 
+import Done from "@material-ui/icons/Done"
+
 
 class Standings extends React.Component {
     constructor(props) {
@@ -34,6 +36,17 @@ class Standings extends React.Component {
         return myWpm;
     }
 
+    getReady(id) {
+        var ready = false;
+        this.props.players.forEach((player) => {
+            if(player.id === id) {
+                ready =  player.ready;
+            }
+        });
+        return ready;
+
+    }
+
     getOpponents() {
         var players = this.props.players;
         players.sort((a, b) => {
@@ -46,16 +59,19 @@ class Standings extends React.Component {
             }
             return (
                 <Grid container spacing={2} direction="row" alignItems="center" className="player">
-                <Grid item>
-                    <Typography className="opponentText" variant="body1">{player.id}</Typography>
+                    <Grid item>
+                        <Typography className="opponentText" variant="body1">{player.id}</Typography>
+                    </Grid>
+                    <Grid item xs>
+                        <PlayerProgress className="progress" key={player.id} you={false} id={player.id} progress={player.progress} wpm={player.wpm} />
+                    </Grid>
+                    <Grid item>
+                        <Typography className="opponentText" variant="body1"> {this.getWpm(player.id)} WPM</Typography>
+                    </Grid>
+                    <Grid item>
+                    {this.getReady(player.id) ? <Done color="secondary" /> : <Done style={{color:'transparent'}} /> }
+                    </Grid>
                 </Grid>
-                <Grid item alignItems="center" xs>
-                  <PlayerProgress className="progress" key={player.id} you={false} id={player.id} progress={player.progress} wpm={player.wpm}/>
-                </Grid>
-                <Grid item>
-                    <Typography className="opponentText" variant="body1"> {this.getWpm(player.id)} WPM</Typography>
-                </Grid>
-            </Grid>
             ) 
           }
         );
@@ -63,18 +79,20 @@ class Standings extends React.Component {
     }
 
     render() {
-        this.getOpponents();
         return(
             <div className="standingsRoot">
                 <Grid container spacing={2} direction="row" alignItems="center" className="player">
                     <Grid item>
                         <Typography className="myText" variant="body1">{this.props.myId}</Typography>
                     </Grid>
-                    <Grid item alignItems="center" xs>
+                    <Grid item xs>
                         <PlayerProgress you={true} id={this.props.myId} progress={this.getProgress(this.props.myId)} />
                     </Grid>
                     <Grid item>
                         <Typography className="myText" variant="body1"> {this.getWpm(this.props.myId)} WPM</Typography>
+                    </Grid>
+                    <Grid item>
+                        {this.getReady(this.props.myId) ? <Done color="primary" /> : <Done style={{color:'transparent'}} /> }
                     </Grid>
                 </Grid>
                 {this.getOpponents()}
