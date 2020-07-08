@@ -2,7 +2,7 @@ package com.jhogne.typer;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RoomTests {
 
@@ -24,13 +24,15 @@ public class RoomTests {
         assertEquals(player.getWpm(), 0);
         assertEquals(player.getProgress(), 0);
         assertEquals(player.getId(), 0);
+        assertTrue(player.isReady());
 
         String roomText = testRoom.getText();
-        PlayerMessage updateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50);
+        PlayerMessage updateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, false);
         testRoom.updatePlayer(updateMsg);
 
         assertEquals(player.getId(), 0);
         assertEquals(player.getProgress(), (roomText.length() / 4) * 100 / roomText.length());
         assertEquals(player.getWpm(), 50);
+        assertFalse(player.isReady());
     }
 }
