@@ -11,6 +11,11 @@ export function joinRoom(roomCode, userId, handleResponse, handleError) {
   response.then(handleResponse).catch(handleError);
 }
 
+export function joinRoomDefaultName(roomCode, handleResponse, handleError) {
+  const response = makeGetRequest(`joinRoom?id=${roomCode}`);
+  response.then(handleResponse).catch(handleError);
+}
+
 export function createRoom(userId, handleResponse) {
   const response = makeGetRequest(`createRoom?user=${userId}`);
   response.then(handleResponse);

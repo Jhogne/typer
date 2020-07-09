@@ -1,6 +1,6 @@
 import React from "react";
 
-import { joinRoom, createRoom } from "./ApiRequests";
+import { joinRoom, createRoom, joinRoomDefaultName } from "./ApiRequests";
 import { TextField } from "@material-ui/core"
 
 export class Home extends React.Component {
@@ -20,17 +20,22 @@ export class Home extends React.Component {
   }
 
   handleNameChange(event) {
-    this.setState({ name: event.target.value });
+    if(event.target.value.length <= 8){ // Change this to the best option when fixing visual bug
+      this.setState({ name: event.target.value });
+    }
     event.preventDefault();
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    joinRoom(this.state.code, this.state.name,
+    joinRoom(
+      this.state.code, 
+      this.state.name,
       (res) => {
+        console.log(res)
         this.props.history.push(`/room/`, {
           roomId: this.state.code,
-          memberId: this.state.name,
+          memberId: res,
         });
       }, (error) => {
         if(error.response){
@@ -40,6 +45,7 @@ export class Home extends React.Component {
               break;
             case 409:
               this.setState({nameError: true})
+              break;
             default:
               break;
           }

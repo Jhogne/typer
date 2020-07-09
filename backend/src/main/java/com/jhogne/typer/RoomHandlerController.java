@@ -15,12 +15,17 @@ public class RoomHandlerController {
 
     @GetMapping("/createRoom")
     private RoomMessage createRoom(@RequestParam(value = "user") String userId) {
+        System.out.println("userId: " + userId + " with  length: " + userId.length());
         return RoomHandler.createRoom(userId);
     }
 
     @GetMapping("/joinRoom")
-    private void joinRoom(@RequestParam(value = "id") String roomId, @RequestParam(value = "user") String userId) throws ResponseStatusException {
+    private String joinRoom(@RequestParam(value = "id") String roomId, @RequestParam(value = "user", required = false) String userId) throws ResponseStatusException {
+        if(userId.isEmpty()) {
+            userId = RoomHandler.generateName(roomId);
+        }
         RoomHandler.joinRoom(roomId, userId);
+        return userId;
     }
 
     @GetMapping("/leaveRoom")

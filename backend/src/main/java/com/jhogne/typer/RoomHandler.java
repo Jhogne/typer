@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class RoomHandler {
@@ -55,6 +56,32 @@ public class RoomHandler {
 
     public static void resetRoom(String id) {
         rooms.get(id).reset();
+    }
+
+    public static String generateName(String roomId) {
+        Room room = rooms.get(roomId);
+        if(room == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        List<Player> members = room.getMembers();
+
+        String template = "user";
+        // Find an available name.
+        for(int i = 0; i < members.size() + 1; i++){
+            boolean unique = true;
+            for(Player p : members) {
+                if(p.getId().equals(template + i)){
+                    unique = false;
+                    break;
+                }
+            }
+            if(unique){
+                return template + i;
+            }
+        }
+
+        return template;
+
     }
 
     private static String generateId() {
