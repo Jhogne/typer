@@ -1,11 +1,9 @@
-import React, { Component } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Container from "@material-ui/core/Container"
 
-import "./PlayerProgress.css"
-import ColoredLinearProgress from "./ColoredLinearProgress"
-  
+import "./PlayerProgress.css"  
 
 const styles = props => ({
     colorPrimary: {

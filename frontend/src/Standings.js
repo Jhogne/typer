@@ -1,7 +1,7 @@
 import React from "react";
 
 import PlayerProgress from "./PlayerProgress";
-import { Container, Grid, Typography } from "@material-ui/core"
+import { Grid, Typography } from "@material-ui/core"
 import "./Standings.css"
 
 import Done from "@material-ui/icons/Done"
@@ -53,10 +53,7 @@ class Standings extends React.Component {
             return a.id - b.id
     
         });
-        const bars = players.map((player) => {
-            if(player.id === this.props.myId){
-                return;
-            }
+        const bars = players.filter((player) => {return player.id !== this.props.myId}).map((player) => {
             return (
                 <Grid container spacing={2} direction="row" alignItems="center" className="player">
                     <Grid item>

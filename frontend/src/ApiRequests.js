@@ -6,13 +6,18 @@ export async function makeGetRequest(location) {
   return data;
 }
 
-export function joinRoom(roomCode, handleResponse) {
-  const response = makeGetRequest(`joinRoom?id=${roomCode}`);
-  response.then(handleResponse);
+export function joinRoom(roomCode, userId, handleResponse, handleError) {
+  const response = makeGetRequest(`joinRoom?id=${roomCode}&user=${userId}`);
+  response.then(handleResponse).catch(handleError);
 }
 
-export function createRoom(handleResponse) {
-  const response = makeGetRequest("createRoom");
+export function joinRoomDefaultName(roomCode, handleResponse, handleError) {
+  const response = makeGetRequest(`joinRoom?id=${roomCode}`);
+  response.then(handleResponse).catch(handleError);
+}
+
+export function createRoom(userId, handleResponse) {
+  const response = makeGetRequest(`createRoom?user=${userId}`);
   response.then(handleResponse);
 }
 

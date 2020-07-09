@@ -22,7 +22,7 @@ public class RoomController {
     }
 
     @MessageMapping("/room/{roomId}/leave")
-    public void leave(@DestinationVariable String roomId, int memberId) {
+    public void leave(@DestinationVariable String roomId, String memberId) {
         RoomHandler.leaveRoom(roomId, memberId);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }
@@ -40,7 +40,7 @@ public class RoomController {
     }
 
     @MessageMapping("/room/{roomId}/finish")
-    public void finish(@DestinationVariable String roomId, int player) {
+    public void finish(@DestinationVariable String roomId, String player) {
         System.out.println("Winner: " + player);
         RoomHandler.playerFinished(roomId, player);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));

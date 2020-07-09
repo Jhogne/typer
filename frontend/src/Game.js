@@ -3,8 +3,7 @@ import React from "react";
 import { sendMessage } from "./ApiRequests";
 import "./Game.css";
 
-import { Card, TextField, Typography} from '@material-ui/core'
-
+import { TextField, Typography} from '@material-ui/core'
 
 var words = 0;
 var idx = 0;

@@ -10,17 +10,17 @@ public class RoomHandlerTests {
 
     @Test
     void createRoomTest() {
-        RoomMessage response = RoomHandler.createRoom();
+        RoomMessage response = RoomHandler.createRoom("a");
 
-        assertEquals(0, response.getMemberId());
+        assertEquals("a", response.getMemberId());
         assertEquals(4, response.getroomId().length());
 
     }
 
     @Test
     void joinRoomTest() {
-        RoomMessage response = RoomHandler.createRoom();
-        RoomHandler.joinRoom(response.getroomId());
+        RoomMessage response = RoomHandler.createRoom("abcd");
+        RoomHandler.joinRoom(response.getroomId(), "testUser");
         Room room = RoomHandler.getRoom(response.getroomId());
         List<Player> members = room.getMembers();
 
@@ -34,7 +34,7 @@ public class RoomHandlerTests {
 
     @Test
     void leaveRoomTest() {
-        RoomMessage response = RoomHandler.createRoom();
+        RoomMessage response = RoomHandler.createRoom("abcd");
         Room room = RoomHandler.getRoom(response.getroomId());
 
         assertEquals(1, room.getMembers().size());
@@ -46,7 +46,7 @@ public class RoomHandlerTests {
 
     @Test
     void deleteRoomTest() {
-        RoomMessage response = RoomHandler.createRoom();
+        RoomMessage response = RoomHandler.createRoom("abcd");
         RoomHandler.leaveRoom(response.getroomId(), response.getMemberId());
 
         assertNull(RoomHandler.getRoom(response.getroomId()));

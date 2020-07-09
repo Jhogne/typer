@@ -4,8 +4,6 @@ import SockJsClient from "react-stomp";
 import Game from "./Game";
 import { sendMessage } from "./ApiRequests";
 import { Typography, Button } from "@material-ui/core";
-import { createMuiTheme } from '@material-ui/core/styles';
-import PlayerProgress from './PlayerProgress';
 import "./Room.css"
 
 import Standings from "./Standings"
@@ -81,6 +79,8 @@ class Room extends React.Component {
         return "Third place"
       case 3:
         return "Fourth place"
+      default:
+        return ""
     }
   }
 

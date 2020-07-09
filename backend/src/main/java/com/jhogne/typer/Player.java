@@ -1,16 +1,16 @@
 package com.jhogne.typer;
 
 public class Player {
-    private int id;
+    private String id;
     private long progress;
     private long wpm;
     private boolean ready = true;
 
-    public Player(int id) {
+    public Player(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

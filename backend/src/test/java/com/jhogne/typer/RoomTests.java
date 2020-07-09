@@ -10,7 +10,7 @@ public class RoomTests {
     void addMemberTest() {
         Room testRoom = new Room("abcd");
         int amountBefore = testRoom.getMembers().size();
-        testRoom.addMember();
+        testRoom.addMember("a");
         int amountAfter = testRoom.getMembers().size();
         assertEquals(amountBefore+1, amountAfter);
     }
@@ -18,19 +18,20 @@ public class RoomTests {
     @Test
     void updatePlayerTest() {
         Room testRoom = new Room("abcd");
-        int playerId = testRoom.addMember();
+        String playerId = "testUser";
+        testRoom.addMember(playerId);
         Player player = testRoom.getMember(playerId);
 
         assertEquals(player.getWpm(), 0);
         assertEquals(player.getProgress(), 0);
-        assertEquals(player.getId(), 0);
+        assertEquals(player.getId(), "testUser");
         assertTrue(player.isReady());
 
         String roomText = testRoom.getText();
         PlayerMessage updateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, false);
         testRoom.updatePlayer(updateMsg);
 
-        assertEquals(player.getId(), 0);
+        assertEquals(player.getId(), "testUser");
         assertEquals(player.getProgress(), (roomText.length() / 4) * 100 / roomText.length());
         assertEquals(player.getWpm(), 50);
         assertFalse(player.isReady());
