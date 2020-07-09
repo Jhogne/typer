@@ -22,7 +22,7 @@ public class RoomController {
     }
 
     @MessageMapping("/room/{roomId}/leave")
-    public void leave(@DestinationVariable String roomId, int memberId) {
+    public void leave(@DestinationVariable String roomId, String memberId) {
         RoomHandler.leaveRoom(roomId, memberId);
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
     }

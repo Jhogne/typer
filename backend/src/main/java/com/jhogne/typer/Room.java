@@ -46,9 +46,8 @@ public class Room {
         return true;
     }
 
-    public boolean decreaseMembers(int id) {
-        members.remove(id);
-        return true;
+    public boolean decreaseMembers(String id) {
+        return members.removeIf(p -> p.getId().equals(id));
     }
 
     public void reset(){

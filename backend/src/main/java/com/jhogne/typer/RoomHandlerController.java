@@ -29,7 +29,7 @@ public class RoomHandlerController {
     }
 
     @GetMapping("/leaveRoom")
-    private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "memberId") int memberId ) throws Exception{
+    private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "memberId") String memberId ) throws Exception{
         if(RoomHandler.leaveRoom(roomId, memberId)){
             return RoomHandler.getRoom(roomId);
         }

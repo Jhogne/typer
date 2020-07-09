@@ -32,7 +32,7 @@ public class RoomHandler {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    public static boolean leaveRoom(String roomId, int memberId) {
+    public static boolean leaveRoom(String roomId, String memberId) {
         if(rooms.containsKey(roomId)) {
             rooms.get(roomId).decreaseMembers(memberId);
             if(rooms.get(roomId).getMemberAmount() <= 0) {
