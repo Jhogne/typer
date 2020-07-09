@@ -1,5 +1,8 @@
 package com.jhogne.typer;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +11,7 @@ public class Room {
     private String roomId;
     private String text;
     private List<Player> members;
-    private List<Integer> standings;
+    private List<String> standings;
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -33,13 +36,14 @@ public class Room {
         return text;
     }
 
-    public int addMember(){
-        int newId = 0;
-        if(!members.isEmpty()) {
-            newId = members.size();
+    public boolean addMember(String userId){
+        for(Player p : members) {
+            if(p.getId().equals(userId)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT);
+            }
         }
-        members.add(new Player(newId));
-        return newId;
+        members.add(new Player(userId));
+        return true;
     }
 
     public boolean decreaseMembers(int id) {
@@ -57,7 +61,7 @@ public class Room {
 
     public void updatePlayer(PlayerMessage newState) {
         for(Player p : members) {
-            if(p.getId() == (newState.getPlayerId())){
+            if(p.getId().equals(newState.getPlayerId())){
                 p.setProgress(newState.getCompleted().length() * 100  / this.text.length());
                 p.setWpm(newState.getWpm());
                 p.setReady(newState.isReady());
@@ -71,24 +75,24 @@ public class Room {
         }
     }
 
-    public Player getMember(int playerId) {
+    public Player getMember(String playerId) {
         for (Player p : members) {
-            if(p.getId() == playerId) {
+            if(p.getId().equals(playerId)) {
                 return p;
             }
         }
         return null;
     }
 
-    public void playerFinished(int playerId) {
+    public void playerFinished(String playerId) {
         for(Player p : members) {
-            if(p.getId() == playerId) {
+            if(p.getId().equals(playerId)) {
                 standings.add(p.getId());
             }
         }
     }
 
-    public List<Integer> getStandings() {
+    public List<String> getStandings() {
         return standings;
     }
 

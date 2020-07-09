@@ -1,9 +1,11 @@
 package com.jhogne.typer;
 
+import org.apache.coyote.Response;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Random;
 
@@ -12,13 +14,13 @@ import java.util.Random;
 public class RoomHandlerController {
 
     @GetMapping("/createRoom")
-    private RoomMessage createRoom() {
-        return RoomHandler.createRoom();
+    private RoomMessage createRoom(@RequestParam(value = "user") String userId) {
+        return RoomHandler.createRoom(userId);
     }
 
     @GetMapping("/joinRoom")
-    private int joinRoom(@RequestParam(value = "id") String roomId) throws Exception{
-        return RoomHandler.joinRoom(roomId);
+    private void joinRoom(@RequestParam(value = "id") String roomId, @RequestParam(value = "user") String userId) throws ResponseStatusException {
+        RoomHandler.joinRoom(roomId, userId);
     }
 
     @GetMapping("/leaveRoom")

@@ -1,31 +1,34 @@
 package com.jhogne.typer;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.HashMap;
 import java.util.Random;
 
 public class RoomHandler {
     private static HashMap<String, Room> rooms = new HashMap<>();
 
-    public static RoomMessage createRoom(){
+    public static RoomMessage createRoom(String userId){
         String roomId = generateId();
         while(rooms.containsKey(roomId)) {
             roomId = generateId();
         }
         Room room = new Room(roomId);
-        int memberId = room.addMember();
+        room.addMember(userId);
         rooms.put(roomId, room);
-        return new RoomMessage(roomId, memberId);
+        return new RoomMessage(roomId, userId);
     }
 
     public static Room getRoom(String id){
         return rooms.getOrDefault(id, null);
     }
 
-    public static int joinRoom(String roomId) {
+    public static boolean joinRoom(String roomId, String userId) {
         if(rooms.containsKey(roomId)) {
-            return rooms.get(roomId).addMember();
+            return rooms.get(roomId).addMember(userId);
         }
-        return -1;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     public static boolean leaveRoom(String roomId, int memberId) {
@@ -39,7 +42,7 @@ public class RoomHandler {
         return false;
     }
 
-    public static void playerFinished(String roomId, int memberId) {
+    public static void playerFinished(String roomId, String memberId) {
         if(rooms.containsKey(roomId)) {
             rooms.get(roomId).playerFinished(memberId);
         }
