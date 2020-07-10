@@ -5,23 +5,21 @@ public class RoomMessage {
 
     private String memberId;
 
-    public RoomMessage() {}
-
     public RoomMessage(String roomId, String memberId) {
         this.roomId = roomId;
         this.memberId = memberId;
     }
 
-    public String getroomId() {
+    public String getRoomId() {
         return roomId;
-    }
-
-    public void setroomId(String roomId) {
-        this.roomId = roomId;
     }
 
     public String getMemberId() {
         return memberId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public void setMemberId(String memberId) {

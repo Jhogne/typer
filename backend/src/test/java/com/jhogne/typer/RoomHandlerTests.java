@@ -17,15 +17,15 @@ public class RoomHandlerTests {
         RoomMessage response = RoomHandler.createRoom("a");
 
         assertEquals("a", response.getMemberId());
-        assertEquals(4, response.getroomId().length());
+        assertEquals(4, response.getRoomId().length());
 
     }
 
     @Test
     void joinRoomTest() {
         RoomMessage response = RoomHandler.createRoom("abcd");
-        RoomHandler.joinRoom(response.getroomId(), "testUser");
-        Room room = RoomHandler.getRoom(response.getroomId());
+        RoomHandler.joinRoom(response.getRoomId(), "testUser");
+        Room room = RoomHandler.getRoom(response.getRoomId());
         List<Player> members = room.getMembers();
 
         assertEquals(2, members.size());
@@ -39,11 +39,11 @@ public class RoomHandlerTests {
     @Test
     void leaveRoomTest() {
         RoomMessage response = RoomHandler.createRoom("abcd");
-        Room room = RoomHandler.getRoom(response.getroomId());
+        Room room = RoomHandler.getRoom(response.getRoomId());
 
         assertEquals(1, room.getMembers().size());
 
-        RoomHandler.leaveRoom(response.getroomId(), response.getMemberId());
+        RoomHandler.leaveRoom(response.getRoomId(), response.getMemberId());
 
         assertEquals(0, room.getMembers().size());
     }
@@ -51,8 +51,8 @@ public class RoomHandlerTests {
     @Test
     void deleteRoomTest() {
         RoomMessage response = RoomHandler.createRoom("abcd");
-        RoomHandler.leaveRoom(response.getroomId(), response.getMemberId());
+        RoomHandler.leaveRoom(response.getRoomId(), response.getMemberId());
 
-        assertNull(RoomHandler.getRoom(response.getroomId()));
+        assertNull(RoomHandler.getRoom(response.getRoomId()));
     }
 }
