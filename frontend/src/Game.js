@@ -9,7 +9,6 @@ var words = 0;
 var idx = 0;
 var wordStart = 0;
 var error = false;
-var startTime;
 
 class Game extends React.Component {
   constructor(props) {
@@ -28,7 +27,6 @@ class Game extends React.Component {
 
     if (idx === 0) {
       var d = new Date();
-      startTime = d.getTime();
     }
     if (
       this.props.text.slice(wordStart, wordStart + newWord.length) === newWord
@@ -51,8 +49,6 @@ class Game extends React.Component {
       error = true;
     }
     if (idx === this.props.text.length) {
-      console.log("You won!");
-      console.log("WPM: " + this.getWPM());
       idx = 0;
       words = 0;
       newWord = "";
@@ -69,7 +65,7 @@ class Game extends React.Component {
   getWPM() {
     var d = new Date();
     var endTime = d.getTime();
-    var time = endTime - startTime;
+    var time = endTime - this.props.startTime;
     var minutes = time / 60000;
     return words / minutes;
   }

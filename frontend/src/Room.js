@@ -6,7 +6,19 @@ import { sendMessage } from "./ApiRequests";
 import { Typography, Button } from "@material-ui/core";
 import "./Room.css"
 
+import Countdown from 'react-countdown';
+
 import Standings from "./Standings"
+
+const renderer = ({ hours, minutes, seconds, completed }) => {
+  if (completed) {
+    // Render a completed state
+    return <Typography variant="body1"> Type! </Typography>;
+  } else {
+    // Render a countdown
+    return <Typography variant="body1">{seconds}</Typography>;
+  }
+};
 
 class Room extends React.Component {
   constructor(props) {
@@ -19,10 +31,12 @@ class Room extends React.Component {
       text: "",
       members: [],
       standings: [],
+      started: true,
     };
     this.updateRoom = this.updateRoom.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.countdownComplete = this.countdownComplete.bind(this);
   }
 
   componentWillUnmount() {
@@ -44,7 +58,8 @@ class Room extends React.Component {
       amount: msg.memberAmount,
       text: msg.text,
       members: msg.members,
-      standings: msg.standings
+      standings: msg.standings,
+      startTime: msg.startTime
     });
   }
 
@@ -59,7 +74,7 @@ class Room extends React.Component {
   }
 
   resetGame() {
-    console.log(this.getMyWpm);
+    this.setState({started:false})
     sendMessage(this.clientRef, `/room/${this.state.roomId}/postState`, {playerId:this.state.memberId, completed:this.state.text, wpm:this.getMyWpm(), ready:true});
   }
 
@@ -91,8 +106,11 @@ class Room extends React.Component {
         ready.push(p.id)
       }
     });
-    
     return ready;
+  }
+
+  countdownComplete() {
+    this.setState({started:true});
   }
 
   render() {
@@ -102,6 +120,9 @@ class Room extends React.Component {
         <h6>
           This is room "{this.state.roomId}" with {this.state.amount} member(s)
         </h6>
+
+        {this.state.startTime > (Date.now()) && <Countdown date={this.state.startTime} renderer={renderer} onComplete={this.countdownComplete} />}
+
         <Standings className="standings" players={this.state.members} myId={this.state.memberId}/>
         {this.state.text.length > 0 && ( // Render game after text is recieved
           <Game
@@ -110,6 +131,8 @@ class Room extends React.Component {
             text={this.state.text}
             clientRef={this.clientRef}
             id={this.state.roomId}
+            disabled={!this.state.started}
+            startTime={this.state.startTime}
           />
         )}
         <Typography variant="h4" className="result">{this.getPlacement()}</Typography>
