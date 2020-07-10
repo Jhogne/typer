@@ -10,9 +10,9 @@ import java.util.Random;
 public class RoomHandler {
     private static HashMap<String, Room> rooms = new HashMap<>();
 
-    public static RoomMessage createRoom(String userId){
+    public static RoomMessage createRoom(String userId) {
         String roomId = generateId();
-        while(rooms.containsKey(roomId)) {
+        while (rooms.containsKey(roomId)) {
             roomId = generateId();
         }
         Room room = new Room(roomId);
@@ -21,48 +21,42 @@ public class RoomHandler {
         return new RoomMessage(roomId, userId);
     }
 
-    public static Room getRoom(String id){
+    public static Room getRoom(String id) {
         return rooms.getOrDefault(id, null);
     }
 
     public static void joinRoom(String roomId, String userId) {
-        if(rooms.containsKey(roomId)) {
-            System.out.println("Room found");
+        if (rooms.containsKey(roomId)) {
             rooms.get(roomId).addPlayer(userId);
             return;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    public static boolean leaveRoom(String roomId, String memberId) {
-        if(rooms.containsKey(roomId)) {
+    public static void leaveRoom(String roomId, String memberId) {
+        if (rooms.containsKey(roomId)) {
             rooms.get(roomId).removePlayer(memberId);
-            if(rooms.get(roomId).getPlayerAmount() <= 0) {
-                deleteRoom(roomId);
+            if (rooms.get(roomId).getPlayerAmount() <= 0) {
+                rooms.remove(roomId);
             }
-            return true;
         }
-        return false;
     }
 
     public static void playerFinished(String roomId, String memberId) {
-        if(rooms.containsKey(roomId)) {
+        if (rooms.containsKey(roomId)) {
             rooms.get(roomId).playerFinished(memberId);
         }
     }
 
-    public static void deleteRoom(String id) {
-        rooms.remove(id);
-    }
-
-
     public static void resetRoom(String id) {
-        rooms.get(id).reset();
+        if (rooms.containsKey(id)) {
+            rooms.get(id).reset();
+        }
     }
 
     public static String generateName(String roomId) {
         Room room = rooms.get(roomId);
-        if(room == null) {
+        if (room == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return room.getUniqueId();
@@ -71,8 +65,8 @@ public class RoomHandler {
     private static String generateId() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
         Random rng = new Random();
-        char text[] = new char[4];
-        for(int i = 0; i < text.length; i++) {
+        char[] text = new char[4];
+        for (int i = 0; i < text.length; i++) {
             text[i] = chars.charAt(rng.nextInt(chars.length()));
         }
         return new String(text);
