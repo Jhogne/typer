@@ -12,6 +12,7 @@ public class Room {
     private String text;
     private List<Player> members;
     private List<String> standings;
+    private long startTime;
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -53,6 +54,7 @@ public class Room {
     public void reset(){
         // Set text to new one here
         standings = new ArrayList<>();
+        startTime = System.currentTimeMillis() + 10000;
         for(Player p : members) {
             p.setReady(false);
         }
@@ -89,10 +91,17 @@ public class Room {
                 standings.add(p.getId());
             }
         }
+        for(String id : standings){
+            System.out.println(id);
+        }
     }
 
     public List<String> getStandings() {
         return standings;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 
     @Override

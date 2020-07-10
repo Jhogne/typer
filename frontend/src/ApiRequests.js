@@ -22,8 +22,11 @@ export function createRoom(userId, handleResponse) {
 }
 
 export function sendMessage(clientRef, location, msg) {
+  if(typeof msg !== "string"){
+    msg = JSON.stringify(msg)
+  }
   try {
-    clientRef.sendMessage(`/app/${location}`, JSON.stringify(msg));
+    clientRef.sendMessage(`/app/${location}`, msg);
     return true;
   } catch (e) {
     return false;

@@ -2,6 +2,10 @@
     color:#d0d0d0;
 }
 
+p {
+    color:#d0d0d0;
+}
+
 .root {
     display: flex;
     flex-direction: column;
