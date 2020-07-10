@@ -10,6 +10,13 @@ public class Player {
         this.id = id;
     }
 
+    public Player(String id, long progress, long wpm, boolean ready) {
+        this.id = id;
+        this.progress = progress;
+        this.wpm = wpm;
+        this.ready = ready;
+    }
+
     public String getId() {
         return id;
     }

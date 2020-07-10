@@ -16,7 +16,7 @@ public class RoomHandler {
             roomId = generateId();
         }
         Room room = new Room(roomId);
-        room.addMember(userId);
+        room.addPlayer(userId);
         rooms.put(roomId, room);
         return new RoomMessage(roomId, userId);
     }
@@ -25,17 +25,19 @@ public class RoomHandler {
         return rooms.getOrDefault(id, null);
     }
 
-    public static boolean joinRoom(String roomId, String userId) {
+    public static void joinRoom(String roomId, String userId) {
         if(rooms.containsKey(roomId)) {
-            return rooms.get(roomId).addMember(userId);
+            System.out.println("Room found");
+            rooms.get(roomId).addPlayer(userId);
+            return;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     public static boolean leaveRoom(String roomId, String memberId) {
         if(rooms.containsKey(roomId)) {
-            rooms.get(roomId).decreaseMembers(memberId);
-            if(rooms.get(roomId).getMemberAmount() <= 0) {
+            rooms.get(roomId).removePlayer(memberId);
+            if(rooms.get(roomId).getPlayerAmount() <= 0) {
                 deleteRoom(roomId);
             }
             return true;
@@ -63,25 +65,7 @@ public class RoomHandler {
         if(room == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        List<Player> members = room.getMembers();
-
-        String template = "user";
-        // Find an available name.
-        for(int i = 0; i < members.size() + 1; i++){
-            boolean unique = true;
-            for(Player p : members) {
-                if(p.getId().equals(template + i)){
-                    unique = false;
-                    break;
-                }
-            }
-            if(unique){
-                return template + i;
-            }
-        }
-
-        return template;
-
+        return room.getUniqueId();
     }
 
     private static String generateId() {

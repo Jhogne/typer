@@ -26,7 +26,10 @@ public class RoomHandlerController {
         if(userId.isEmpty()) {
             userId = RoomHandler.generateName(roomId);
         }
+
+        System.out.println("Returning: " + userId);
         RoomHandler.joinRoom(roomId, userId);
+        System.out.println("Returning: " + userId);
         return userId;
     }
 
