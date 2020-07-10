@@ -7,24 +7,44 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A static class that contains all rooms and forwards requests to the proper room
+ */
 public class RoomHandler {
     private static HashMap<String, Room> rooms = new HashMap<>();
 
-    public static RoomMessage createRoom(String userId) {
+    /**
+     * Creates a new room with a unique room id
+     *
+     * @return The id of the newly created room
+     */
+    public static String createRoom() {
         String roomId = generateId();
         while (rooms.containsKey(roomId)) {
             roomId = generateId();
         }
         Room room = new Room(roomId);
-        room.addPlayer(userId);
         rooms.put(roomId, room);
-        return new RoomMessage(roomId, userId);
+        return roomId;
     }
 
+    /**
+     * Gets a room by it's id, or null if it doesn't exist
+     *
+     * @param id The id of the room to be retrieved
+     * @return The room
+     */
     public static Room getRoom(String id) {
         return rooms.getOrDefault(id, null);
     }
 
+    /**
+     * A player, given by it's player id, joins a room, given by it's room id . Throws not found exception if room
+     * doesn't exist
+     *
+     * @param roomId The id of the room to join
+     * @param userId The id of the player to join the room
+     */
     public static void joinRoom(String roomId, String userId) {
         if (rooms.containsKey(roomId)) {
             rooms.get(roomId).addPlayer(userId);
@@ -33,6 +53,12 @@ public class RoomHandler {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * A player, given by it's player id, leaves a room, given by it's room id.
+     *
+     * @param roomId   The id of the room to leave
+     * @param memberId The id of the player to leave
+     */
     public static void leaveRoom(String roomId, String memberId) {
         if (rooms.containsKey(roomId)) {
             rooms.get(roomId).removePlayer(memberId);
@@ -42,18 +68,35 @@ public class RoomHandler {
         }
     }
 
+    /**
+     * Reports a player of a room as finished
+     *
+     * @param roomId   The room the player has finished
+     * @param memberId The player that has finished the text
+     */
     public static void playerFinished(String roomId, String memberId) {
         if (rooms.containsKey(roomId)) {
             rooms.get(roomId).playerFinished(memberId);
         }
     }
 
+    /**
+     * Resets a room
+     *
+     * @param id The id of the room to reset
+     */
     public static void resetRoom(String id) {
         if (rooms.containsKey(id)) {
             rooms.get(id).reset();
         }
     }
 
+    /**
+     * Generates a new unique name for a room
+     *
+     * @param roomId The id of the room that is used as base
+     * @return A name that is unique in the room
+     */
     public static String generateName(String roomId) {
         Room room = rooms.get(roomId);
         if (room == null) {
@@ -62,6 +105,11 @@ public class RoomHandler {
         return room.getUniqueId();
     }
 
+    /**
+     * Generates a random room id with 4 lowercase letters
+     *
+     * @return A random room id
+     */
     private static String generateId() {
         String chars = "abcdefghijklmnopqrstuvwxyz";
         Random rng = new Random();

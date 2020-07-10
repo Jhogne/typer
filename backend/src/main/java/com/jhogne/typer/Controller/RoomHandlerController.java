@@ -18,7 +18,9 @@ public class RoomHandlerController {
         if(userId.isEmpty()) {
             userId = "user0";
         }
-        return RoomHandler.createRoom(userId);
+        String roomId = RoomHandler.createRoom();
+        RoomHandler.joinRoom(roomId, userId);
+        return new RoomMessage(roomId, userId);
     }
 
     @GetMapping("/joinRoom")
