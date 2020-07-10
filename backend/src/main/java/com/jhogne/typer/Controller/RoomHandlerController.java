@@ -1,13 +1,13 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Controller;
 
-import org.apache.coyote.Response;
+import com.jhogne.typer.Model.Room;
+import com.jhogne.typer.Model.RoomHandler;
+import com.jhogne.typer.Model.RoomMessage;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Random;
 
 @RestController
 @CrossOrigin

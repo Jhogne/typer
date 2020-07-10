@@ -1,4 +1,4 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Model;
 
 public class PlayerMessage {
     private String playerId;

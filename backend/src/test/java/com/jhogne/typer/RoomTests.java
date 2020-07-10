@@ -1,5 +1,8 @@
 package com.jhogne.typer;
 
+import com.jhogne.typer.Model.Player;
+import com.jhogne.typer.Model.PlayerMessage;
+import com.jhogne.typer.Model.Room;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

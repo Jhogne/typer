@@ -1,4 +1,4 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

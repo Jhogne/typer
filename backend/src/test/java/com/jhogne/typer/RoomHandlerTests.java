@@ -1,5 +1,9 @@
 package com.jhogne.typer;
 
+import com.jhogne.typer.Model.Player;
+import com.jhogne.typer.Model.Room;
+import com.jhogne.typer.Model.RoomHandler;
+import com.jhogne.typer.Model.RoomMessage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

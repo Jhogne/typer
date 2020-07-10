@@ -1,4 +1,4 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -90,9 +90,6 @@ public class Room {
             if(p.getId().equals(playerId)) {
                 standings.add(p.getId());
             }
-        }
-        for(String id : standings){
-            System.out.println(id);
         }
     }
 
