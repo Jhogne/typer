@@ -43,11 +43,11 @@ public class RoomHandler {
      * doesn't exist
      *
      * @param roomId The id of the room to join
-     * @param userId The id of the player to join the room
+     * @param playerId The id of the player to join the room
      */
-    public static void joinRoom(String roomId, String userId) {
+    public static void joinRoom(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).addPlayer(userId);
+            rooms.get(roomId).addPlayer(playerId);
             return;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -57,11 +57,11 @@ public class RoomHandler {
      * A player, given by it's player id, leaves a room, given by it's room id.
      *
      * @param roomId   The id of the room to leave
-     * @param memberId The id of the player to leave
+     * @param playerId The id of the player to leave
      */
-    public static void leaveRoom(String roomId, String memberId) {
+    public static void leaveRoom(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).removePlayer(memberId);
+            rooms.get(roomId).removePlayer(playerId);
             if (rooms.get(roomId).getPlayerAmount() <= 0) {
                 rooms.remove(roomId);
             }
@@ -72,11 +72,11 @@ public class RoomHandler {
      * Reports a player of a room as finished
      *
      * @param roomId   The room the player has finished
-     * @param memberId The player that has finished the text
+     * @param playerId The player that has finished the text
      */
-    public static void playerFinished(String roomId, String memberId) {
+    public static void playerFinished(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).playerFinished(memberId);
+            rooms.get(roomId).playerFinished(playerId);
         }
     }
 

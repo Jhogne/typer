@@ -14,28 +14,28 @@ import org.springframework.web.server.ResponseStatusException;
 public class RoomHandlerController {
 
     @GetMapping("/createRoom")
-    private RoomMessage createRoom(@RequestParam(value = "user") String userId) {
-        if(userId.isEmpty()) {
-            userId = "user0";
+    private RoomMessage createRoom(@RequestParam(value = "user") String playerId) {
+        if(playerId.isEmpty()) {
+            playerId = "user0";
         }
         String roomId = RoomHandler.createRoom();
-        RoomHandler.joinRoom(roomId, userId);
-        return new RoomMessage(roomId, userId);
+        RoomHandler.joinRoom(roomId, playerId);
+        return new RoomMessage(roomId, playerId);
     }
 
     @GetMapping("/joinRoom")
-    private String joinRoom(@RequestParam(value = "id") String roomId, @RequestParam(value = "user", required = false) String userId) throws ResponseStatusException {
-        if(userId.isEmpty()) {
-            userId = RoomHandler.generateName(roomId);
+    private String joinRoom(@RequestParam(value = "id") String roomId, @RequestParam(value = "user", required = false) String playerId) throws ResponseStatusException {
+        if(playerId.isEmpty()) {
+            playerId = RoomHandler.generateName(roomId);
         }
-        RoomHandler.joinRoom(roomId, userId);
-        return userId;
+        RoomHandler.joinRoom(roomId, playerId);
+        return playerId;
     }
 
     @GetMapping("/leaveRoom")
-    private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "memberId") String memberId ) throws Exception{
+    private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "userId") String playerId ) throws Exception{
         if(RoomHandler.getRoom(roomId) != null) {
-            RoomHandler.leaveRoom(roomId, memberId);
+            RoomHandler.leaveRoom(roomId, playerId);
             return RoomHandler.getRoom(roomId);
         }
         throw new Exception("Bad things happened");

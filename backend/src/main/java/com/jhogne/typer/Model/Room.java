@@ -93,13 +93,13 @@ public class Room {
     /**
      * Adds a player to the room. Throws conflict exception if a player with the same name is already in the room
      *
-     * @param userId The id of the player to be added
+     * @param playerId The id of the player to be added
      */
-    public void addPlayer(String userId) {
-        if (players.containsKey(userId)) {
+    public void addPlayer(String playerId) {
+        if (players.containsKey(playerId)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
-        players.put(userId, new Player(userId));
+        players.put(playerId, new Player(playerId));
     }
 
     /**
@@ -165,7 +165,7 @@ public class Room {
      */
     public String getUniqueId() {
         String template = "user";
-        // Find an available name. Requires at most one more tries than members (taken names) in the room
+        // Find an available name. Requires at most one more tries than players (taken names) in the room
         for (int i = 0; i < players.size() + 1; i++) {
             if (!players.containsKey(template + i)) {
                 return template + i;
@@ -192,7 +192,7 @@ public class Room {
         return "Room{" +
                 "roomId='" + roomId + '\'' +
                 ", text='" + text + '\'' +
-                ", members=" + players +
+                ", players=" + players +
                 ", standings=" + standings +
                 ", startTime=" + startTime +
                 '}';

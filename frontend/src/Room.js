@@ -52,12 +52,13 @@ class Room extends React.Component {
   }
 
   handleMessage(msg) {
+    console.log(msg);
     this.setState({
       winner: msg.winner,
       roomId: msg.roomId,
-      amount: msg.memberAmount,
+      amount: msg.playerAmount,
       text: msg.text,
-      members: msg.members,
+      members: msg.players,
       standings: msg.standings,
       startTime: msg.startTime
     });

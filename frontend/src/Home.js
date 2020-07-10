@@ -59,7 +59,7 @@ export class Home extends React.Component {
     createRoom(this.state.name, (res) => {
       this.props.history.push(`/room/`, {
         roomId: res.roomId,
-        memberId: res.memberId,
+        memberId: res.playerId,
       });
     });
   }
