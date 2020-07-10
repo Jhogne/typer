@@ -15,7 +15,9 @@ public class RoomHandlerController {
 
     @GetMapping("/createRoom")
     private RoomMessage createRoom(@RequestParam(value = "user") String userId) {
-        System.out.println("userId: " + userId + " with  length: " + userId.length());
+        if(userId.isEmpty()) {
+            userId = "user0";
+        }
         return RoomHandler.createRoom(userId);
     }
 
