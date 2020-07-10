@@ -26,16 +26,14 @@ public class RoomHandlerController {
         if(userId.isEmpty()) {
             userId = RoomHandler.generateName(roomId);
         }
-
-        System.out.println("Returning: " + userId);
         RoomHandler.joinRoom(roomId, userId);
-        System.out.println("Returning: " + userId);
         return userId;
     }
 
     @GetMapping("/leaveRoom")
     private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "memberId") String memberId ) throws Exception{
-        if(RoomHandler.leaveRoom(roomId, memberId)){
+        if(RoomHandler.getRoom(roomId) != null) {
+            RoomHandler.leaveRoom(roomId, memberId);
             return RoomHandler.getRoom(roomId);
         }
         throw new Exception("Bad things happened");

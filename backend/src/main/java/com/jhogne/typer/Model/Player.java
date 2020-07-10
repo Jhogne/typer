@@ -25,20 +25,20 @@ public class Player {
         return progress;
     }
 
-    public void setProgress(long progress) {
-        this.progress = progress;
-    }
-
-    public void setWpm(long wpm) {
-        this.wpm = wpm;
-    }
-
     public long getWpm() {
         return wpm;
     }
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
+    }
+
+    public void setWpm(long wpm) {
+        this.wpm = wpm;
     }
 
     public void setReady(boolean ready) {

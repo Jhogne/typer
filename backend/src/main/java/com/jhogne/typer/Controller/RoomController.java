@@ -21,28 +21,33 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/leave")
     public void leave(@DestinationVariable String roomId, String memberId) {
         RoomHandler.leaveRoom(roomId, memberId);
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        sendRoomMessage(roomId);
     }
 
     @MessageMapping("/room/{roomId}/update")
     public void update(@DestinationVariable String roomId) {
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        sendRoomMessage(roomId);
     }
 
     @MessageMapping("/room/{roomId}/postState")
     public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
         RoomHandler.getRoom(roomId).updatePlayer(msg);
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        sendRoomMessage(roomId);
     }
 
     @MessageMapping("/room/{roomId}/finish")
     public void finish(@DestinationVariable String roomId, String player) {
         RoomHandler.playerFinished(roomId, player);
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        sendRoomMessage(roomId);
     }
 
     @MessageMapping("/room/{roomId}/reset")
     public void reset(@DestinationVariable String roomId) {
         RoomHandler.resetRoom(roomId);
+        sendRoomMessage(roomId);
+    }
+
+    private void sendRoomMessage(String roomId) {
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
-    }}
+    }
+}
