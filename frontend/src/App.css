@@ -1,15 +1,4 @@
-body, html {
-    background-color: #222222;
-}
-
-h1 {
-    color: #d0d0d0;
-}
-
-h3 {
-    color: #d0d0d0;
-}
-
-h6 {
-    color: #d0d0d0;
+body,
+html {
+  background-color: #222222;
 }
