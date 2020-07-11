@@ -15,7 +15,15 @@ const theme = createMuiTheme({
     secondary: {
       main: "#90caf9",
     },
+    background: {
+      main: '#222222',
+    },
   },
+  typography: {
+    body1: {
+      fontSize: 24
+    }
+  }
 });
 
 ReactDOM.render(
