@@ -2,13 +2,13 @@ import React from "react";
 import SockJsClient from "react-stomp";
 
 import Game from "./Game";
-import { sendMessage } from "./ApiRequests";
+import { sendMessage } from "utils/ApiRequests";
 import { Typography, Button } from "@material-ui/core";
 import "./Room.css"
 
 import Countdown from 'react-countdown';
 
-import Standings from "./Standings"
+import Standings from "components/Standings"
 
 const renderer = ({ hours, minutes, seconds, completed }) => {
   if (completed) {

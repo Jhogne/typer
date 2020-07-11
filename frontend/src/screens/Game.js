@@ -1,6 +1,6 @@
 import React from "react";
 
-import { sendMessage } from "./ApiRequests";
+import { sendMessage } from "utils/ApiRequests";
 import "./Game.css";
 
 import { TextField, Typography} from '@material-ui/core'

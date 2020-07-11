@@ -1,6 +1,6 @@
 import React from "react";
 
-import { joinRoom, createRoom, joinRoomDefaultName } from "./ApiRequests";
+import { joinRoom, createRoom, joinRoomDefaultName } from "utils/ApiRequests";
 import { TextField } from "@material-ui/core"
 
 export class Home extends React.Component {
@@ -32,7 +32,6 @@ export class Home extends React.Component {
       this.state.code, 
       this.state.name,
       (res) => {
-        console.log(res)
         this.props.history.push(`/room/`, {
           roomId: this.state.code,
           memberId: res,
