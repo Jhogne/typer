@@ -1,5 +1,9 @@
 package com.jhogne.typer;
 
+import com.jhogne.typer.Model.Player;
+import com.jhogne.typer.Model.Room;
+import com.jhogne.typer.Model.RoomHandler;
+import com.jhogne.typer.Model.RoomMessage;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,19 +14,27 @@ public class RoomHandlerTests {
 
     @Test
     void createRoomTest() {
-        RoomMessage response = RoomHandler.createRoom("a");
+        String roomId = RoomHandler.createRoom();
 
-        assertEquals("a", response.getMemberId());
-        assertEquals(4, response.getroomId().length());
+        assertEquals(4, roomId.length());
 
+        Room room = RoomHandler.getRoom(roomId);
+
+        assertNotNull(room);
+        assertEquals(0, room.getPlayers().size());
+        assertEquals(roomId, room.getRoomId());
+        assertEquals(0, room.getStandings().size());
+        assertEquals(0, room.getStartTime());
+        assertNotEquals(0, room.getText().length());
     }
 
     @Test
     void joinRoomTest() {
-        RoomMessage response = RoomHandler.createRoom("abcd");
-        RoomHandler.joinRoom(response.getroomId(), "testUser");
-        Room room = RoomHandler.getRoom(response.getroomId());
-        List<Player> members = room.getMembers();
+        String roomId = RoomHandler.createRoom();
+        RoomHandler.joinRoom(roomId, "testPlayer0");
+        RoomHandler.joinRoom(roomId, "testPlayer1");
+        Room room = RoomHandler.getRoom(roomId);
+        List<Player> members = room.getPlayers();
 
         assertEquals(2, members.size());
 
@@ -34,21 +46,25 @@ public class RoomHandlerTests {
 
     @Test
     void leaveRoomTest() {
-        RoomMessage response = RoomHandler.createRoom("abcd");
-        Room room = RoomHandler.getRoom(response.getroomId());
+        String roomId = RoomHandler.createRoom();
+        Room room = RoomHandler.getRoom(roomId);
+        String playerId = "testPlayer0";
+        RoomHandler.joinRoom(roomId, playerId);
 
-        assertEquals(1, room.getMembers().size());
+        assertEquals(1, room.getPlayers().size());
 
-        RoomHandler.leaveRoom(response.getroomId(), response.getMemberId());
+        RoomHandler.leaveRoom(roomId, playerId);
 
-        assertEquals(0, room.getMembers().size());
+        assertEquals(0, room.getPlayers().size());
     }
 
     @Test
     void deleteRoomTest() {
-        RoomMessage response = RoomHandler.createRoom("abcd");
-        RoomHandler.leaveRoom(response.getroomId(), response.getMemberId());
+        String roomId = RoomHandler.createRoom();
+        String playerId = "testPlayer0";
+        RoomHandler.joinRoom(roomId, playerId);
+        RoomHandler.leaveRoom(roomId, playerId);
 
-        assertNull(RoomHandler.getRoom(response.getroomId()));
+        assertNull(RoomHandler.getRoom(roomId));
     }
 }

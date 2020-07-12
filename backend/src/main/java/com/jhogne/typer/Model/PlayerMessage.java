@@ -1,12 +1,10 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Model;
 
 public class PlayerMessage {
     private String playerId;
     private String completed;
     private long wpm;
     private boolean ready;
-
-    public PlayerMessage(){}
 
     public PlayerMessage(String playerId, String completed, long wpm, boolean ready) {
         this.playerId = playerId;
@@ -23,16 +21,20 @@ public class PlayerMessage {
         return completed;
     }
 
-    public void setCompleted(String completed) {
-        this.completed = completed;
+    public long getWpm() {
+        return wpm;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
 
-    public long getWpm() {
-        return wpm;
+    public void setCompleted(String completed) {
+        this.completed = completed;
     }
 
     public void setWpm(long wpm) {
@@ -41,10 +43,6 @@ public class PlayerMessage {
 
     public void setReady(boolean ready) {
         this.ready = ready;
-    }
-
-    public boolean isReady() {
-        return ready;
     }
 
     @Override

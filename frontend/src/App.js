@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import Room from "./Room";
-import Home from "./Home";
-import './App.css'
+import Room from "screens/Room";
+import Home from "screens/Home";
+import "./App.css";
 
 class App extends React.Component {
   render() {

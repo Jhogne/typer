@@ -1,4 +1,4 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Model;
 
 public class Player {
     private String id;
@@ -10,6 +10,13 @@ public class Player {
         this.id = id;
     }
 
+    public Player(String id, long progress, long wpm, boolean ready) {
+        this.id = id;
+        this.progress = progress;
+        this.wpm = wpm;
+        this.ready = ready;
+    }
+
     public String getId() {
         return id;
     }
@@ -18,20 +25,20 @@ public class Player {
         return progress;
     }
 
-    public void setProgress(long progress) {
-        this.progress = progress;
-    }
-
-    public void setWpm(long wpm) {
-        this.wpm = wpm;
-    }
-
     public long getWpm() {
         return wpm;
     }
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
+    }
+
+    public void setWpm(long wpm) {
+        this.wpm = wpm;
     }
 
     public void setReady(boolean ready) {

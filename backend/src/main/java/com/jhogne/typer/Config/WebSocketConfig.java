@@ -1,4 +1,4 @@
-package com.jhogne.typer;
+package com.jhogne.typer.Config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
