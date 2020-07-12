@@ -28,7 +28,7 @@ public class RoomTests {
         assertEquals(0, player.getWpm());
         assertEquals(0, player.getProgress());
         assertEquals(playerId, player.getId());
-        assertTrue(player.isReady());
+        assertFalse(player.isReady());
 
         String roomText = testRoom.getText();
         PlayerMessage updateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, false);
