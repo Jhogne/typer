@@ -45,8 +45,8 @@ export function resetMessage(clientRef, roomId, player) {
   sendMessage(clientRef, `/room/${roomId}/postState`, player);
 }
 
-export function leaveMessage(clientRef, roomId) {
-  sendMessage(clientRef, `room/${roomId}/leave`, roomId);
+export function leaveMessage(clientRef, roomId, playerId) {
+  sendMessage(clientRef, `room/${roomId}/leave`, playerId);
 }
 
 export function updateRoomMessage(clientRef, roomId) {

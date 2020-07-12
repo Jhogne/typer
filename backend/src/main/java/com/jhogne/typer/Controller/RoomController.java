@@ -21,7 +21,9 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/leave")
     public void leave(@DestinationVariable String roomId, String playerId) {
         RoomHandler.leaveRoom(roomId, playerId);
-        sendRoomMessage(roomId);
+        if(RoomHandler.getRoom(roomId) != null) {
+            sendRoomMessage(roomId);
+        }
     }
 
     @MessageMapping("/room/{roomId}/update")
