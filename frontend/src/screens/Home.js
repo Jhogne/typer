@@ -33,7 +33,7 @@ export class Home extends React.Component {
       (res) => {
         this.props.history.push(`/room/`, {
           roomId: this.state.code,
-          memberId: res,
+          playerId: res,
         });
       },
       (error) => {
@@ -59,7 +59,7 @@ export class Home extends React.Component {
     createRoom(this.state.name, (res) => {
       this.props.history.push(`/room/`, {
         roomId: res.roomId,
-        memberId: res.playerId,
+        playerId: res.playerId,
       });
     });
   }

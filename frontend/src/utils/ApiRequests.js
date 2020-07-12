@@ -6,8 +6,8 @@ export async function makeGetRequest(location) {
   return data;
 }
 
-export function joinRoom(roomCode, userId, handleResponse, handleError) {
-  const response = makeGetRequest(`joinRoom?id=${roomCode}&user=${userId}`);
+export function joinRoom(roomCode, playerId, handleResponse, handleError) {
+  const response = makeGetRequest(`joinRoom?id=${roomCode}&user=${playerId}`);
   response.then(handleResponse).catch(handleError);
 }
 
@@ -16,8 +16,8 @@ export function joinRoomDefaultName(roomCode, handleResponse, handleError) {
   response.then(handleResponse).catch(handleError);
 }
 
-export function createRoom(userId, handleResponse) {
-  const response = makeGetRequest(`createRoom?user=${userId}`);
+export function createRoom(playerId, handleResponse) {
+  const response = makeGetRequest(`createRoom?user=${playerId}`);
   response.then(handleResponse);
 }
 

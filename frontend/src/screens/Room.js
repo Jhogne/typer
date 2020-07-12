@@ -45,7 +45,7 @@ class Room extends React.Component {
     super(props);
     this.state = {
       text: "",
-      members: [],
+      players: [],
       standings: [],
       started: true,
       startTime: 0,
@@ -61,7 +61,7 @@ class Room extends React.Component {
   handleMessage(msg) {
     this.setState({
       text: msg.text,
-      members: msg.players,
+      players: msg.players,
       standings: msg.standings,
       startTime: msg.startTime,
     });
@@ -70,16 +70,16 @@ class Room extends React.Component {
   resetGame() {
     this.setState({ started: false });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
-      playerId: this.props.location.state.memberId,
+      playerId: this.props.location.state.playerId,
       completed: this.state.text,
       ready: true,
     });
   }
 
   getPlacement() {
-    return this.state.standings.includes(this.props.location.state.memberId)
+    return this.state.standings.includes(this.props.location.state.playerId)
       ? this.prettyPlacement(
-          this.state.standings.indexOf(this.props.location.state.memberId)
+          this.state.standings.indexOf(this.props.location.state.playerId)
         )
       : "";
   }
@@ -118,14 +118,14 @@ class Room extends React.Component {
 
           <Standings
             className={classes.standings}
-            players={this.state.members}
-            myId={this.props.location.state.memberId}
+            players={this.state.players}
+            myId={this.props.location.state.playerId}
           />
           {this.state.text.length > 0 && ( // Render game after text is recieved
             <Game
-              memberId={this.props.location.state.memberId}
+              playerId={this.props.location.state.playerId}
               finished={this.state.standings.includes(
-                this.props.location.state.memberId
+                this.props.location.state.playerId
               )}
               text={this.state.text}
               clientRef={this.clientRef}
@@ -137,7 +137,7 @@ class Room extends React.Component {
           <Typography variant="h4" className="result">
             {this.getPlacement()}
           </Typography>
-          {this.state.members.length === this.state.standings.length && (
+          {this.state.players.length === this.state.standings.length && (
             <Button
               className="reset"
               color="secondary"
