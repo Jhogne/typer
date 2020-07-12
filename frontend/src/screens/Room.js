@@ -55,7 +55,7 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
-    leaveMessage(this.clientRef, this.props.location.state.roomId);
+    leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
   }
 
   handleMessage(msg) {
