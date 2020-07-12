@@ -21,7 +21,11 @@ const theme = createMuiTheme({
   },
   typography: {
     body1: {
-      fontSize: 24
+      fontSize: 24,
+      color: '#d0d0d0',
+    },
+    h4: {
+      color: '#d0d0d0',
     }
   }
 });

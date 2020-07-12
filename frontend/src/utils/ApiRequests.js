@@ -21,7 +21,7 @@ export function createRoom(userId, handleResponse) {
   response.then(handleResponse);
 }
 
-export function sendMessage(clientRef, location, msg) {
+function sendMessage(clientRef, location, msg) {
   if (typeof msg !== "string") {
     msg = JSON.stringify(msg);
   }
@@ -39,4 +39,21 @@ export function finishGame(clientRef, roomId, playerId) {
 
 export function updatePlayer(clientRef, roomId, player) {
   sendMessage(clientRef, `/room/${roomId}/postState`, player);
+}
+
+export function resetMessage(clientRef, roomId, player) {
+  sendMessage(clientRef, `/room/${roomId}/postState`, player);
+}
+
+export function leaveMessage(clientRef, roomId) {
+  sendMessage(clientRef, `room/${roomId}/leave`, roomId)
+}
+
+export function updateRoomMessage(clientRef, roomId) {
+  sendMessage(
+    clientRef,
+    `/room/${roomId}/update`,
+    "Hello"
+  );
+
 }
