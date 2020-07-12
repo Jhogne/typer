@@ -30,6 +30,9 @@ const styles = (theme) => ({
     paddingBottom: 90,
     borderStyle: "solid",
   },
+  reset: {
+    marginTop: 10,
+  }
 });
 
 const renderer = ({ seconds, completed }) => {
@@ -47,7 +50,7 @@ class Room extends React.Component {
       text: "",
       players: [],
       standings: [],
-      started: true,
+      started: false,
       startTime: 0,
     };
     this.handleMessage = this.handleMessage.bind(this);
@@ -137,9 +140,9 @@ class Room extends React.Component {
           <Typography variant="h4" className="result">
             {this.getPlacement()}
           </Typography>
-          {this.state.players.length === this.state.standings.length && (
+          {(this.state.players.length === this.state.standings.length || this.state.startTime === 0) && (
             <Button
-              className="reset"
+              className={classes.reset}
               color="secondary"
               variant="outlined"
               onClick={this.resetGame}
