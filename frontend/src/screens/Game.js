@@ -70,6 +70,7 @@ class Game extends React.Component {
     this.setState({ currentWord: myState.input });
   }
 
+
   render() {
     const { classes } = this.props;
     return (
@@ -86,13 +87,15 @@ class Game extends React.Component {
             className={classes.input}
             type="text"
             disabled={this.props.disabled}
+            autoFocus={!this.props.disabled}
             value={this.state.currentWord}
             onChange={this.handleChange}
             variant="outlined"
             InputProps={{
               className: classes.input,
             }}
-          />
+            inputRef={input => input && input.focus()}
+            />
         )}
       </div>
     );
