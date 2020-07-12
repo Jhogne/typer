@@ -4,7 +4,7 @@ public class Player {
     private String id;
     private long progress;
     private long wpm;
-    private boolean ready = true;
+    private boolean ready = false;
 
     public Player(String id) {
         this.id = id;
