@@ -16,30 +16,29 @@ const theme = createMuiTheme({
       main: "#90caf9",
     },
     background: {
-      main: '#222222',
+      main: "#222222",
     },
     error: {
-      main:  '#f44336',
+      main: "#f44336",
     },
     text: {
-      main: "#d0d0d0"
+      main: "#d0d0d0",
     },
   },
   typography: {
     body1: {
       fontSize: 24,
-      color: '#d0d0d0',
+      color: "#d0d0d0",
     },
     h4: {
-      color: '#d0d0d0',
-    }
-  }
+      color: "#d0d0d0",
+    },
+  },
 });
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <Router>
-      {console.log(theme)}
       <App />
     </Router>
   </ThemeProvider>,

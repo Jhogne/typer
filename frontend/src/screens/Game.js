@@ -1,45 +1,42 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
-import withStyles from "@material-ui/core/styles/withStyles"
+import withStyles from "@material-ui/core/styles/withStyles";
 import { updatePlayer, finishGame } from "utils/ApiRequests";
 import GameState from "utils/GameState";
 import Prompt from "components/Prompt";
-
 
 const styles = (theme) => ({
   input: {
     color: theme.palette.text.main,
     height: 80,
     fontSize: 34,
-    
-    '& label.Mui-focused': {
+
+    "& label.Mui-focused": {
       color: theme.palette.primary.main,
       borderWidth: 2,
     },
-    '& .MuiInput-underline:after': {
+    "& .MuiInput-underline:after": {
       borderBottomColor: theme.palette.primary.main,
       borderWidth: 2,
     },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
         borderColor: theme.palette.primary.main,
         borderWidth: 2,
       },
-      '&:hover fieldset': {
+      "&:hover fieldset": {
         borderColor: theme.palette.primary.main,
         borderWidth: 2,
       },
-      '&.Mui-focused fieldset': {
+      "&.Mui-focused fieldset": {
         borderColor: theme.palette.primary.main,
         borderWidth: 3,
       },
     },
-
   },
   foo: {
     padding: 2,
   },
-
 });
 
 var myState = new GameState();
@@ -93,7 +90,7 @@ class Game extends React.Component {
             onChange={this.handleChange}
             variant="outlined"
             InputProps={{
-              className: classes.input
+              className: classes.input,
             }}
           />
         )}

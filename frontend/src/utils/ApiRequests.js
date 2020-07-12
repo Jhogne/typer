@@ -46,14 +46,9 @@ export function resetMessage(clientRef, roomId, player) {
 }
 
 export function leaveMessage(clientRef, roomId) {
-  sendMessage(clientRef, `room/${roomId}/leave`, roomId)
+  sendMessage(clientRef, `room/${roomId}/leave`, roomId);
 }
 
 export function updateRoomMessage(clientRef, roomId) {
-  sendMessage(
-    clientRef,
-    `/room/${roomId}/update`,
-    "Hello"
-  );
-
+  sendMessage(clientRef, `/room/${roomId}/update`, "Hello");
 }
