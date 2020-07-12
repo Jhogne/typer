@@ -1,9 +1,46 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles"
 import { updatePlayer, finishGame } from "utils/ApiRequests";
 import GameState from "utils/GameState";
 import Prompt from "components/Prompt";
-import "./Game.css";
+
+
+const styles = (theme) => ({
+  input: {
+    color: theme.palette.text.main,
+    height: 80,
+    fontSize: 34,
+    
+    '& label.Mui-focused': {
+      color: theme.palette.primary.main,
+      borderWidth: 2,
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: theme.palette.primary.main,
+      borderWidth: 2,
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: theme.palette.primary.main,
+        borderWidth: 2,
+      },
+      '&:hover fieldset': {
+        borderColor: theme.palette.primary.main,
+        borderWidth: 2,
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: theme.palette.primary.main,
+        borderWidth: 3,
+      },
+    },
+
+  },
+  foo: {
+    padding: 2,
+  },
+
+});
 
 var myState = new GameState();
 class Game extends React.Component {
@@ -37,8 +74,9 @@ class Game extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
-      <div className="root">
+      <div className={classes.foo}>
         <Prompt
           text={this.props.text}
           current={myState.idx}
@@ -47,12 +85,16 @@ class Game extends React.Component {
         />
         {!this.props.finished && (
           <TextField
-            className="input"
+            color="primary"
+            className={classes.input}
             type="text"
             disabled={this.props.disabled}
             value={this.state.currentWord}
             onChange={this.handleChange}
             variant="outlined"
+            InputProps={{
+              className: classes.input
+            }}
           />
         )}
       </div>
@@ -60,4 +102,4 @@ class Game extends React.Component {
   }
 }
 
-export default Game;
+export default withStyles(styles)(Game);
