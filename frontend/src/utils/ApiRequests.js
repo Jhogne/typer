@@ -22,8 +22,8 @@ export function createRoom(userId, handleResponse) {
 }
 
 export function sendMessage(clientRef, location, msg) {
-  if(typeof msg !== "string"){
-    msg = JSON.stringify(msg)
+  if (typeof msg !== "string") {
+    msg = JSON.stringify(msg);
   }
   try {
     clientRef.sendMessage(`/app/${location}`, msg);
@@ -31,4 +31,12 @@ export function sendMessage(clientRef, location, msg) {
   } catch (e) {
     return false;
   }
+}
+
+export function finishGame(clientRef, roomId, playerId) {
+  sendMessage(clientRef, `/room/${roomId}/finish`, playerId);
+}
+
+export function updatePlayer(clientRef, roomId, player) {
+  sendMessage(clientRef, `/room/${roomId}/postState`, player);
 }
