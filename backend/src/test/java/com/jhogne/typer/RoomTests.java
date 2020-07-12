@@ -12,31 +12,31 @@ public class RoomTests {
     @Test
     void addMemberTest() {
         Room testRoom = new Room("abcd");
-        int amountBefore = testRoom.getMembers().size();
-        testRoom.addMember("a");
-        int amountAfter = testRoom.getMembers().size();
+        int amountBefore = testRoom.getPlayers().size();
+        testRoom.addPlayer("a");
+        int amountAfter = testRoom.getPlayers().size();
         assertEquals(amountBefore+1, amountAfter);
     }
 
     @Test
     void updatePlayerTest() {
         Room testRoom = new Room("abcd");
-        String playerId = "testUser";
-        testRoom.addMember(playerId);
-        Player player = testRoom.getMember(playerId);
+        String playerId = "testPlayer";
+        testRoom.addPlayer(playerId);
+        Player player = testRoom.getPlayer(playerId);
 
-        assertEquals(player.getWpm(), 0);
-        assertEquals(player.getProgress(), 0);
-        assertEquals(player.getId(), "testUser");
+        assertEquals(0, player.getWpm());
+        assertEquals(0, player.getProgress());
+        assertEquals(playerId, player.getId());
         assertTrue(player.isReady());
 
         String roomText = testRoom.getText();
         PlayerMessage updateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, false);
         testRoom.updatePlayer(updateMsg);
 
-        assertEquals(player.getId(), "testUser");
-        assertEquals(player.getProgress(), (roomText.length() / 4) * 100 / roomText.length());
-        assertEquals(player.getWpm(), 50);
+        assertEquals(playerId, player.getId());
+        assertEquals((roomText.length() / 4) * 100 / roomText.length(), player.getProgress());
+        assertEquals(50, player.getWpm());
         assertFalse(player.isReady());
     }
 }

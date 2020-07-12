@@ -41,15 +41,6 @@ public class Room {
     }
 
     /**
-     * Gets the number of players in the room
-     *
-     * @return The number of players in the room
-     */
-    public int getPlayerAmount() {
-        return players.size();
-    }
-
-    /**
      * Gets a copy of each player in the room
      *
      * @return A list containing a copy of each player in the room

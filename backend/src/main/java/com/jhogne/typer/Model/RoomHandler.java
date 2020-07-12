@@ -62,7 +62,7 @@ public class RoomHandler {
     public static void leaveRoom(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
             rooms.get(roomId).removePlayer(playerId);
-            if (rooms.get(roomId).getPlayerAmount() <= 0) {
+            if (rooms.get(roomId).getPlayers().size() <= 0) {
                 rooms.remove(roomId);
             }
         }
