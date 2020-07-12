@@ -50,6 +50,10 @@ class Game extends React.Component {
   }
 
   handleChange(event) {
+    if(event.target.value.length > 12) {
+      return;
+    }
+
     myState.input = event.target.value;
 
     myState.verifyInput(this.props.text);
