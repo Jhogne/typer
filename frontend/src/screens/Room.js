@@ -34,7 +34,7 @@ const styles = (theme) => ({
 
 const renderer = ({ seconds, completed }) => {
   if (completed) {
-    return <Typography variant="body1"> Type! </Typography>;
+    return <Typography variant="body2"> Type! </Typography>;
   } else {
     return <Typography variant="body1">{seconds}</Typography>;
   }
