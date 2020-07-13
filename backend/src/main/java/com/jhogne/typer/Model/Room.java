@@ -32,7 +32,7 @@ public class Room {
         try
         {
             Object object = parser
-                    .parse(new FileReader("/home/jonas/Repos/typer/backend/src/main/data/data.json"));
+                    .parse(new FileReader("src/main/data/data.json"));
 
             //convert Object to JSONObject
             JSONArray jsonArray = (JSONArray) object;
