@@ -1,8 +1,13 @@
 package com.jhogne.typer.Model;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 
 /**
@@ -19,9 +24,33 @@ public class Room {
         this.roomId = roomId;
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
-        this.text = "Testing text pls ignore.";
+        this.text = getTextFromJson();
     }
 
+    private String getTextFromJson() {
+        JSONParser parser = new JSONParser();
+        try
+        {
+            Object object = parser
+                    .parse(new FileReader("/home/jonas/Repos/typer/backend/src/main/data/data.json"));
+
+            //convert Object to JSONObject
+            JSONArray jsonArray = (JSONArray) object;
+            Random rand = new Random();
+            int randIdx = rand.nextInt(jsonArray.size());
+            JSONObject obj = (JSONObject) jsonArray.get(randIdx);
+            return (String) obj.get("quote");
+        }
+        catch(FileNotFoundException fe)
+        {
+            fe.printStackTrace();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return "Test text pls ignore.";
+    }
     /**
      * Gets the room id
      *

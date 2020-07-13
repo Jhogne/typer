@@ -151,7 +151,7 @@ class Room extends React.Component {
             </Button>
           )}
           <SockJsClient
-            url={"http://192.168.1.139:8080/endpoint"}
+            url={"http://192.168.1.140:8080/endpoint"}
             topics={[`/topic/room/${this.props.location.state.roomId}`]}
             onMessage={this.handleMessage}
             ref={(client) => {
