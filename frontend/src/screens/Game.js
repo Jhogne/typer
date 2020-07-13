@@ -90,6 +90,7 @@ class Game extends React.Component {
             color="primary"
             className={classes.input}
             type="text"
+            fullWidth
             disabled={this.props.disabled}
             autoFocus={!this.props.disabled}
             value={this.state.currentWord}
