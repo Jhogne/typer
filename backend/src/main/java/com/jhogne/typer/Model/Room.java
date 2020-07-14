@@ -24,33 +24,9 @@ public class Room {
         this.roomId = roomId;
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
-        this.text = getTextFromJson();
+        this.text = TextRetriever.getRandomText();
     }
 
-    private String getTextFromJson() {
-        JSONParser parser = new JSONParser();
-        try
-        {
-            Object object = parser
-                    .parse(new FileReader("src/main/data/data.json"));
-
-            //convert Object to JSONObject
-            JSONArray jsonArray = (JSONArray) object;
-            Random rand = new Random();
-            int randIdx = rand.nextInt(jsonArray.size());
-            JSONObject obj = (JSONObject) jsonArray.get(randIdx);
-            return (String) obj.get("quote");
-        }
-        catch(FileNotFoundException fe)
-        {
-            fe.printStackTrace();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return "Test text pls ignore.";
-    }
     /**
      * Gets the room id
      *
@@ -154,7 +130,7 @@ public class Room {
     }
 
     /**
-     * Reports that a player has finished the text. That is, adds them to the standings. If player is not in  theroom
+     * Reports that a player has finished the text. That is, adds them to the standings. If player is not in  the room
      * nothing happens
      *
      * @param playerId The id of the player that has finished
@@ -166,12 +142,13 @@ public class Room {
     }
 
     /**
-     * Resets the game by clearing the standings, updating the start time, and setting each player to not ready.
+     * Resets the game by clearing the standings, updating the start time, setting a new random text, and setting each
+     * player to not ready.
      */
     public void reset() {
-        // Set text to new one here
         standings = new ArrayList<>();
         startTime = System.currentTimeMillis() + 10000;
+        text = TextRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
         }
