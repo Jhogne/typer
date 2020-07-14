@@ -1,16 +1,29 @@
 import click
 from PyInquirer import prompt, print_json
+from wikiquote import DisambiguationPageException, NoSuchPageException
 import wikiquote
 import json
 
 jsonfile = "backend/src/main/data/data.json"
 
-results = wikiquote.search("surely you can't be serious")
-for r in results:
-    click.echo(r)
+@click.group()
+def cli():
+    """This script can be used to populate the databse with quotes from wikiquotes"""
+    pass
 
 
-@click.command()
+@cli.command()
+@click.argument("query")
+def search(query):
+    """Search wikiquotes for a query."""
+
+    results = wikiquote.search(query)
+    click.echo(click.style("Found {} results:".format(len(results)), bold=True))
+    for result in results:
+        click.echo(result)
+
+
+@cli.command()
 @click.argument("query")
 def quotes(query):
     """Goes through the all wikiquotes from the given query."""
@@ -19,7 +32,14 @@ def quotes(query):
         data = file.read()
 
     obj = json.loads(data)
-    quotesList = wikiquote.quotes(query)
+    try : 
+        quotesList = wikiquote.quotes(query)
+    except DisambiguationPageException:
+        click.echo(click.style("ERROR: Disambiguation in prompt. Try searching first", fg="red"))
+        return
+    except NoSuchPageException:
+        click.echo(click.style("ERROR: No such page found. Try searching first", fg="red"))
+        return
     acceptedList = []
     idx = 0
     old_amt = len(obj)
@@ -28,7 +48,21 @@ def quotes(query):
         click.clear()
         click.echo(click.style(query, fg='magenta', bold=True))
         quote = format_quote(quotesList[idx])
-        res = prompt_quote(quote)
+        click.echo(quote)
+        res = prompt([  
+            {
+                'type': 'rawlist',
+                'name': 'answer',
+                'choices': [
+                    'Accept',
+                    'Deny',
+                    'Edit',
+                    'Back',
+                    'Quit'
+                ],
+                'message': 'what to do?',
+            }
+        ])
         if res["answer"] == "Accept":
             new_obj = {
                 "from" : query,
@@ -57,27 +91,8 @@ def quotes(query):
     click.clear()
     click.echo("Added {} entries".format(len(obj) - old_amt))
 
-
 def format_quote(quote):
-    return quote.replace('\n', '').encode('ascii', 'ignore').decode()
-
-def prompt_quote(quote):
-    click.echo(quote)
-    question =  [  
-    {
-        'type': 'rawlist',
-        'name': 'answer',
-        'choices': [
-            'Accept',
-            'Deny',
-            'Edit',
-            'Back',
-            'Quit'
-        ],
-        'message': 'what to do?',
-    }
-    ]
-    return prompt(question)
+    return quote.replace('\n', ' ').encode('ascii', 'ignore').decode()
 
 if __name__ == '__main__':
-    quotes()
+    cli()
