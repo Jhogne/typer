@@ -24,6 +24,17 @@ def search(query):
 
 
 @cli.command()
+@click.argument("query")
+def search(query):
+    """Search wikiquotes for a query."""
+
+    results = wikiquote.search(query)
+    click.echo(click.style("Found {} results:".format(len(results)), bold=True))
+    for result in results:
+        click.echo(result)
+
+
+@cli.command()
 @click.option(
     '-n',
     type=int, 
@@ -89,6 +100,11 @@ def quotes(query, n, i):
                 'message': 'what to do?',
             }
         ])
+        if res["answer"] == "Accept":
+            new_obj = {
+                "from" : query,
+                "quote" : quote
+            }
         if res["answer"] == "Accept":
             if(new_quote in all_quotes):
                 click.echo("Quote alreay in database")

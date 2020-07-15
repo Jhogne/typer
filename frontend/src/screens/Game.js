@@ -50,7 +50,7 @@ class Game extends React.Component {
   }
 
   handleChange(event) {
-    if(event.target.value.length > 12) {
+    if(event.target.value.length > 20) {
       return;
     }
 
