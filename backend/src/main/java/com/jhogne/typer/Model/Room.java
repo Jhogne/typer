@@ -24,7 +24,7 @@ public class Room {
         this.roomId = roomId;
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
-        this.text = TextRetriever.getRandomText();
+        this.text = "";
     }
 
     /**
@@ -116,7 +116,7 @@ public class Room {
         if (players.containsKey(newState.getPlayerId())) {
             Player p = players.get(newState.getPlayerId());
 
-            p.setProgress(newState.getCompleted().length() * 100 / this.text.length());
+            p.setProgress(newState.getCompleted().length() * 100 / Math.max(this.text.length(), 1)); // Avoid division by 0 at the start.
             p.setWpm(newState.getWpm());
             p.setReady(newState.isReady());
 
