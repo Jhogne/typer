@@ -58,6 +58,7 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
+    this.resetGame()
     leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
   }
 
@@ -71,7 +72,9 @@ class Room extends React.Component {
   }
 
   resetGame() {
-    this.setState({ started: false });
+    this.setState({       
+      started: false,
+    });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
       completed: this.state.text,
