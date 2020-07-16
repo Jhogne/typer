@@ -36,7 +36,6 @@ public class RoomHandlerController {
     private Room leaveRoom(@RequestParam(value = "roomId") String roomId, @RequestParam(value = "userId") String playerId ) throws Exception{
         if(RoomHandler.getRoom(roomId) != null) {
             RoomHandler.leaveRoom(roomId, playerId);
-            return RoomHandler.getRoom(roomId);
         }
         throw new Exception("Bad things happened");
     }

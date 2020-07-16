@@ -24,7 +24,7 @@ public class Room {
         this.roomId = roomId;
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
-        this.text = TextRetriever.getOrderedText();
+        this.text = TextRetriever.getRandomText();
     }
 
     /**
@@ -148,7 +148,7 @@ public class Room {
     public void reset() {
         standings = new ArrayList<>();
         startTime = System.currentTimeMillis() + 2000;
-        text = TextRetriever.getOrderedText();
+        text = TextRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
         }

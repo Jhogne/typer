@@ -39,13 +39,14 @@ const styles = (theme) => ({
   },
 });
 
-var myState = new GameState();
+var myState;
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentWord: "",
     };
+    myState = new GameState();
     this.handleChange = this.handleChange.bind(this);
   }
 
