@@ -73,6 +73,7 @@ class Room extends React.Component {
 
   resetGame() {
     this.setState({       
+      standings: [],
       started: false,
     });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
