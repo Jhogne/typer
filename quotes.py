@@ -101,11 +101,6 @@ def quotes(query, n, i):
             }
         ])
         if res["answer"] == "Accept":
-            new_obj = {
-                "from" : query,
-                "quote" : quote
-            }
-        if res["answer"] == "Accept":
             if(new_quote in all_quotes):
                 click.echo("Quote alreay in database")
                 click.pause()
@@ -114,12 +109,18 @@ def quotes(query, n, i):
             idx += 1
         elif res["answer"] == "Edit":
             message = click.edit(f"{quote}")
-            quotes_list.insert(idx+1, message)
+            new_quote = {
+                "from" : query,
+                "quote" : message
+            }
+            all_quotes.append(new_quote)
             idx += 1
         elif res["answer"] == "Back":
             idx -= 1
         elif res["answer"] == "Deny":
             idx += 1
+            if new_quote in all_quotes:
+                all_quotes.remove(new_quote)	
         elif res["answer"] == "Quit":
             idx = end
 
