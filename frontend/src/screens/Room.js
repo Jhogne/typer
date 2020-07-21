@@ -51,7 +51,8 @@ class Room extends React.Component {
       players: [],
       standings: [],
       started: false,
-      startTime: 0,
+      timer: 0,
+
     };
     this.handleMessage = this.handleMessage.bind(this);
     this.resetGame = this.resetGame.bind(this);
@@ -67,7 +68,7 @@ class Room extends React.Component {
       text: msg.text,
       players: msg.players,
       standings: msg.standings,
-      startTime: msg.startTime,
+      timer: msg.countdown,
     });
   }
 
@@ -113,12 +114,15 @@ class Room extends React.Component {
         <div className={classes.content}>
           <h6>This is room "{this.props.location.state.roomId}"</h6>
 
-          {this.state.startTime > Date.now() && (
+          {this.state.timer > 0 && !this.state.started && (
             <Countdown
-              date={this.state.startTime}
+              date={Date.now() + this.state.timer*1000}
               renderer={renderer}
               onComplete={() => {
-                this.setState({ started: true });
+                this.setState({ 
+                  started: true,
+                  timer: 0,
+                  count: Date.now()});
               }}
             />
           )}
@@ -138,13 +142,13 @@ class Room extends React.Component {
               clientRef={this.clientRef}
               id={this.props.location.state.roomId}
               disabled={!this.state.started}
-              startTime={this.state.startTime}
+              startTime={this.state.count}
             />
           )}
           <Typography variant="h4" className="result">
             {this.getPlacement()}
           </Typography>
-          {(this.state.players.length === this.state.standings.length || this.state.startTime === 0) && (
+          {(this.state.players.length === this.state.standings.length || this.state.timer === 0) && (
             <Button
               className={classes.reset}
               color="secondary"
@@ -155,7 +159,7 @@ class Room extends React.Component {
             </Button>
           )}
           <SockJsClient
-            url={"http://192.168.1.142:8080/endpoint"}
+            url={"http://192.168.1.144:8080/endpoint"}
             topics={[`/topic/room/${this.props.location.state.roomId}`]}
             onMessage={this.handleMessage}
             ref={(client) => {

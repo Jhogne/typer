@@ -18,7 +18,7 @@ public class Room {
     private String text;
     private HashMap<String, Player> players;
     private List<String> standings;
-    private long startTime;
+    private int countdown;
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -82,8 +82,8 @@ public class Room {
      *
      * @return The time the game starts
      */
-    public long getStartTime() {
-        return startTime;
+    public long getCountdown() {
+        return countdown;
     }
 
     /**
@@ -147,7 +147,7 @@ public class Room {
      */
     public void reset() {
         standings = new ArrayList<>();
-        startTime = System.currentTimeMillis() + 2000;
+        countdown = 3;
         text = TextRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
@@ -191,7 +191,7 @@ public class Room {
                 ", text='" + text + '\'' +
                 ", players=" + players +
                 ", standings=" + standings +
-                ", startTime=" + startTime +
+                ", countdown=" + countdown +
                 '}';
     }
 }
