@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { updatePlayer, finishGame } from "utils/ApiRequests";
 import GameState from "utils/GameState";
@@ -34,7 +34,7 @@ const styles = (theme) => ({
       },
     },
   },
-  foo: {
+  root: {
     padding: 2,
   },
 });
@@ -58,18 +58,18 @@ class Game extends React.Component {
 
     myState.input = event.target.value;
 
-    myState.verifyInput(this.props.text);
+    myState.verifyInput(this.props.prompt.text);
 
     if (!myState.error) {
       updatePlayer(this.props.clientRef, this.props.id, {
         playerId: this.props.playerId,
-        completed: this.props.text.slice(0, myState.idx),
+        completed: this.props.prompt.text.slice(0, myState.idx),
         wpm: myState.getWPM(this.props.startTime),
         ready: false,
       });
     }
 
-    if (myState.idx === this.props.text.length) {
+    if (myState.idx === this.props.prompt.text.length) {
       myState.finishText();
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
     }
@@ -80,13 +80,19 @@ class Game extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.foo}>
+      <div className={classes.root}>
+      {!this.props.finished && (
+        <>
         <Prompt
-          text={this.props.text}
+          text={this.props.prompt.text}
           current={myState.idx}
-          finished={this.props.finished}
           error={myState.error}
         />
+        <Typography color="primary" variant="body2" align="right">
+          -{this.props.prompt.source}
+        </Typography>
+        </>
+      )}
         {!this.props.finished && (
           <TextField
             color="primary"

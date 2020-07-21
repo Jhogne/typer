@@ -76,7 +76,7 @@ def quotes(query, n, i):
     while idx < end:
         quote = format_quote(quotes_list[idx])
         new_quote = {
-            "from" : query,
+            "source" : query,
             "quote" : quote
         }
 
@@ -110,7 +110,7 @@ def quotes(query, n, i):
         elif res["answer"] == "Edit":
             message = click.edit(f"{quote}")
             new_quote = {
-                "from" : query,
+                "source" : query,
                 "quote" : message
             }
             all_quotes.append(new_quote)

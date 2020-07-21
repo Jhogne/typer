@@ -47,7 +47,7 @@ class Room extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: "",
+      prompt: null,
       players: [],
       standings: [],
       started: false,
@@ -65,7 +65,7 @@ class Room extends React.Component {
 
   handleMessage(msg) {
     this.setState({
-      text: msg.text,
+      prompt: msg.prompt,
       players: msg.players,
       standings: msg.standings,
       timer: msg.countdown,
@@ -79,7 +79,7 @@ class Room extends React.Component {
     });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
-      completed: this.state.text,
+      completed: this.state.prompt.text,
       ready: true,
     });
   }
@@ -132,13 +132,13 @@ class Room extends React.Component {
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
-          {this.state.text.length > 0 && ( // Render game after text is recieved
+          {this.state.prompt !== null && ( // Render game after text is recieved
             <Game
               playerId={this.props.location.state.playerId}
               finished={this.state.standings.includes(
                 this.props.location.state.playerId
               )}
-              text={this.state.text}
+              prompt={this.state.prompt}
               clientRef={this.clientRef}
               id={this.props.location.state.roomId}
               disabled={!this.state.started}
