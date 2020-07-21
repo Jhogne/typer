@@ -25,6 +25,7 @@ public class Room {
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
         this.prompt = new Prompt("", "");
+        this.countdown = -1;
     }
 
     /**
@@ -86,6 +87,11 @@ public class Room {
         return countdown;
     }
 
+    public void decrementCountdown() {
+        if(countdown > 0) {
+            countdown--;
+        }
+    }
     /**
      * Adds a player to the room. Throws conflict exception if a player with the same name is already in the room
      *
@@ -108,24 +114,16 @@ public class Room {
     }
 
     /**
-     * Updates the state of a player in the room. If the player is the last to report being ready the game resets.
+     * Updates the state of a player in the room.
      *
      * @param newState The new state of the player
      */
     public void updatePlayer(PlayerMessage newState) {
         if (players.containsKey(newState.getPlayerId())) {
             Player p = players.get(newState.getPlayerId());
-
             p.setProgress(newState.getCompleted().length() * 100 / Math.max(this.prompt.getText().length(), 1)); // Avoid division by 0 at the start.
             p.setWpm(newState.getWpm());
             p.setReady(newState.isReady());
-
-            for (Player q : players.values()) {
-                if (!q.isReady()) {
-                    return;
-                }
-            }
-            reset();
         }
     }
 
@@ -152,6 +150,15 @@ public class Room {
         for (Player p : players.values()) {
             p.setReady(false);
         }
+    }
+
+    public boolean everyoneReady() {
+        for(Player p : players.values()) {
+            if(!p.isReady()){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
