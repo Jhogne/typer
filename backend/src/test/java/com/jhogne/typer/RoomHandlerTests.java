@@ -25,7 +25,7 @@ public class RoomHandlerTests {
         assertEquals(roomId, room.getRoomId());
         assertEquals(0, room.getStandings().size());
         assertEquals(0, room.getCountdown());
-        assertEquals(0, room.getText().length());
+        assertEquals(0, room.getPrompt().getText().length());
     }
 
     @Test
