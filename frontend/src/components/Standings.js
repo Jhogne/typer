@@ -4,7 +4,7 @@ import Player from "components/Player";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "80%",
+    width: "90%",
   },
 }));
 
