@@ -5,11 +5,6 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import cx from "classnames";
 
 const useStyles = makeStyles((theme) => ({
-  promptText: {
-    fontSize: "34px",
-    padding: 0,
-    margin: 0,
-  },
   cursor: {
     boxShadow: "-2px 0px 0px " + theme.palette.primary.main,
   },
@@ -27,17 +22,16 @@ function divideText(text, current, error, classes) {
   return (
     <>
       <Typography
-        className={classes.promptText}
         color="primary"
-        variant="body1"
+        variant="body2"
         component="span"
       >
         {text.slice(0, current)}
       </Typography>
       <Typography
-        className={cx(classes.promptText, classes.cursor)}
+        className={classes.cursor}
         color={error ? "error" : "initial"}
-        variant="body1"
+        variant="body2"
         component="span"
       >
         {text.slice(current, text.length)}
@@ -50,11 +44,9 @@ export default function Prompt(props) {
   const classes = useStyles();
   return (
     <div className={classes.promptBox}>
-      {!props.finished && (
-        <Typography variant="body1">
-          {divideText(props.text, props.current, props.error, classes)}
-        </Typography>
-      )}
+      <Typography variant="body1">
+        {divideText(props.text, props.current, props.error, classes)}
+      </Typography>
     </div>
   );
 }

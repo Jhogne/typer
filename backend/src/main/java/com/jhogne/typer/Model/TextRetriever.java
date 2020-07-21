@@ -15,12 +15,13 @@ public class TextRetriever {
     private static final JSONParser parser = new JSONParser();
 
     private static int currentText = 0;
+
     /**
-     * Gets a random text from the data.json file
-     * @return A random text
+     * Gets a random prompt from the data.json file
+     * @return A random prompt
      */
-    public static String getRandomText() {
-        String text = "";
+    public static Prompt getRandomText() {
+        Prompt prompt = new Prompt("", "");
         try {
             Object object = parser.parse(new FileReader("src/main/data/data.json"));
 
@@ -29,16 +30,22 @@ public class TextRetriever {
             Random rand = new Random();
             int randIdx = rand.nextInt(jsonArray.size());
             JSONObject obj = (JSONObject) jsonArray.get(randIdx);
-            text =  (String) obj.get("quote");
+            prompt.setText((String) obj.get("quote"));
+            prompt.setSource((String) obj.get("source"));
+
         }
         catch(ParseException | IOException e) {
             e.printStackTrace();
         }
-        return text;
+        return prompt;
     }
 
-    public static String getOrderedText() {
-        String text = "";
+    /**
+     * Gets an ordered prompt from the data.json file
+     * @return An ordered prompt
+     */
+    public static Prompt getOrderedText() {
+        Prompt prompt = new Prompt("", "");
         try {
             Object object = parser.parse(new FileReader("src/main/data/data.json"));
 
@@ -46,7 +53,8 @@ public class TextRetriever {
             JSONArray jsonArray = (JSONArray) object;
             Random rand = new Random();
             JSONObject obj = (JSONObject) jsonArray.get(currentText);
-            text =  (String) obj.get("quote");
+            prompt.setText((String) obj.get("quote"));
+            prompt.setSource((String) obj.get("source"));
 
             currentText++;
             if(currentText >= jsonArray.size()) {
@@ -56,7 +64,7 @@ public class TextRetriever {
         catch(ParseException | IOException e) {
             e.printStackTrace();
         }
-        return text;
+        return prompt;
 
     }
 }

@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class Room {
     private String roomId;
-    private String text;
+    private Prompt prompt;
     private HashMap<String, Player> players;
     private List<String> standings;
     private int countdown;
@@ -24,7 +24,7 @@ public class Room {
         this.roomId = roomId;
         this.players = new HashMap<>();
         this.standings = new ArrayList<>();
-        this.text = "";
+        this.prompt = new Prompt("", "");
     }
 
     /**
@@ -37,12 +37,12 @@ public class Room {
     }
 
     /**
-     * Gets the prompt text for the room
+     * Gets the prompt for the room
      *
-     * @return The prompt text for the room
+     * @return The prompt for the room
      */
-    public String getText() {
-        return text;
+    public Prompt getPrompt() {
+        return prompt;
     }
 
     /**
@@ -116,7 +116,7 @@ public class Room {
         if (players.containsKey(newState.getPlayerId())) {
             Player p = players.get(newState.getPlayerId());
 
-            p.setProgress(newState.getCompleted().length() * 100 / Math.max(this.text.length(), 1)); // Avoid division by 0 at the start.
+            p.setProgress(newState.getCompleted().length() * 100 / Math.max(this.prompt.getText().length(), 1)); // Avoid division by 0 at the start.
             p.setWpm(newState.getWpm());
             p.setReady(newState.isReady());
 
@@ -148,7 +148,7 @@ public class Room {
     public void reset() {
         standings = new ArrayList<>();
         countdown = 3;
-        text = TextRetriever.getRandomText();
+        prompt = TextRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
         }
@@ -188,7 +188,7 @@ public class Room {
     public String toString() {
         return "Room{" +
                 "roomId='" + roomId + '\'' +
-                ", text='" + text + '\'' +
+                ", prompt='" + prompt + '\'' +
                 ", players=" + players +
                 ", standings=" + standings +
                 ", countdown=" + countdown +
