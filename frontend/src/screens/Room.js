@@ -62,7 +62,6 @@ class Room extends React.Component {
       countdown: msg.countdown,
       startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
-    console.log(this.state.startTime)
   }
 
   resetGame() {
@@ -129,7 +128,7 @@ class Room extends React.Component {
           <Typography variant="h4" className="result">
             {this.getPlacement()}
           </Typography>
-          {(this.state.players.length === this.state.standings.length || true) && (
+          {(this.state.players.length === this.state.standings.length || (this.state.prompt !== null && this.state.prompt.text.length === 0)) && (
             <Button
               className={classes.reset}
               color="secondary"
