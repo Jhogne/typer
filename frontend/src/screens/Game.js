@@ -45,6 +45,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       currentWord: "",
+      startTime: 0
     };
     myState = new GameState();
     this.handleChange = this.handleChange.bind(this);
