@@ -40,15 +40,17 @@ export default class GameState {
   }
 
   verifyInput(text) {
+    console.log("Compare against: " + text.slice(this.wordStart, this.wordStart + this.input.length))
+    console.log("Input: " + this.input)
     if (
       text.slice(this.wordStart, this.wordStart + this.input.length) ===
       this.input
     ) {
       this._error = false;
+      this._idx = this.wordStart + this.input.length;
       if (this.input.length === 0) {
         return;
       }
-      this._idx = this.wordStart + this.input.length;
       if (this.endWord()) {
         this.finishWord();
       }
