@@ -11,13 +11,12 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
   cursor: {
-    borderRight: "2px solid",
-    marginRight: "-2px",
+    boxShadow: "-2px 0px 0px " + theme.palette.primary.main,
   },
+
   promptBox: {
     width: "100%",
     textAlign: "left",
-    textJustify: "distribute",
     padding: 0,
     margin: 0,
     userSelect: "none",
@@ -28,7 +27,7 @@ function divideText(text, current, error, classes) {
   return (
     <>
       <Typography
-        className={cx(classes.promptText, classes.cursor)}
+        className={classes.promptText}
         color="primary"
         variant="body1"
         component="span"
@@ -36,7 +35,7 @@ function divideText(text, current, error, classes) {
         {text.slice(0, current)}
       </Typography>
       <Typography
-        className={classes.promptText}
+        className={cx(classes.promptText, classes.cursor)}
         color={error ? "error" : "initial"}
         variant="body1"
         component="span"
