@@ -36,7 +36,7 @@ public class RoomTests {
         assertEquals(playerId, player.getId());
         assertEquals(0, player.getProgress());
         assertEquals(50, player.getWpm());
-        assertFalse(player.isReady()); // Since only one player in the room it should still be set to false
+        assertTrue(player.isReady());
 
         String roomText = testRoom.getPrompt().getText();
         PlayerMessage sndUpdateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, true);
