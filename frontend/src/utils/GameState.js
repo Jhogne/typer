@@ -40,8 +40,6 @@ export default class GameState {
   }
 
   verifyInput(text) {
-    console.log("Compare against: " + text.slice(this.wordStart, this.wordStart + this.input.length))
-    console.log("Input: " + this.input)
     if (
       text.slice(this.wordStart, this.wordStart + this.input.length) ===
       this.input

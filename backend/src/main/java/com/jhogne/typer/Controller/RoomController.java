@@ -1,6 +1,7 @@
 package com.jhogne.typer.Controller;
 
 import com.jhogne.typer.Model.PlayerMessage;
+import com.jhogne.typer.Model.Room;
 import com.jhogne.typer.Model.RoomHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -34,7 +35,12 @@ public class RoomController {
     @MessageMapping("/room/{roomId}/postState")
     public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
         RoomHandler.getRoom(roomId).updatePlayer(msg);
-        sendRoomMessage(roomId);
+        if(RoomHandler.getRoom(roomId).everyoneReady()) {
+            RoomHandler.resetRoom(roomId);
+            countdown(RoomHandler.getRoom(roomId));
+        } else {
+            sendRoomMessage(roomId);
+        }
     }
 
     @MessageMapping("/room/{roomId}/finish")
@@ -43,13 +49,20 @@ public class RoomController {
         sendRoomMessage(roomId);
     }
 
-    @MessageMapping("/room/{roomId}/reset")
-    public void reset(@DestinationVariable String roomId) {
-        RoomHandler.resetRoom(roomId);
-        sendRoomMessage(roomId);
-    }
-
     private void sendRoomMessage(String roomId) {
         this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+    }
+
+    private void countdown(Room room) {
+        while(room.getCountdown() > 0) {
+            sendRoomMessage(room.getRoomId());
+            room.decrementCountdown();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        sendRoomMessage(room.getRoomId());
     }
 }

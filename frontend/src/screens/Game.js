@@ -81,8 +81,6 @@ class Game extends React.Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-      {!this.props.finished && (
-        <>
         <Prompt
           text={this.props.prompt.text}
           current={myState.idx}
@@ -91,25 +89,21 @@ class Game extends React.Component {
         <Typography color="primary" variant="body2" align="right">
           -{this.props.prompt.source}
         </Typography>
-        </>
-      )}
-        {!this.props.finished && (
-          <TextField
-            color="primary"
-            className={classes.input}
-            type="text"
-            fullWidth
-            disabled={this.props.disabled}
-            autoFocus={!this.props.disabled}
-            value={this.state.currentWord}
-            onChange={this.handleChange}
-            variant="outlined"
-            InputProps={{
-              className: classes.input,
-            }}
-            inputRef={input => input && input.focus()}
-            />
-        )}
+        <TextField
+          color="primary"
+          className={classes.input}
+          type="text"
+          fullWidth
+          disabled={this.props.disabled}
+          autoFocus={!this.props.disabled}
+          value={this.state.currentWord}
+          onChange={this.handleChange}
+          variant="outlined"
+          InputProps={{
+            className: classes.input,
+          }}
+          inputRef={input => input && input.focus()}
+          />
       </div>
     );
   }

@@ -1,6 +1,5 @@
 import React from "react";
 import SockJsClient from "react-stomp";
-import Countdown from "react-countdown";
 import { Typography, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Game from "screens/Game";
@@ -35,14 +34,6 @@ const styles = (theme) => ({
   }
 });
 
-const renderer = ({ seconds, completed }) => {
-  if (completed) {
-    return <Typography variant="body2"> Type! </Typography>;
-  } else {
-    return <Typography variant="body1">{seconds}</Typography>;
-  }
-};
-
 class Room extends React.Component {
   constructor(props) {
     super(props);
@@ -50,8 +41,8 @@ class Room extends React.Component {
       prompt: null,
       players: [],
       standings: [],
-      started: false,
-      timer: 0,
+      countdown: -1,
+      startTime: -1
 
     };
     this.handleMessage = this.handleMessage.bind(this);
@@ -68,14 +59,15 @@ class Room extends React.Component {
       prompt: msg.prompt,
       players: msg.players,
       standings: msg.standings,
-      timer: msg.countdown,
+      countdown: msg.countdown,
+      startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
   }
 
   resetGame() {
     this.setState({       
       standings: [],
-      started: false,
+      prompt: null,
     });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
@@ -114,41 +106,29 @@ class Room extends React.Component {
         <div className={classes.content}>
           <h6>This is room "{this.props.location.state.roomId}"</h6>
 
-          {this.state.timer > 0 && !this.state.started && (
-            <Countdown
-              date={Date.now() + this.state.timer*1000}
-              renderer={renderer}
-              onComplete={() => {
-                this.setState({ 
-                  started: true,
-                  timer: 0,
-                  count: Date.now()});
-              }}
-            />
+          {this.state.countdown > 0 && (
+            <Typography variant="body1">{this.state.countdown}</Typography>
           )}
-
           <Standings
             className={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
-          {this.state.prompt !== null && ( // Render game after text is recieved
+          {this.state.prompt !== null && !this.state.standings.includes(this.props.location.state.playerId) && ( // Render game after text is recieved
             <Game
               playerId={this.props.location.state.playerId}
-              finished={this.state.standings.includes(
-                this.props.location.state.playerId
-              )}
+              finished={false}
               prompt={this.state.prompt}
               clientRef={this.clientRef}
               id={this.props.location.state.roomId}
-              disabled={!this.state.started}
-              startTime={this.state.count}
+              disabled={this.state.countdown !== 0}
+              startTime={this.state.startTime}
             />
           )}
           <Typography variant="h4" className="result">
             {this.getPlacement()}
           </Typography>
-          {(this.state.players.length === this.state.standings.length || this.state.timer === 0) && (
+          {(this.state.players.length === this.state.standings.length || (this.state.prompt !== null && this.state.prompt.text.length === 0)) && (
             <Button
               className={classes.reset}
               color="secondary"
