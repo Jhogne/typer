@@ -4,6 +4,7 @@ export default class GameState {
     this._words = 0;
     this._idx = 0;
     this._error = false;
+    this._errors = 0;
   }
 
   set input(x) {
@@ -35,6 +36,10 @@ export default class GameState {
     return this._error;
   }
 
+  get errors() {
+    return this.errors;
+  }
+
   endWord() {
     return this.lastInput === " " || this.lastInput === ".";
   }
@@ -52,8 +57,9 @@ export default class GameState {
       if (this.endWord()) {
         this.finishWord();
       }
-    } else {
+    } else if(!this._error){
       this._error = true;
+      this._errors += 1;
     }
   }
 
@@ -74,5 +80,10 @@ export default class GameState {
     this._words = 0;
     this._wordStart = 0;
     this._idx = 0;
+    this._errors = 0;
+  }
+
+  getAccuracy() {
+    return 1 - (this._errors / this._idx);
   }
 }
