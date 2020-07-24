@@ -87,6 +87,9 @@ public class Room {
         return countdown;
     }
 
+    /**
+     * Decrements the countdown by 1, as long as it will remain positive
+     */
     public void decrementCountdown() {
         if(countdown > 0) {
             countdown--;

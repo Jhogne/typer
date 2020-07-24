@@ -37,12 +37,5 @@ public class RoomTests {
         assertEquals(0, player.getProgress());
         assertEquals(50, player.getWpm());
         assertTrue(player.isReady());
-
-        String roomText = testRoom.getPrompt().getText();
-        PlayerMessage sndUpdateMsg = new PlayerMessage(playerId, roomText.substring(0,roomText.length() / 4), 50, true);
-        testRoom.updatePlayer(sndUpdateMsg);
-
-        assertEquals((roomText.length() / 4) * 100 / roomText.length(), player.getProgress());
-
     }
 }
