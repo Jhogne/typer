@@ -1,10 +1,13 @@
 export default class GameState {
-  constructor() {
-    this._wordStart = 0;
-    this._words = 0;
-    this._idx = 0;
-    this._error = false;
-    this._errors = 0;
+  constructor(wordStart = 0, words = 0, idx = 0, error = false, errors = 0, acc = 1, input = "", lastInput = "") {
+    this._wordStart = wordStart;
+    this._words = words;
+    this._idx = idx;
+    this._error = error;
+    this._errors = errors;
+    this._acc = acc;
+    this._input = input;
+    this._lastInput = lastInput;
   }
 
   set input(x) {
@@ -40,6 +43,10 @@ export default class GameState {
     return this._errors;
   }
 
+  get accuracy() {
+    return this._acc;
+  }
+
   endWord() {
     return this.lastInput === " " || this.lastInput === ".";
   }
@@ -61,6 +68,7 @@ export default class GameState {
       this._error = true;
       this._errors += 1;
     }
+    this.setAccuracy();
   }
 
   getWPM(startTime) {
@@ -75,15 +83,16 @@ export default class GameState {
     this._wordStart = this.idx;
   }
 
-  finishText() {
+  reset() {
     this._input = "";
     this._words = 0;
     this._wordStart = 0;
     this._idx = 0;
     this._errors = 0;
+    this._acc = 1;
   }
 
-  getAccuracy() {
-    return 1 - (this._errors / this._idx);
+  setAccuracy() {
+    this._acc =  1 - (this._errors / this._idx);
   }
 }

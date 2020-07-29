@@ -19,7 +19,7 @@ export default function Results(props) {
             container
             spacing={3}
             justify="space-evenly">
-        {getItem(`Time: ${Math.floor((Date.now() - props.startTime) / 1000)}s`)}
+        {getItem(`Time: ${Math.floor((props.time) / 1000)}s`)}
         {getItem(`Words: ${props.words}`)}
         {getItem(`Mistakes: ${props.errors}`)}
         {getItem(`Accuracy: ${Math.round(props.accuracy * 10000)/100}%`)}

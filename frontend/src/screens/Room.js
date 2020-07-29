@@ -46,9 +46,10 @@ class Room extends React.Component {
       players: [],
       standings: [],
       countdown: -1,
-      startTime: -1
-
+      startTime: -1,
+      endTime: -1
     };
+    
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
@@ -68,6 +69,16 @@ class Room extends React.Component {
       countdown: msg.countdown,
       startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
+    if(this.state.standings.includes(this.props.location.state.playerId) && this.state.endTime <= this.state.startTime) {
+      this.setState({
+          endTime: Date.now()
+        }
+      )
+    }
+    if(msg.countdown > 0) {
+      console.log('reset')
+      gameState.reset();
+    }   
   }
 
   resetGame() {
@@ -80,7 +91,7 @@ class Room extends React.Component {
       completed: this.state.prompt.text,
       ready: true,
     });
-    gameState.finishText();
+
 
   }
 
@@ -109,7 +120,6 @@ class Room extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(gameState)
     return (
       <div className={classes.root}>
         <div className={classes.content}>
@@ -142,10 +152,10 @@ class Room extends React.Component {
             </Typography>
 
             <Results 
-              startTime={this.state.startTime}
+              time={this.state.endTime-this.state.startTime}
               words={gameState.words}
               errors={gameState.errors}
-              accuracy={gameState.getAccuracy()}
+              accuracy={gameState.accuracy}
             />
             </>
           )}

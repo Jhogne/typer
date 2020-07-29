@@ -66,7 +66,6 @@ class Game extends React.Component {
     }
 
     if (this.props.gameState.idx === this.props.prompt.text.length) {
-      sessionStorage.setItem('gameState', this.props.gameState)
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
 
     }
@@ -100,9 +99,6 @@ class Game extends React.Component {
           }}
           inputRef={input => input && input.focus()}
           />
-          <Typography>
-            {this.props.gameState.getAccuracy()}
-          </Typography>
       </div>
     );
   }
