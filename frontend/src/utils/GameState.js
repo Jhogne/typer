@@ -37,7 +37,7 @@ export default class GameState {
   }
 
   get errors() {
-    return this.errors;
+    return this._errors;
   }
 
   endWord() {

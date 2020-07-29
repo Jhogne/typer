@@ -9,6 +9,9 @@ import {
   updateRoomMessage,
 } from "utils/ApiRequests";
 import Standings from "components/Standings";
+import GameState from "utils/GameState";
+import Results from "../components/Results";
+
 
 const styles = (theme) => ({
   root: {
@@ -34,6 +37,7 @@ const styles = (theme) => ({
   }
 });
 
+var gameState;
 class Room extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +49,8 @@ class Room extends React.Component {
       startTime: -1
 
     };
+    gameState = new GameState();
+
     this.handleMessage = this.handleMessage.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
@@ -74,6 +80,8 @@ class Room extends React.Component {
       completed: this.state.prompt.text,
       ready: true,
     });
+    gameState.finishText();
+
   }
 
   getPlacement() {
@@ -101,6 +109,7 @@ class Room extends React.Component {
 
   render() {
     const { classes } = this.props;
+    console.log(gameState)
     return (
       <div className={classes.root}>
         <div className={classes.content}>
@@ -123,11 +132,23 @@ class Room extends React.Component {
               id={this.props.location.state.roomId}
               disabled={this.state.countdown !== 0}
               startTime={this.state.startTime}
+              gameState={gameState}
             />
           )}
-          <Typography variant="h4" className="result">
-            {this.getPlacement()}
-          </Typography>
+          {this.state.standings.includes(this.props.location.state.playerId) && (
+            <>
+            <Typography variant="h4" className="result">
+              {this.getPlacement()}
+            </Typography>
+
+            <Results 
+              startTime={this.state.startTime}
+              words={gameState.words}
+              errors={gameState.errors}
+              accuracy={gameState.getAccuracy()}
+            />
+            </>
+          )}
           {(this.state.players.length === this.state.standings.length || (this.state.prompt !== null && this.state.prompt.text.length === 0)) && (
             <Button
               className={classes.reset}
