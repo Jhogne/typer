@@ -9,6 +9,9 @@ import {
   updateRoomMessage,
 } from "utils/ApiRequests";
 import Standings from "components/Standings";
+import GameState from "utils/GameState";
+import Results from "../components/Results";
+
 
 const styles = (theme) => ({
   root: {
@@ -34,6 +37,7 @@ const styles = (theme) => ({
   }
 });
 
+var gameState;
 class Room extends React.Component {
   constructor(props) {
     super(props);
@@ -42,9 +46,12 @@ class Room extends React.Component {
       players: [],
       standings: [],
       countdown: -1,
-      startTime: -1
-
+      startTime: -1,
+      endTime: -1
     };
+    
+    gameState = new GameState();
+
     this.handleMessage = this.handleMessage.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
@@ -62,6 +69,16 @@ class Room extends React.Component {
       countdown: msg.countdown,
       startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
+    if(this.state.standings.includes(this.props.location.state.playerId) && this.state.endTime <= this.state.startTime) {
+      this.setState({
+          endTime: Date.now()
+        }
+      )
+    }
+    if(msg.countdown > 0) {
+      console.log('reset')
+      gameState.reset();
+    }   
   }
 
   resetGame() {
@@ -74,6 +91,8 @@ class Room extends React.Component {
       completed: this.state.prompt.text,
       ready: true,
     });
+
+
   }
 
   getPlacement() {
@@ -123,11 +142,23 @@ class Room extends React.Component {
               id={this.props.location.state.roomId}
               disabled={this.state.countdown !== 0}
               startTime={this.state.startTime}
+              gameState={gameState}
             />
           )}
-          <Typography variant="h4" className="result">
-            {this.getPlacement()}
-          </Typography>
+          {this.state.standings.includes(this.props.location.state.playerId) && (
+            <>
+            <Typography variant="h4" className="result">
+              {this.getPlacement()}
+            </Typography>
+
+            <Results 
+              time={this.state.endTime-this.state.startTime}
+              words={gameState.words}
+              errors={gameState.errors}
+              accuracy={gameState.accuracy}
+            />
+            </>
+          )}
           {(this.state.players.length === this.state.standings.length || (this.state.prompt !== null && this.state.prompt.text.length === 0)) && (
             <Button
               className={classes.reset}

@@ -2,7 +2,6 @@ import React from "react";
 import { TextField, Typography } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { updatePlayer, finishGame } from "utils/ApiRequests";
-import GameState from "utils/GameState";
 import Prompt from "components/Prompt";
 
 const styles = (theme) => ({
@@ -39,15 +38,12 @@ const styles = (theme) => ({
   },
 });
 
-var myState;
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentWord: "",
-      startTime: 0
     };
-    myState = new GameState();
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -56,26 +52,25 @@ class Game extends React.Component {
       return;
     }
 
-    myState.input = event.target.value;
+    this.props.gameState.input = event.target.value;
 
-    myState.verifyInput(this.props.prompt.text);
+    this.props.gameState.verifyInput(this.props.prompt.text);
 
-    if (!myState.error) {
+    if (!this.props.gameState.error) {
       updatePlayer(this.props.clientRef, this.props.id, {
         playerId: this.props.playerId,
-        completed: this.props.prompt.text.slice(0, myState.idx),
-        wpm: myState.getWPM(this.props.startTime),
+        completed: this.props.prompt.text.slice(0, this.props.gameState.idx),
+        wpm: this.props.gameState.getWPM(this.props.startTime),
         ready: false,
       });
     }
 
-    if (myState.idx === this.props.prompt.text.length) {
-      myState.finishText();
+    if (this.props.gameState.idx === this.props.prompt.text.length) {
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
-    }
-    this.setState({ currentWord: myState.input });
-  }
 
+    }
+    this.setState({ currentWord: this.props.gameState.input });
+  }
 
   render() {
     const { classes } = this.props;
@@ -83,8 +78,8 @@ class Game extends React.Component {
       <div className={classes.root}>
         <Prompt
           text={this.props.prompt.text}
-          current={myState.idx}
-          error={myState.error}
+          current={this.props.gameState.idx}
+          error={this.props.gameState.error}
         />
         <Typography color="primary" variant="body2" align="right">
           -{this.props.prompt.source}
