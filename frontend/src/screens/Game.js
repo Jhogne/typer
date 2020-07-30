@@ -67,11 +67,12 @@ class Game extends React.Component {
 
     if (this.props.gameState.idx === this.props.prompt.text.length) {
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
+
     }
 
     this.setState({ currentWord: this.props.gameState.input });
   }
-
+  
   render() {
     const { classes } = this.props;
     return (

@@ -91,6 +91,8 @@ class Room extends React.Component {
       wpm: gameState.getWPM(this.state.startTime, this.state.endTime),
       ready: true,
     });
+
+
   }
 
   getPlacement() {
