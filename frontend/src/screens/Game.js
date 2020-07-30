@@ -34,6 +34,7 @@ const styles = (theme) => ({
   },
   root: {
     padding: 2,
+    width: "100%",
   },
 });
 
