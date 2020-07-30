@@ -24,7 +24,6 @@ const styles = (theme) => ({
         borderWidth: 2,
       },
       "&:hover fieldset": {
-        borderColor: theme.palette.primary.main,
         borderWidth: 2,
       },
       "&.Mui-focused fieldset": {
@@ -35,6 +34,7 @@ const styles = (theme) => ({
   },
   root: {
     padding: 2,
+    width: "100%",
   },
 });
 
