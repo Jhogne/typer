@@ -38,7 +38,7 @@ public class RoomController {
         if(RoomHandler.getRoom(roomId).everyoneReady()) {
             RoomHandler.resetRoom(roomId);
             countdown(RoomHandler.getRoom(roomId));
-        } else {
+        } else {    
             sendRoomMessage(roomId);
         }
     }
