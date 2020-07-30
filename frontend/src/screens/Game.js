@@ -72,7 +72,7 @@ class Game extends React.Component {
 
     this.setState({ currentWord: this.props.gameState.input });
   }
-  
+
   render() {
     const { classes } = this.props;
     return (
@@ -82,9 +82,11 @@ class Game extends React.Component {
           current={this.props.gameState.idx}
           error={this.props.gameState.error}
         />
+        {this.props.prompt.source && 
         <Typography color="primary" variant="body2" align="right">
           -{this.props.prompt.source}
         </Typography>
+        }
         <TextField
           color="primary"
           className={classes.input}
