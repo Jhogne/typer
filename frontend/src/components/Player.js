@@ -5,9 +5,9 @@ import PlayerProgress from "components/PlayerProgress";
 
 export default function Player(props) {
   return (
-    <Grid container spacing={2} direction="row" alignItems="center">
-      <Grid item xl={1} lg={2} md={2} sm={3} xs={4}>
-        <Typography color={props.color} variant="body1">
+    <Grid container spacing={0} direction="row" alignItems="center">
+      <Grid item xl={2} lg={2} md={3} sm={3} xs={4}>
+        <Typography color={props.color} variant="body1" noWrap>
           {props.id}
         </Typography>
       </Grid>
@@ -18,8 +18,8 @@ export default function Player(props) {
           progress={props.progress}
         />
       </Grid>
-      <Grid item xl={2} lg={2} md={3} sm={3} xs={3}>
-        <Typography color={props.color} variant="body1">
+      <Grid item xl={2} lg={2} md={3} sm={3} xs={4} >
+        <Typography color={props.color} variant="body1" align="right">
           {props.wpm} WPM
         </Typography>
       </Grid>
