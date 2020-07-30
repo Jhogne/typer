@@ -71,9 +71,8 @@ export default class GameState {
     this.setAccuracy();
   }
 
-  getWPM(startTime) {
-    var d = new Date();
-    var minutes = (d.getTime() - startTime) / 60000;
+  getWPM(startTime, endTime) {
+    var minutes = (endTime - startTime) / 60000;
     return this.words / minutes;
   }
 

@@ -60,7 +60,7 @@ class Game extends React.Component {
       updatePlayer(this.props.clientRef, this.props.id, {
         playerId: this.props.playerId,
         completed: this.props.prompt.text.slice(0, this.props.gameState.idx),
-        wpm: this.props.gameState.getWPM(this.props.startTime),
+        wpm: this.props.gameState.getWPM(this.props.startTime, Date.now()),
         ready: false,
       });
     }
@@ -69,9 +69,10 @@ class Game extends React.Component {
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
 
     }
+
     this.setState({ currentWord: this.props.gameState.input });
   }
-
+  
   render() {
     const { classes } = this.props;
     return (
