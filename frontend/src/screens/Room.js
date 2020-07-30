@@ -76,7 +76,6 @@ class Room extends React.Component {
       )
     }
     if(msg.countdown > 0) {
-      console.log('reset')
       gameState.reset();
     }   
   }
@@ -89,10 +88,9 @@ class Room extends React.Component {
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
       completed: this.state.prompt.text,
+      wpm: gameState.getWPM(this.state.startTime, this.state.endTime),
       ready: true,
     });
-
-
   }
 
   getPlacement() {

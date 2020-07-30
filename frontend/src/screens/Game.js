@@ -60,15 +60,15 @@ class Game extends React.Component {
       updatePlayer(this.props.clientRef, this.props.id, {
         playerId: this.props.playerId,
         completed: this.props.prompt.text.slice(0, this.props.gameState.idx),
-        wpm: this.props.gameState.getWPM(this.props.startTime),
+        wpm: this.props.gameState.getWPM(this.props.startTime, Date.now()),
         ready: false,
       });
     }
 
     if (this.props.gameState.idx === this.props.prompt.text.length) {
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
-
     }
+
     this.setState({ currentWord: this.props.gameState.input });
   }
 

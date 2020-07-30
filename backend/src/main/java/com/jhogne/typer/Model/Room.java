@@ -152,6 +152,8 @@ public class Room {
         prompt = TextRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
+            p.setProgress(0);
+            p.setWpm(0);
         }
     }
 
