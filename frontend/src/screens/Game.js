@@ -72,7 +72,7 @@ class Game extends React.Component {
 
     this.setState({ currentWord: this.props.gameState.input });
   }
-
+  
   render() {
     const { classes } = this.props;
     return (
