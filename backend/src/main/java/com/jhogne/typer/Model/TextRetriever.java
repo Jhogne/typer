@@ -1,9 +1,11 @@
 package com.jhogne.typer.Model;
 
+import com.jhogne.typer.TyperApplication;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.boot.SpringApplication;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,7 +16,7 @@ public class TextRetriever {
 
     private static final JSONParser parser = new JSONParser();
 
-    private static int currentText = 0;
+    private static int currentText = 6;
 
     /**
      * Gets a random prompt from the data.json file
@@ -65,6 +67,6 @@ public class TextRetriever {
             e.printStackTrace();
         }
         return prompt;
-
     }
+
 }

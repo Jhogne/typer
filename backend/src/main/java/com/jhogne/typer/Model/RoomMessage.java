@@ -2,7 +2,6 @@ package com.jhogne.typer.Model;
 
 public class RoomMessage {
     private String roomId;
-
     private String playerId;
 
     public RoomMessage(String roomId, String playerId) {

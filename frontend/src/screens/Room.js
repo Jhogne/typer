@@ -62,6 +62,7 @@ class Room extends React.Component {
   }
 
   handleMessage(msg) {
+    console.log(msg)
     this.setState({
       prompt: msg.prompt,
       players: msg.players,
@@ -88,7 +89,6 @@ class Room extends React.Component {
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
       completed: this.state.prompt.text,
-      wpm: gameState.getWPM(this.state.startTime, this.state.endTime),
       ready: true,
     });
 
@@ -141,7 +141,6 @@ class Room extends React.Component {
               clientRef={this.clientRef}
               id={this.props.location.state.roomId}
               disabled={this.state.countdown !== 0}
-              startTime={this.state.startTime}
               gameState={gameState}
             />
           )}
@@ -153,7 +152,7 @@ class Room extends React.Component {
 
             <Results 
               time={this.state.endTime-this.state.startTime}
-              words={gameState.words}
+              words={this.state.prompt.length}
               errors={gameState.errors}
               accuracy={gameState.accuracy}
             />

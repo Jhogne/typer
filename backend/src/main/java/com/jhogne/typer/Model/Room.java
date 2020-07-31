@@ -8,6 +8,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -19,6 +21,7 @@ public class Room {
     private HashMap<String, Player> players;
     private List<String> standings;
     private int countdown;
+    private long startTime;
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -87,6 +90,10 @@ public class Room {
         return countdown;
     }
 
+    public void startRoom() {
+        startTime = Instant.now().toEpochMilli();
+    }
+
     /**
      * Decrements the countdown by 1, as long as it will remain positive
      */
@@ -125,7 +132,15 @@ public class Room {
         if (players.containsKey(newState.getPlayerId())) {
             Player p = players.get(newState.getPlayerId());
             p.setProgress(newState.getCompleted().length() * 100 / Math.max(this.prompt.getText().length(), 1)); // Avoid division by 0 at the start.
-            p.setWpm(newState.getWpm());
+
+            int words = newState.getCompleted().split("\\s+").length;
+            double minutes;
+            if(p.getEndTime() > 0) {
+                minutes = (double) (p.getEndTime() - startTime) / 60000;
+            } else {
+                minutes = (double) (Instant.now().toEpochMilli() - startTime) / 60000;
+            }
+            p.setWpm((int) (words / minutes));
             p.setReady(newState.isReady());
         }
     }
@@ -139,6 +154,7 @@ public class Room {
     public void playerFinished(String playerId) {
         if (players.containsKey(playerId)) {
             standings.add(playerId);
+            players.get(playerId).setEndTime(Instant.now().toEpochMilli());
         }
     }
 
