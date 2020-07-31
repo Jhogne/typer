@@ -174,6 +174,7 @@ public class Room {
             p.setReady(false);
             p.setProgress(0);
             p.setWpm(0);
+            p.setEndTime(0);
         }
     }
 
