@@ -46,22 +46,20 @@ class Room extends React.Component {
       players: [],
       standings: [],
       countdown: -1,
-      endTime: -1
     };
     
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
-    this.resetGame = this.resetGame.bind(this);
+    this.clickReset = this.clickReset.bind(this);
   }
 
   componentWillUnmount() {
-    this.resetGame()
+    this.clickReset()
     leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
   }
 
   handleMessage(msg) {
-    console.log(msg)
     this.setState({
       prompt: msg.prompt,
       players: msg.players,
@@ -75,12 +73,14 @@ class Room extends React.Component {
         }
       )
     }
+
+    // Reset the game state when a new game is starting
     if(msg.countdown > 0) {
       gameState.reset();
     }   
   }
 
-  resetGame() {
+  clickReset() {
     this.setState({       
       standings: [],
       prompt: null,
@@ -163,7 +163,7 @@ class Room extends React.Component {
               className={classes.reset}
               color="secondary"
               variant="outlined"
-              onClick={this.resetGame}
+              onClick={this.clickReset}
             >
               Ready
             </Button>
