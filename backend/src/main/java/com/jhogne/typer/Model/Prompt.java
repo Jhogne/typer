@@ -33,6 +33,7 @@ public class Prompt {
     }
 
     private void setLength() {
+        // Splits the text by spaces and checks length
         length = this.text.split("\\s+").length;
     }
 }

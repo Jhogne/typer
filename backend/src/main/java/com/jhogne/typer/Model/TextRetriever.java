@@ -16,7 +16,7 @@ public class TextRetriever {
 
     private static final JSONParser parser = new JSONParser();
 
-    private static int currentText = 6;
+    private static int currentText = 0;
 
     /**
      * Gets a random prompt from the data.json file

@@ -53,6 +53,17 @@ public class Player {
     public void setEndTime(long endTime){
         this.endTime = endTime;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id='" + id + '\'' +
+                ", progress=" + progress +
+                ", wpm=" + wpm +
+                ", ready=" + ready +
+                ", endTime=" + endTime +
+                '}';
+    }
 }
 
 

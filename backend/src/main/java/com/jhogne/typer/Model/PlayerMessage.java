@@ -38,7 +38,7 @@ public class PlayerMessage {
     @Override
     public String toString() {
         return "PlayerMessage{" +
-                "playerId=" + playerId +
+                "playerId='" + playerId + '\'' +
                 ", completed='" + completed + '\'' +
                 ", ready=" + ready +
                 '}';

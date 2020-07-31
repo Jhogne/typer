@@ -1,14 +1,7 @@
 package com.jhogne.typer.Model;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.*;
 
@@ -82,18 +75,25 @@ public class Room {
     }
 
     /**
-     * Gets the time the game starts in the room
+     * Gets the countdown of the room
      *
-     * @return The time the game starts
+     * @return The value of the countdown
      */
     public long getCountdown() {
         return countdown;
     }
 
+    /**
+     * Gets the start time of the room
+     * @return The time the game started for this room (in epoch time)
+     */
     public long getStartTime(){
         return startTime;
     }
 
+    /**
+     * Starts a game in this room. This is done by setting the start time to the current time
+     */
     public void startRoom() {
         startTime = Instant.now().toEpochMilli();
     }
@@ -128,7 +128,8 @@ public class Room {
     }
 
     /**
-     * Updates the state of a player in the room.
+     * Updates the state of a player in the room based of a message from a client. Does nothing if the player hasn't
+     * joined the room
      *
      * @param newState The new state of the player
      */
@@ -145,13 +146,14 @@ public class Room {
                 minutes = (double) (Instant.now().toEpochMilli() - startTime) / 60000;
             }
             p.setWpm((int) (words / minutes));
+
             p.setReady(newState.isReady());
         }
     }
 
     /**
-     * Reports that a player has finished the text. That is, adds them to the standings. If player is not in  the room
-     * nothing happens
+     * Reports that a player has finished the text. That is, adds them to the standings and sets their end time.
+     * If player is not in the room nothing happens
      *
      * @param playerId The id of the player that has finished
      */
@@ -163,8 +165,8 @@ public class Room {
     }
 
     /**
-     * Resets the game by clearing the standings, updating the start time, setting a new random text, and setting each
-     * player to not ready.
+     * Resets the game by clearing the standings, resetting the countdown, setting a new random text, and
+     * resetting each player
      */
     public void reset() {
         standings = new ArrayList<>();
@@ -178,6 +180,10 @@ public class Room {
         }
     }
 
+    /**
+     * Checks if every player in the room is ready
+     * @return Whether every player in the room is ready
+     */
     public boolean everyoneReady() {
         for(Player p : players.values()) {
             if(!p.isReady()){
@@ -221,10 +227,11 @@ public class Room {
     public String toString() {
         return "Room{" +
                 "roomId='" + roomId + '\'' +
-                ", prompt='" + prompt + '\'' +
+                ", prompt=" + prompt +
                 ", players=" + players +
                 ", standings=" + standings +
                 ", countdown=" + countdown +
+                ", startTime=" + startTime +
                 '}';
     }
 }

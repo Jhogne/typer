@@ -24,4 +24,12 @@ public class RoomMessage {
     public void setplayerId(String playerId) {
         this.playerId = playerId;
     }
+
+    @Override
+    public String toString() {
+        return "RoomMessage{" +
+                "roomId='" + roomId + '\'' +
+                ", playerId='" + playerId + '\'' +
+                '}';
+    }
 }
