@@ -2,6 +2,7 @@ package com.jhogne.typer;
 
 import com.jhogne.typer.Model.Player;
 import com.jhogne.typer.Model.PlayerMessage;
+import com.jhogne.typer.Model.Prompt;
 import com.jhogne.typer.Model.Room;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +22,11 @@ public class RoomTests {
     @Test
     void updatePlayerTest() {
         Room testRoom = new Room("abcd");
+        testRoom.reset();
         String playerId = "testPlayer";
         testRoom.addPlayer(playerId);
+        testRoom.getPrompt().setText("Lorem ipsum dolor sit amet");
+        testRoom.startRoom();
         Player player = testRoom.getPlayer(playerId);
 
         assertEquals(0, player.getWpm());
@@ -30,12 +34,15 @@ public class RoomTests {
         assertEquals(playerId, player.getId());
         assertFalse(player.isReady());
 
-        PlayerMessage updateMsg = new PlayerMessage(playerId, "", 50, true);
+        String text = testRoom.getPrompt().getText();
+        String completed = text.substring(0,text.length()/2);
+
+        PlayerMessage updateMsg = new PlayerMessage(playerId, completed,true);
         testRoom.updatePlayer(updateMsg);
 
+        assertTrue(player.getWpm() > 0);
         assertEquals(playerId, player.getId());
-        assertEquals(0, player.getProgress());
-        assertEquals(50, player.getWpm());
+        assertEquals(50, player.getProgress());
         assertTrue(player.isReady());
     }
 }
