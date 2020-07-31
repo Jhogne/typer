@@ -90,6 +90,10 @@ public class Room {
         return countdown;
     }
 
+    public long getStartTime(){
+        return startTime;
+    }
+
     public void startRoom() {
         startTime = Instant.now().toEpochMilli();
     }

@@ -46,7 +46,6 @@ class Room extends React.Component {
       players: [],
       standings: [],
       countdown: -1,
-      startTime: -1,
       endTime: -1
     };
     
@@ -68,11 +67,11 @@ class Room extends React.Component {
       players: msg.players,
       standings: msg.standings,
       countdown: msg.countdown,
-      startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
-    if(this.state.standings.includes(this.props.location.state.playerId) && this.state.endTime <= this.state.startTime) {
+
+    if(this.state.standings.includes(this.props.location.state.playerId) && !this.state.time) {
       this.setState({
-          endTime: Date.now()
+          time: Date.now() - msg.startTime
         }
       )
     }
@@ -85,6 +84,7 @@ class Room extends React.Component {
     this.setState({       
       standings: [],
       prompt: null,
+      time: null,
     });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
@@ -151,7 +151,7 @@ class Room extends React.Component {
             </Typography>
 
             <Results 
-              time={this.state.endTime-this.state.startTime}
+              time={this.state.time}
               words={this.state.prompt.length}
               errors={gameState.errors}
               accuracy={gameState.accuracy}
