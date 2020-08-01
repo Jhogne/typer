@@ -63,6 +63,7 @@ public class RoomController {
                 e.printStackTrace();
             }
         }
+        room.startRoom();
         sendRoomMessage(room.getRoomId());
     }
 }

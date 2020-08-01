@@ -46,18 +46,16 @@ class Room extends React.Component {
       players: [],
       standings: [],
       countdown: -1,
-      startTime: -1,
-      endTime: -1
     };
     
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
-    this.resetGame = this.resetGame.bind(this);
+    this.clickReset = this.clickReset.bind(this);
   }
 
   componentWillUnmount() {
-    this.resetGame()
+    this.clickReset()
     leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
   }
 
@@ -67,28 +65,30 @@ class Room extends React.Component {
       players: msg.players,
       standings: msg.standings,
       countdown: msg.countdown,
-      startTime: msg.countdown === 0 ? this.state.startTime : Date.now() + msg.countdown * 1000
     });
-    if(this.state.standings.includes(this.props.location.state.playerId) && this.state.endTime <= this.state.startTime) {
+
+    if(this.state.standings.includes(this.props.location.state.playerId) && !this.state.time) {
       this.setState({
-          endTime: Date.now()
+          time: Date.now() - msg.startTime
         }
       )
     }
+
+    // Reset the game state when a new game is starting
     if(msg.countdown > 0) {
       gameState.reset();
     }   
   }
 
-  resetGame() {
+  clickReset() {
     this.setState({       
       standings: [],
       prompt: null,
+      time: null,
     });
     resetMessage(this.clientRef, this.props.location.state.roomId, {
       playerId: this.props.location.state.playerId,
       completed: this.state.prompt.text,
-      wpm: gameState.getWPM(this.state.startTime, this.state.endTime),
       ready: true,
     });
 
@@ -141,7 +141,6 @@ class Room extends React.Component {
               clientRef={this.clientRef}
               id={this.props.location.state.roomId}
               disabled={this.state.countdown !== 0}
-              startTime={this.state.startTime}
               gameState={gameState}
             />
           )}
@@ -152,8 +151,8 @@ class Room extends React.Component {
             </Typography>
 
             <Results 
-              time={this.state.endTime-this.state.startTime}
-              words={gameState.words}
+              time={this.state.time}
+              words={this.state.prompt.length}
               errors={gameState.errors}
               accuracy={gameState.accuracy}
             />
@@ -164,7 +163,7 @@ class Room extends React.Component {
               className={classes.reset}
               color="secondary"
               variant="outlined"
-              onClick={this.resetGame}
+              onClick={this.clickReset}
             >
               Ready
             </Button>

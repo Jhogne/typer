@@ -2,7 +2,6 @@ package com.jhogne.typer.Model;
 
 public class RoomMessage {
     private String roomId;
-
     private String playerId;
 
     public RoomMessage(String roomId, String playerId) {
@@ -24,5 +23,13 @@ public class RoomMessage {
 
     public void setplayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    @Override
+    public String toString() {
+        return "RoomMessage{" +
+                "roomId='" + roomId + '\'' +
+                ", playerId='" + playerId + '\'' +
+                '}';
     }
 }
