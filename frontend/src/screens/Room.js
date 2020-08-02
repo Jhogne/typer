@@ -11,6 +11,7 @@ import {
 import Standings from "components/Standings";
 import GameState from "utils/GameState";
 import Results from "../components/Results";
+import { Redirect } from "react-router-dom";
 
 
 const styles = (theme) => ({
@@ -21,7 +22,7 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   content: {
-    marginTop: "10%",
+    marginTop: "75px",
     width: "75%",
     display: "flex",
     flexDirection: "column",
@@ -55,8 +56,10 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
+    if(this.props.location.state !== undefined) {
     this.clickReset()
     leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
+    }
   }
 
   handleMessage(msg) {
@@ -119,12 +122,13 @@ class Room extends React.Component {
   }
 
   render() {
+    if(this.props.location.state === undefined) { 
+      return <Redirect to="/" />
+    }
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <h6>This is room "{this.props.location.state.roomId}"</h6>
-
           {this.state.countdown > 0 && (
             <Typography variant="body1">{this.state.countdown}</Typography>
           )}
@@ -168,6 +172,10 @@ class Room extends React.Component {
               Ready
             </Button>
           )}
+          <Typography variant="overline" style={{alignSelf: "flex-end"}}>
+            Room id: {this.props.location.state.roomId}
+          </Typography>
+
           <SockJsClient
             url={"http://192.168.1.144:8080/endpoint"}
             topics={[`/topic/room/${this.props.location.state.roomId}`]}

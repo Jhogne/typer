@@ -81,7 +81,7 @@ export class Home extends React.Component {
   handleCreate(event) {
     event.preventDefault();
     createRoom(this.state.name, (res) => {
-      this.props.history.push(`/room/`, {
+      this.props.history.push(`/room/${res.roomId}`, {
         roomId: res.roomId,
         playerId: res.playerId,
       });
