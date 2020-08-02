@@ -46,9 +46,7 @@ export class Home extends React.Component {
   }
 
   handleNameChange(event) {
-    if (event.target.value.length <= 8) {
-      this.setState({ name: event.target.value });
-    }
+    this.setState({ name: event.target.value });
     event.preventDefault();
   }
 
