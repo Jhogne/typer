@@ -7,6 +7,9 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 import App from "./App";
 
+import "fontsource-roboto-mono"
+import 'fontsource-roboto';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -36,6 +39,10 @@ const theme = createMuiTheme({
     },
     h4: {
       color: "#d0d0d0",
+    },
+    h1: {
+      fontFamily: 'Roboto Mono',
+      fontWeight: 300,
     },
     overline: {
       color: "#d0d0d0",
