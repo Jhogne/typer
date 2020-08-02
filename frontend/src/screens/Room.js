@@ -129,9 +129,16 @@ class Room extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          {this.state.countdown > 0 && (
-            <Typography variant="body1">{this.state.countdown}</Typography>
-          )}
+          {this.state.countdown === 0 ? 
+            <Typography variant="body1">
+              Type!
+            </Typography> : 
+            <Typography variant="body1">
+              {this.state.countdown > 0 ? this.state.countdown : 'Get ready'}
+            </Typography>
+
+          }
+
           <Standings
             className={classes.standings}
             players={this.state.players}
