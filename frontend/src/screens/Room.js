@@ -63,6 +63,10 @@ class Room extends React.Component {
   }
 
   handleMessage(msg) {
+    // Reset the game state when a new game is starting
+    if(msg.countdown > 0) {
+      gameState.reset();
+    }   
     this.setState({
       prompt: msg.prompt,
       players: msg.players,
@@ -76,11 +80,6 @@ class Room extends React.Component {
         }
       )
     }
-
-    // Reset the game state when a new game is starting
-    if(msg.countdown > 0) {
-      gameState.reset();
-    }   
   }
 
   clickReset() {
