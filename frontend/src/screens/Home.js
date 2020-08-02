@@ -1,6 +1,31 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { joinRoom, createRoom } from "utils/ApiRequests";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+
+
+const styles = (theme) => ({
+  input: {
+    color: theme.palette.text.main,
+
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#545454",
+      },
+      "&:hover fieldset": {
+        borderColor: theme.palette.text.main
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  content: {
+    marginTop: 100
+  },
+});
+
 
 export class Home extends React.Component {
   constructor(props) {
@@ -14,13 +39,14 @@ export class Home extends React.Component {
   }
 
   handleCodeChange(event) {
-    this.setState({ code: event.target.value });
+    if(event.target.value.length <= 4){
+      this.setState({ code: event.target.value });
+    }
     event.preventDefault();
   }
 
   handleNameChange(event) {
     if (event.target.value.length <= 8) {
-      // Change this to the best option when fixing visual bug
       this.setState({ name: event.target.value });
     }
     event.preventDefault();
@@ -65,36 +91,81 @@ export class Home extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
-        <form>
-          <label style={{ color: "#d0d0d0" }}>Name: </label>
-          <TextField
-            type="text"
-            error={this.state.nameError}
-            value={this.state.name}
-            onChange={this.handleNameChange}
-            helperText={this.state.nameError ? "Name already in use" : ""}
-          />
-        </form>
-        <button type="button" onClick={this.handleCreate}>
-          Create room
-        </button>
-        <form onSubmit={this.handleJoin}>
-          <label style={{ color: "#d0d0d0" }}>Code:</label>
-          <TextField
-            error={this.state.roomError}
-            type="text"
-            value={this.state.code}
-            onChange={this.handleCodeChange}
-            helperText={this.state.roomError ? "Room doesn't exist" : ""}
-            color="primary"
-          />
-          <input type="submit" value="enter room" />
-        </form>
+        <Grid
+          className={classes.content}
+          container
+          spacing={2}
+          direction="column"
+          alignItems="center"
+          style={{ minHeight: '100vh' }}
+        >
+          <Grid item xs={12}>
+            <Typography variant="h1" color="primary">
+              Typer
+            </Typography>
+          </Grid>
+          <Grid item xs={12} >
+              <TextField
+                className={classes.input} 
+                error={this.state.nameError}
+                value={this.state.name}
+                variant="outlined"
+                label="name"
+                InputProps={{
+                style: {fontSize: "1rem", color: "#d0d0d0"} 
+              }}
+                InputLabelProps={{style: {fontSize: "1rem"}}} 
+
+                onChange={this.handleNameChange}
+                helperText={this.state.nameError ? "Name already in use" : ""}
+              />
+          </Grid>
+            <Grid container item xs={12}           
+                  spacing={2}
+                  direction="row"
+                  alignItems="center"
+                  justify="center">
+            <Grid item>
+            <TextField
+              className={classes.input} 
+              error={this.state.roomError}
+              label="Code"
+              value={this.state.code}
+              variant="outlined"
+              onChange={this.handleCodeChange}
+              helperText={this.state.roomError ? "Room doesn't exist" : ""}
+              style={{width:150}}
+              InputProps={{
+                style: {fontSize: "1rem", color: "#d0d0d0"},
+              }}
+              InputLabelProps={{style: {fontSize: "1rem"}}} 
+              color="primary"
+            />
+            </Grid>
+          <Grid item>
+            <Button variant="outlined" onClick={this.handleJoin} color="secondary">
+              Enter room
+            </Button>
+          </Grid>
+          </Grid>
+
+          <Grid item>
+            <Typography variant="overline">
+              or
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Button variant="outlined" onClick={this.handleCreate} color="secondary">
+              Create room
+            </Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-export default Home;
+export default withStyles(styles)(Home);
