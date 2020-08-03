@@ -28,13 +28,14 @@ const styles = (theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  standings: {
-    marginBottom: 90,
-    paddingBottom: 90,
-    borderStyle: "solid",
-  },
   reset: {
     marginTop: 10,
+  },
+  results: {
+    marginTop: 30,
+  },
+  roomId: {
+    alignSelf: "flex-end",
   }
 });
 
@@ -98,7 +99,7 @@ class Room extends React.Component {
   }
 
   getPlacement() {
-    return this.state.standings.includes(this.props.location.state.playerId)
+    return this.state.standings.includes(this.props.location.state.playerId) && this.state.players > 1
       ? this.prettyPlacement(
           this.state.standings.indexOf(this.props.location.state.playerId)
         )
@@ -129,17 +130,14 @@ class Room extends React.Component {
       <div className={classes.root}>
         <div className={classes.content}>
           {this.state.countdown === 0 ? 
-            <Typography variant="body1">
+            <Typography variant="body1" style={{color: this.state.standings.includes(this.props.location.state.playerId) ? 'transparent' : ""}}>
               Type!
             </Typography> : 
             <Typography variant="body1">
               {this.state.countdown > 0 ? this.state.countdown : 'Get ready'}
             </Typography>
-
           }
-
           <Standings
-            className={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
@@ -156,11 +154,11 @@ class Room extends React.Component {
           )}
           {this.state.standings.includes(this.props.location.state.playerId) && (
             <>
-            <Typography variant="h4" className="result">
+            <Typography variant="h4">
               {this.getPlacement()}
             </Typography>
-
             <Results 
+              style={classes.results}
               time={this.state.time}
               words={this.state.prompt.length}
               errors={gameState.errors}
@@ -178,7 +176,7 @@ class Room extends React.Component {
               Ready
             </Button>
           )}
-          <Typography variant="overline" style={{alignSelf: "flex-end"}}>
+          <Typography variant="overline" className={classes.roomId}>
             Room id: {this.props.location.state.roomId}
           </Typography>
 
