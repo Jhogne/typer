@@ -17,16 +17,17 @@ import { Redirect } from "react-router-dom";
 const styles = (theme) => ({
   root: {
     display: "flex",
+    height: "100vh",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   content: {
-    marginTop: "75px",
     width: "75%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginBottom: 200
   },
   reset: {
     marginTop: 10,
