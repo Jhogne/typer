@@ -12,6 +12,7 @@ import Standings from "components/Standings";
 import GameState from "utils/GameState";
 import Results from "../components/Results";
 import { Redirect } from "react-router-dom";
+import { browserHistory } from "react-router";
 
 
 const styles = (theme) => ({
@@ -50,7 +51,7 @@ class Room extends React.Component {
       standings: [],
       countdown: -1,
     };
-    
+  
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
@@ -59,10 +60,20 @@ class Room extends React.Component {
 
   componentWillUnmount() {
     if(this.props.location.state !== undefined) {
-    this.clickReset()
-    leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
+      this.clickReset()
+      leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
     }
+    window.removeEventListener("beforeunload", this.goHome);
   }
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", this.goHome);
+ }
+
+  goHome = (e) => {
+    this.props.history.replace("/")
+  }
+
 
   handleMessage(msg) {
     // Reset the game state when a new game is starting
@@ -95,8 +106,6 @@ class Room extends React.Component {
       completed: this.state.prompt.text,
       ready: true,
     });
-
-
   }
 
   getPlacement() {
