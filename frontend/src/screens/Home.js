@@ -28,7 +28,7 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   content: {
-    marginBottom: 200
+    marginBottom: 200,
   },
 });
 

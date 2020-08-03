@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   root: {
-    height: 7,
+    height: 4,
     borderRadius: 3,
   },
 }));

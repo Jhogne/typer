@@ -32,7 +32,7 @@ export default function Standings(props) {
   const classes = useStyles();
   const me = props.players.find((player) => player.id === props.myId);
   return (
-    <div className={classes.root}>
+    <div className={props.style}>
       {me !== undefined && (
         <Player
           id={me.id}

@@ -38,6 +38,10 @@ const styles = (theme) => ({
   },
   roomId: {
     alignSelf: "flex-end",
+  },
+  standings: {
+    width: '100%',
+    marginBottom: 30,
   }
 });
 
@@ -148,6 +152,7 @@ class Room extends React.Component {
             </Typography>
           }
           <Standings
+            style={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
