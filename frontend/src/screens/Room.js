@@ -62,7 +62,7 @@ class Room extends React.Component {
 
   componentWillUnmount() {
     if(this.props.location.state !== undefined) {
-      this.clickReset()
+      //this.clickReset()
       leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
     }
     window.removeEventListener("beforeunload", this.goHome);
@@ -91,7 +91,7 @@ class Room extends React.Component {
 
     if(this.state.standings.includes(this.props.location.state.playerId) && !this.state.time) {
       this.setState({
-          time: Date.now() - msg.startTime
+          time: Date.now() - msg.gameStart
         }
       )
     }

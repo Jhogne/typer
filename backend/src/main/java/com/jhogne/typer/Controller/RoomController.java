@@ -50,7 +50,10 @@ public class RoomController {
     }
 
     private void sendRoomMessage(String roomId) {
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        Room room = RoomHandler.getRoom(roomId);
+        if(room != null) {
+            this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        }
     }
 
     private void countdown(Room room) {
