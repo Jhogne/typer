@@ -12,8 +12,6 @@ import Standings from "components/Standings";
 import GameState from "utils/GameState";
 import Results from "../components/Results";
 import { Redirect } from "react-router-dom";
-import { browserHistory } from "react-router";
-
 
 const styles = (theme) => ({
   root: {

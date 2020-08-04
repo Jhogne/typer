@@ -1,17 +1,5 @@
 import React from 'react'
-import { Typography, Container, Grid, Paper } from '@material-ui/core';
-
-function getItem(text) {
-    return(
-        <Grid 
-            item
-        >
-        <Typography>
-            {text}
-        </Typography>
-        </Grid>
-    )
-}
+import { Typography, Grid } from '@material-ui/core';
 
 export default function Results(props) {
     return(

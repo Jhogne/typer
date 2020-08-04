@@ -34,7 +34,7 @@ const theme = createMuiTheme({
       color: "#d0d0d0",
     },
     body2: {
-      fontSize: 34,
+      fontSize: '2rem',
       color: "#d0d0d0",
     },
     h4: {
@@ -46,7 +46,7 @@ const theme = createMuiTheme({
     },
     overline: {
       color: "#d0d0d0",
-      fontSize: 14,
+      fontSize: '0.75rem',
     }
   },
 });

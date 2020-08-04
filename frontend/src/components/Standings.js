@@ -1,12 +1,5 @@
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Player from "components/Player";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-}));
 
 function getOpponents(players, me) {
   const bars = players
@@ -29,7 +22,6 @@ function getOpponents(players, me) {
 }
 
 export default function Standings(props) {
-  const classes = useStyles();
   const me = props.players.find((player) => player.id === props.myId);
   return (
     <div className={props.style}>
