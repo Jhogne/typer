@@ -79,6 +79,12 @@ class Room extends React.Component {
 
   handleMessage(msg) {
     // Reset the game state when a new game is starting
+    console.log("msg: " + msg)
+    if(msg === "") {
+      this.clientRef.disconnect();
+      this.goHome();
+      return;
+    }
     if(msg.countdown > 0) {
       gameState.reset();
     }   
@@ -206,8 +212,15 @@ class Room extends React.Component {
                 this.props.location.state.roomId
               )
             }
-            debug={false}
+            onDisconnect={() => {
+              console.log("disconnected")
+            }}
+            debug={true}
           />
+          <Button               
+            onClick={() => {this.clientRef.disconnect()}}
+          >
+          Disconnect</Button>
         </div>
       </div>
     );

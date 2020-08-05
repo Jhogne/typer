@@ -42,7 +42,7 @@ public class RoomHandler {
         if(roomPair != null) {
             return roomPair.first;
         }
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     public static long getCreatedTime(String id) {

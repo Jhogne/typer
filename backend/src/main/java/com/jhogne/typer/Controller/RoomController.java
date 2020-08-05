@@ -4,10 +4,12 @@ import com.jhogne.typer.Model.PlayerMessage;
 import com.jhogne.typer.Model.Room;
 import com.jhogne.typer.Model.RoomHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class RoomController {
@@ -33,12 +35,16 @@ public class RoomController {
     }
 
     @MessageMapping("/room/{roomId}/postState")
-    public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
-        RoomHandler.getRoom(roomId).updatePlayer(msg);
-        if(RoomHandler.getRoom(roomId).everyoneReady()) {
-            RoomHandler.resetRoom(roomId);
-            countdown(RoomHandler.getRoom(roomId));
-        } else {    
+    public void postState(@DestinationVariable String roomId, PlayerMessage msg) throws ResponseStatusException {
+        try {
+            RoomHandler.getRoom(roomId).updatePlayer(msg);
+            if (RoomHandler.getRoom(roomId).everyoneReady()) {
+                RoomHandler.resetRoom(roomId);
+                countdown(RoomHandler.getRoom(roomId));
+            } else {
+                sendRoomMessage(roomId);
+            }
+        } catch(ResponseStatusException e) {
             sendRoomMessage(roomId);
         }
     }
@@ -50,9 +56,16 @@ public class RoomController {
     }
 
     private void sendRoomMessage(String roomId) {
-        Room room = RoomHandler.getRoom(roomId);
+        Room room = null;
+        try {
+            room = RoomHandler.getRoom(roomId);
+        } catch(ResponseStatusException e) {
+
+        }
         if(room != null) {
             this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        } else {
+            this.template.convertAndSend("/topic/room/" + roomId, "");
         }
     }
 

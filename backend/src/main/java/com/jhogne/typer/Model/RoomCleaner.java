@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Set;
 
 public class RoomCleaner implements Runnable {
-    private final long hours = 60 * 60 * 1000;
+    private final long hours = 1000;
     public void run() {
         Set<String> ids = RoomHandler.getAllIds();
         for(String id : ids) {
