@@ -23,9 +23,11 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/leave")
     public void leave(@DestinationVariable String roomId, String playerId) {
-        RoomHandler.leaveRoom(roomId, playerId);
-        if(RoomHandler.getRoom(roomId) != null) {
+        try {
+            RoomHandler.leaveRoom(roomId, playerId);
             sendRoomMessage(roomId);
+        } catch(ResponseStatusException e) {
+            sendEmptyRoom(roomId);
         }
     }
 
@@ -35,38 +37,41 @@ public class RoomController {
     }
 
     @MessageMapping("/room/{roomId}/postState")
-    public void postState(@DestinationVariable String roomId, PlayerMessage msg) throws ResponseStatusException {
+    public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
         try {
             RoomHandler.getRoom(roomId).updatePlayer(msg);
-            if (RoomHandler.getRoom(roomId).everyoneReady()) {
-                RoomHandler.resetRoom(roomId);
-                countdown(RoomHandler.getRoom(roomId));
-            } else {
-                sendRoomMessage(roomId);
-            }
-        } catch(ResponseStatusException e) {
+        } catch (ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
+        if (RoomHandler.getRoom(roomId).everyoneReady()) {
+            RoomHandler.resetRoom(roomId);
+            countdown(RoomHandler.getRoom(roomId));
+        } else {
             sendRoomMessage(roomId);
         }
     }
 
     @MessageMapping("/room/{roomId}/finish")
     public void finish(@DestinationVariable String roomId, String player) {
-        RoomHandler.playerFinished(roomId, player);
-        sendRoomMessage(roomId);
+        try {
+            RoomHandler.playerFinished(roomId, player);
+            sendRoomMessage(roomId);
+        } catch (ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
     }
 
     private void sendRoomMessage(String roomId) {
-        Room room = null;
         try {
-            room = RoomHandler.getRoom(roomId);
+            Room room = RoomHandler.getRoom(roomId);
+            this.template.convertAndSend("/topic/room/" + roomId, room);
         } catch(ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
+    }
 
-        }
-        if(room != null) {
-            this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
-        } else {
-            this.template.convertAndSend("/topic/room/" + roomId, "");
-        }
+    private void sendEmptyRoom(String roomId) {
+        this.template.convertAndSend("/topic/room" + roomId, "");
     }
 
     private void countdown(Room room) {
