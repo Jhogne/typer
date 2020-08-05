@@ -15,6 +15,6 @@ public class TyperApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TyperApplication.class, args);
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-		scheduler.scheduleAtFixedRate(new RoomCleaner(), 10, 10, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(new RoomCleaner(), 24, 24, TimeUnit.HOURS);
 	}
 }
