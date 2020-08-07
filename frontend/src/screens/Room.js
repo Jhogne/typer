@@ -13,28 +13,33 @@ import GameState from "utils/GameState";
 import Results from "../components/Results";
 import { Redirect } from "react-router-dom";
 
-
 const styles = (theme) => ({
   root: {
     display: "flex",
+    height: "100vh",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
   content: {
-    marginTop: "75px",
     width: "75%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  standings: {
-    marginBottom: 90,
-    paddingBottom: 90,
-    borderStyle: "solid",
+    marginBottom: 200
   },
   reset: {
     marginTop: 10,
+  },
+  results: {
+    marginTop: 30,
+  },
+  roomId: {
+    alignSelf: "flex-end",
+  },
+  standings: {
+    width: '100%',
+    marginBottom: 30,
   }
 });
 
@@ -48,7 +53,7 @@ class Room extends React.Component {
       standings: [],
       countdown: -1,
     };
-    
+  
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
@@ -57,13 +62,28 @@ class Room extends React.Component {
 
   componentWillUnmount() {
     if(this.props.location.state !== undefined) {
-    this.clickReset()
-    leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
+      //this.clickReset()
+      leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
     }
+    window.removeEventListener("beforeunload", this.goHome);
   }
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", this.goHome);
+ }
+
+  goHome = (e) => {
+    this.props.history.replace("/")
+  }
+
 
   handleMessage(msg) {
     // Reset the game state when a new game is starting
+    if(msg === "") {
+      this.clientRef.disconnect();
+      this.goHome();
+      return;
+    }
     if(msg.countdown > 0) {
       gameState.reset();
     }   
@@ -76,7 +96,7 @@ class Room extends React.Component {
 
     if(this.state.standings.includes(this.props.location.state.playerId) && !this.state.time) {
       this.setState({
-          time: Date.now() - msg.startTime
+          time: Date.now() - msg.gameStart
         }
       )
     }
@@ -93,12 +113,10 @@ class Room extends React.Component {
       completed: this.state.prompt.text,
       ready: true,
     });
-
-
   }
 
   getPlacement() {
-    return this.state.standings.includes(this.props.location.state.playerId)
+    return this.state.standings.includes(this.props.location.state.playerId) && this.state.players > 1
       ? this.prettyPlacement(
           this.state.standings.indexOf(this.props.location.state.playerId)
         )
@@ -129,17 +147,15 @@ class Room extends React.Component {
       <div className={classes.root}>
         <div className={classes.content}>
           {this.state.countdown === 0 ? 
-            <Typography variant="body1">
+            <Typography variant="body1" style={{color: this.state.standings.includes(this.props.location.state.playerId) ? 'transparent' : ""}}>
               Type!
             </Typography> : 
             <Typography variant="body1">
               {this.state.countdown > 0 ? this.state.countdown : 'Get ready'}
             </Typography>
-
           }
-
           <Standings
-            className={classes.standings}
+            style={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
@@ -156,11 +172,11 @@ class Room extends React.Component {
           )}
           {this.state.standings.includes(this.props.location.state.playerId) && (
             <>
-            <Typography variant="h4" className="result">
+            <Typography variant="h4">
               {this.getPlacement()}
             </Typography>
-
             <Results 
+              style={classes.results}
               time={this.state.time}
               words={this.state.prompt.length}
               errors={gameState.errors}
@@ -178,7 +194,7 @@ class Room extends React.Component {
               Ready
             </Button>
           )}
-          <Typography variant="overline" style={{alignSelf: "flex-end"}}>
+          <Typography variant="overline" className={classes.roomId}>
             Room id: {this.props.location.state.roomId}
           </Typography>
 

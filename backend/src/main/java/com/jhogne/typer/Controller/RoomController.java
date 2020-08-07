@@ -4,10 +4,12 @@ import com.jhogne.typer.Model.PlayerMessage;
 import com.jhogne.typer.Model.Room;
 import com.jhogne.typer.Model.RoomHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class RoomController {
@@ -21,9 +23,11 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/leave")
     public void leave(@DestinationVariable String roomId, String playerId) {
-        RoomHandler.leaveRoom(roomId, playerId);
-        if(RoomHandler.getRoom(roomId) != null) {
+        try {
+            RoomHandler.leaveRoom(roomId, playerId);
             sendRoomMessage(roomId);
+        } catch(ResponseStatusException e) {
+            sendEmptyRoom(roomId);
         }
     }
 
@@ -34,23 +38,40 @@ public class RoomController {
 
     @MessageMapping("/room/{roomId}/postState")
     public void postState(@DestinationVariable String roomId, PlayerMessage msg) {
-        RoomHandler.getRoom(roomId).updatePlayer(msg);
-        if(RoomHandler.getRoom(roomId).everyoneReady()) {
+        try {
+            RoomHandler.getRoom(roomId).updatePlayer(msg);
+        } catch (ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
+        if (RoomHandler.getRoom(roomId).everyoneReady()) {
             RoomHandler.resetRoom(roomId);
             countdown(RoomHandler.getRoom(roomId));
-        } else {    
+        } else {
             sendRoomMessage(roomId);
         }
     }
 
     @MessageMapping("/room/{roomId}/finish")
     public void finish(@DestinationVariable String roomId, String player) {
-        RoomHandler.playerFinished(roomId, player);
-        sendRoomMessage(roomId);
+        try {
+            RoomHandler.playerFinished(roomId, player);
+            sendRoomMessage(roomId);
+        } catch (ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
     }
 
     private void sendRoomMessage(String roomId) {
-        this.template.convertAndSend("/topic/room/" + roomId, RoomHandler.getRoom(roomId));
+        try {
+            Room room = RoomHandler.getRoom(roomId);
+            this.template.convertAndSend("/topic/room/" + roomId, room);
+        } catch(ResponseStatusException e) {
+            sendEmptyRoom(roomId);
+        }
+    }
+
+    private void sendEmptyRoom(String roomId) {
+        this.template.convertAndSend("/topic/room" + roomId, "");
     }
 
     private void countdown(Room room) {

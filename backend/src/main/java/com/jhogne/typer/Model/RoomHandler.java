@@ -3,15 +3,17 @@ package com.jhogne.typer.Model;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * A static class that contains all rooms and forwards requests to the proper room
  */
 public class RoomHandler {
-    private static HashMap<String, Room> rooms = new HashMap<>();
+    private static HashMap<String, Pair<Room, Long>> rooms = new HashMap<>();
 
     /**
      * Creates a new room with a unique room id
@@ -24,7 +26,8 @@ public class RoomHandler {
             roomId = generateId();
         }
         Room room = new Room(roomId);
-        rooms.put(roomId, room);
+        rooms.put(roomId, new Pair<>(room, Instant.now().toEpochMilli()));
+        System.out.println(rooms.keySet().size());
         return roomId;
     }
 
@@ -35,7 +38,19 @@ public class RoomHandler {
      * @return The room
      */
     public static Room getRoom(String id) {
-        return rooms.getOrDefault(id, null);
+        Pair<Room, Long> roomPair = rooms.get(id);
+        if(roomPair != null) {
+            return roomPair.first;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    public static long getCreatedTime(String id) {
+        Pair<Room, Long> roomPair = rooms.get(id);
+        if(roomPair != null) {
+            return roomPair.second;
+        }
+        return -1;
     }
 
     /**
@@ -47,7 +62,7 @@ public class RoomHandler {
      */
     public static void joinRoom(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).addPlayer(playerId);
+            getRoom(roomId).addPlayer(playerId);
             return;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -61,10 +76,17 @@ public class RoomHandler {
      */
     public static void leaveRoom(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).removePlayer(playerId);
-            if (rooms.get(roomId).getPlayers().size() <= 0) {
-                rooms.remove(roomId);
+            getRoom(roomId).removePlayer(playerId);
+            if (getRoom(roomId).getPlayers().size() <= 0) {
+                deleteRoom(roomId);
             }
+        }
+    }
+
+    public static void deleteRoom(String roomId) {
+        if(rooms.containsKey(roomId)) {
+            rooms.remove(roomId);
+            System.out.println(rooms.keySet().size());
         }
     }
 
@@ -76,7 +98,7 @@ public class RoomHandler {
      */
     public static void playerFinished(String roomId, String playerId) {
         if (rooms.containsKey(roomId)) {
-            rooms.get(roomId).playerFinished(playerId);
+            getRoom(roomId).playerFinished(playerId);
         }
     }
 
@@ -87,7 +109,7 @@ public class RoomHandler {
      */
     public static void resetRoom(String id) {
         if (rooms.containsKey(id)) {
-            rooms.get(id).reset();
+            getRoom(id).reset();
         }
     }
 
@@ -98,11 +120,15 @@ public class RoomHandler {
      * @return A name that is unique in the room
      */
     public static String generateName(String roomId) {
-        Room room = rooms.get(roomId);
+        Room room = getRoom(roomId);
         if (room == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return room.getUniqueId();
+    }
+
+    public static Set<String> getAllIds() {
+        return rooms.keySet();
     }
 
     /**
@@ -119,6 +145,4 @@ public class RoomHandler {
         }
         return new String(text);
     }
-
-
 }

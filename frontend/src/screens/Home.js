@@ -21,8 +21,14 @@ const styles = (theme) => ({
       },
     },
   },
+  root: {
+    display: "flex",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   content: {
-    marginTop: 100
+    marginBottom: 200,
   },
 });
 
@@ -91,14 +97,13 @@ export class Home extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <Grid
           className={classes.content}
           container
           spacing={2}
           direction="column"
           alignItems="center"
-          style={{ minHeight: '100vh' }}
         >
           <Grid item xs={12}>
             <Typography variant="h1" color="primary">

@@ -14,7 +14,7 @@ public class Room {
     private HashMap<String, Player> players;
     private List<String> standings;
     private int countdown;
-    private long startTime;
+    private long gameStart;
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -87,15 +87,15 @@ public class Room {
      * Gets the start time of the room
      * @return The time the game started for this room (in epoch time)
      */
-    public long getStartTime(){
-        return startTime;
+    public long getgameStart(){
+        return gameStart;
     }
 
     /**
      * Starts a game in this room. This is done by setting the start time to the current time
      */
     public void startRoom() {
-        startTime = Instant.now().toEpochMilli();
+        gameStart = Instant.now().toEpochMilli();
     }
 
     /**
@@ -141,9 +141,9 @@ public class Room {
             int words = newState.getCompleted().split("\\s+").length;
             double minutes;
             if(p.getEndTime() > 0) {
-                minutes = (double) (p.getEndTime() - startTime) / 60000;
+                minutes = (double) (p.getEndTime() - gameStart) / 60000;
             } else {
-                minutes = (double) (Instant.now().toEpochMilli() - startTime) / 60000;
+                minutes = (double) (Instant.now().toEpochMilli() - gameStart) / 60000;
             }
             p.setWpm((int) (words / minutes));
 
@@ -231,7 +231,7 @@ public class Room {
                 ", players=" + players +
                 ", standings=" + standings +
                 ", countdown=" + countdown +
-                ", startTime=" + startTime +
+                ", gameStart=" + gameStart +
                 '}';
     }
 }

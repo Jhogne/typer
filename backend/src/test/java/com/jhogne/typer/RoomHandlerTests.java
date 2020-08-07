@@ -5,6 +5,8 @@ import com.jhogne.typer.Model.Room;
 import com.jhogne.typer.Model.RoomHandler;
 import com.jhogne.typer.Model.RoomMessage;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -65,6 +67,6 @@ public class RoomHandlerTests {
         RoomHandler.joinRoom(roomId, playerId);
         RoomHandler.leaveRoom(roomId, playerId);
 
-        assertNull(RoomHandler.getRoom(roomId));
+        assertThrows(ResponseStatusException.class, () -> RoomHandler.getRoom(roomId));
     }
 }
