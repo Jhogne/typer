@@ -153,7 +153,9 @@ class Room extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <Countdown />
+          <Countdown 
+            value={this.state.countdown}
+            finished={this.state.standings.includes(this.props.location.state.playerId)} />
           <Standings
             style={classes.standings}
             players={this.state.players}
