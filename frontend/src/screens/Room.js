@@ -2,7 +2,7 @@ import React from "react";
 import SockJsClient from "react-stomp";
 import { Typography, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Game from "screens/Game";
+import Game from "components/Game";
 import {
   resetMessage,
   leaveMessage,
