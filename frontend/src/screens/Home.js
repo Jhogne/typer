@@ -21,7 +21,13 @@ export class Home extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Box display="flex" flexDirection="column" justifyContent="center"  alignItems="center" alignContent="center">
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        alignContent="center"
+      >
         <Typography className={classes.title} variant="h1" color="primary">
           Typer
         </Typography>

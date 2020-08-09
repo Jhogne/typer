@@ -11,7 +11,7 @@ import {
 import Standings from "components/Standings";
 import GameState from "utils/GameState";
 import Results from "../components/Results";
-import Countdown from "components/Countdown"
+import Countdown from "components/Countdown";
 import { Redirect } from "react-router-dom";
 
 const styles = (theme) => ({
@@ -82,6 +82,7 @@ class Room extends React.Component {
   };
 
   handleMessage(msg) {
+    console.log(msg);
     // Reset the game state when a new game is starting
     if (msg === "") {
       this.clientRef.disconnect();
@@ -98,10 +99,7 @@ class Room extends React.Component {
       countdown: msg.countdown,
     });
 
-    if (
-      this.state.standings.includes(this.props.location.state.playerId) &&
-      !this.state.time
-    ) {
+    if (this.hasFinished() && !this.state.time) {
       this.setState({
         time: Date.now() - msg.gameStart,
       });
@@ -122,8 +120,7 @@ class Room extends React.Component {
   }
 
   getPlacement() {
-    return this.state.standings.includes(this.props.location.state.playerId) &&
-      this.state.players > 1
+    return this.hasFinished() && this.state.players > 1
       ? this.prettyPlacement(
           this.state.standings.indexOf(this.props.location.state.playerId)
         )
@@ -145,6 +142,17 @@ class Room extends React.Component {
     }
   }
 
+  hasFinished() {
+    return this.state.standings.includes(this.props.location.state.playerId);
+  }
+
+  betweenGames() {
+    return (
+      this.state.players.length === this.state.standings.length ||
+      (this.state.prompt !== null && this.state.prompt.text.length === 0)
+    );
+  }
+
   render() {
     if (this.props.location.state === undefined) {
       return <Redirect to="/" />;
@@ -153,31 +161,27 @@ class Room extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <Countdown 
+          <Countdown
             value={this.state.countdown}
-            finished={this.state.standings.includes(this.props.location.state.playerId)} />
+            finished={this.hasFinished()}
+          />
           <Standings
             style={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
-          {this.state.prompt !== null &&
-          !this.state.standings.includes(
-            this.props.location.state.playerId
-          ) && ( // Render game after text is recieved
-              <Game
-                playerId={this.props.location.state.playerId}
-                finished={false}
-                prompt={this.state.prompt}
-                clientRef={this.clientRef}
-                id={this.props.location.state.roomId}
-                disabled={this.state.countdown !== 0}
-                gameState={gameState}
-              />
-            )}
-          {this.state.standings.includes(
-            this.props.location.state.playerId
-          ) && (
+          {this.state.prompt !== null && !this.hasFinished() && (
+            <Game
+              playerId={this.props.location.state.playerId}
+              finished={false}
+              prompt={this.state.prompt}
+              clientRef={this.clientRef}
+              id={this.props.location.state.roomId}
+              disabled={this.state.countdown !== 0}
+              gameState={gameState}
+            />
+          )}
+          {this.hasFinished() && (
             <>
               <Typography variant="h4">{this.getPlacement()}</Typography>
               <Results
@@ -189,9 +193,7 @@ class Room extends React.Component {
               />
             </>
           )}
-          {(this.state.players.length === this.state.standings.length ||
-            (this.state.prompt !== null &&
-              this.state.prompt.text.length === 0)) && (
+          {this.betweenGames() && (
             <Button
               className={classes.reset}
               color="secondary"
