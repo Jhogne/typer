@@ -11,6 +11,7 @@ import {
 import Standings from "components/Standings";
 import GameState from "utils/GameState";
 import Results from "../components/Results";
+import Countdown from "components/Countdown"
 import { Redirect } from "react-router-dom";
 
 const styles = (theme) => ({
@@ -152,24 +153,7 @@ class Room extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          {this.state.countdown === 0 ? (
-            <Typography
-              variant="body1"
-              style={{
-                color: this.state.standings.includes(
-                  this.props.location.state.playerId
-                )
-                  ? "transparent"
-                  : "",
-              }}
-            >
-              Type!
-            </Typography>
-          ) : (
-            <Typography variant="body1">
-              {this.state.countdown > 0 ? this.state.countdown : "Get ready"}
-            </Typography>
-          )}
+          <Countdown />
           <Standings
             style={classes.standings}
             players={this.state.players}

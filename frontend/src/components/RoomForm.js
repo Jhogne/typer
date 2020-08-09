@@ -55,6 +55,7 @@ class RoomForm extends React.Component {
   }
 
   handleJoin(event) {
+    event.preventDefault();
     joinRoom(
       this.state.code,
       this.state.name,
@@ -79,7 +80,6 @@ class RoomForm extends React.Component {
         }
       }
     );
-    event.preventDefault();
   }
 
   handleCreate(event) {
