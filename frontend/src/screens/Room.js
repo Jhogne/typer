@@ -26,7 +26,7 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: 200
+    marginBottom: 200,
   },
   reset: {
     marginTop: 10,
@@ -38,9 +38,9 @@ const styles = (theme) => ({
     alignSelf: "flex-end",
   },
   standings: {
-    width: '100%',
+    width: "100%",
     marginBottom: 30,
-  }
+  },
 });
 
 var gameState;
@@ -53,7 +53,7 @@ class Room extends React.Component {
       standings: [],
       countdown: -1,
     };
-  
+
     gameState = new GameState();
 
     this.handleMessage = this.handleMessage.bind(this);
@@ -61,32 +61,35 @@ class Room extends React.Component {
   }
 
   componentWillUnmount() {
-    if(this.props.location.state !== undefined) {
+    if (this.props.location.state !== undefined) {
       //this.clickReset()
-      leaveMessage(this.clientRef, this.props.location.state.roomId, this.props.location.state.playerId);
+      leaveMessage(
+        this.clientRef,
+        this.props.location.state.roomId,
+        this.props.location.state.playerId
+      );
     }
     window.removeEventListener("beforeunload", this.goHome);
   }
 
   componentDidMount() {
     window.addEventListener("beforeunload", this.goHome);
- }
-
-  goHome = (e) => {
-    this.props.history.replace("/")
   }
 
+  goHome = (e) => {
+    this.props.history.replace("/");
+  };
 
   handleMessage(msg) {
     // Reset the game state when a new game is starting
-    if(msg === "") {
+    if (msg === "") {
       this.clientRef.disconnect();
       this.goHome();
       return;
     }
-    if(msg.countdown > 0) {
+    if (msg.countdown > 0) {
       gameState.reset();
-    }   
+    }
     this.setState({
       prompt: msg.prompt,
       players: msg.players,
@@ -94,16 +97,18 @@ class Room extends React.Component {
       countdown: msg.countdown,
     });
 
-    if(this.state.standings.includes(this.props.location.state.playerId) && !this.state.time) {
+    if (
+      this.state.standings.includes(this.props.location.state.playerId) &&
+      !this.state.time
+    ) {
       this.setState({
-          time: Date.now() - msg.gameStart
-        }
-      )
+        time: Date.now() - msg.gameStart,
+      });
     }
   }
 
   clickReset() {
-    this.setState({       
+    this.setState({
       standings: [],
       prompt: null,
       time: null,
@@ -116,7 +121,8 @@ class Room extends React.Component {
   }
 
   getPlacement() {
-    return this.state.standings.includes(this.props.location.state.playerId) && this.state.players > 1
+    return this.state.standings.includes(this.props.location.state.playerId) &&
+      this.state.players > 1
       ? this.prettyPlacement(
           this.state.standings.indexOf(this.props.location.state.playerId)
         )
@@ -139,52 +145,67 @@ class Room extends React.Component {
   }
 
   render() {
-    if(this.props.location.state === undefined) { 
-      return <Redirect to="/" />
+    if (this.props.location.state === undefined) {
+      return <Redirect to="/" />;
     }
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          {this.state.countdown === 0 ? 
-            <Typography variant="body1" style={{color: this.state.standings.includes(this.props.location.state.playerId) ? 'transparent' : ""}}>
+          {this.state.countdown === 0 ? (
+            <Typography
+              variant="body1"
+              style={{
+                color: this.state.standings.includes(
+                  this.props.location.state.playerId
+                )
+                  ? "transparent"
+                  : "",
+              }}
+            >
               Type!
-            </Typography> : 
-            <Typography variant="body1">
-              {this.state.countdown > 0 ? this.state.countdown : 'Get ready'}
             </Typography>
-          }
+          ) : (
+            <Typography variant="body1">
+              {this.state.countdown > 0 ? this.state.countdown : "Get ready"}
+            </Typography>
+          )}
           <Standings
             style={classes.standings}
             players={this.state.players}
             myId={this.props.location.state.playerId}
           />
-          {this.state.prompt !== null && !this.state.standings.includes(this.props.location.state.playerId) && ( // Render game after text is recieved
-            <Game
-              playerId={this.props.location.state.playerId}
-              finished={false}
-              prompt={this.state.prompt}
-              clientRef={this.clientRef}
-              id={this.props.location.state.roomId}
-              disabled={this.state.countdown !== 0}
-              gameState={gameState}
-            />
-          )}
-          {this.state.standings.includes(this.props.location.state.playerId) && (
+          {this.state.prompt !== null &&
+          !this.state.standings.includes(
+            this.props.location.state.playerId
+          ) && ( // Render game after text is recieved
+              <Game
+                playerId={this.props.location.state.playerId}
+                finished={false}
+                prompt={this.state.prompt}
+                clientRef={this.clientRef}
+                id={this.props.location.state.roomId}
+                disabled={this.state.countdown !== 0}
+                gameState={gameState}
+              />
+            )}
+          {this.state.standings.includes(
+            this.props.location.state.playerId
+          ) && (
             <>
-            <Typography variant="h4">
-              {this.getPlacement()}
-            </Typography>
-            <Results 
-              style={classes.results}
-              time={this.state.time}
-              words={this.state.prompt.length}
-              errors={gameState.errors}
-              accuracy={gameState.accuracy}
-            />
+              <Typography variant="h4">{this.getPlacement()}</Typography>
+              <Results
+                style={classes.results}
+                time={this.state.time}
+                words={this.state.prompt.length}
+                errors={gameState.errors}
+                accuracy={gameState.accuracy}
+              />
             </>
           )}
-          {(this.state.players.length === this.state.standings.length || (this.state.prompt !== null && this.state.prompt.text.length === 0)) && (
+          {(this.state.players.length === this.state.standings.length ||
+            (this.state.prompt !== null &&
+              this.state.prompt.text.length === 0)) && (
             <Button
               className={classes.reset}
               color="secondary"

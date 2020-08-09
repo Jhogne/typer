@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Room from "screens/Room";
 import Home from "screens/Home";
 import "./App.css";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 
 class App extends React.Component {
   render() {

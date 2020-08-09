@@ -20,11 +20,7 @@ const useStyles = makeStyles((theme) => ({
 function divideText(text, current, error, classes) {
   return (
     <>
-      <Typography
-        color="primary"
-        variant="body2"
-        component="span"
-      >
+      <Typography color="primary" variant="body2" component="span">
         {text.slice(0, current)}
       </Typography>
       <Typography

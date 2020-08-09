@@ -3,8 +3,6 @@ import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { joinRoom, createRoom } from "utils/ApiRequests";
 import withStyles from "@material-ui/core/styles/withStyles";
 
-
-
 const styles = (theme) => ({
   input: {
     color: theme.palette.text.main,
@@ -14,7 +12,7 @@ const styles = (theme) => ({
         borderColor: "#545454",
       },
       "&:hover fieldset": {
-        borderColor: theme.palette.text.main
+        borderColor: theme.palette.text.main,
       },
       "&.Mui-focused fieldset": {
         borderColor: theme.palette.primary.main,
@@ -32,7 +30,6 @@ const styles = (theme) => ({
   },
 });
 
-
 export class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +42,7 @@ export class Home extends React.Component {
   }
 
   handleCodeChange(event) {
-    if(event.target.value.length <= 4){
+    if (event.target.value.length <= 4) {
       this.setState({ code: event.target.value });
     }
     event.preventDefault();
@@ -110,58 +107,67 @@ export class Home extends React.Component {
               Typer
             </Typography>
           </Grid>
-          <Grid item xs={12} >
-              <TextField
-                className={classes.input} 
-                error={this.state.nameError}
-                value={this.state.name}
-                variant="outlined"
-                label="name"
-                InputProps={{
-                style: {fontSize: "1rem", color: "#d0d0d0"} 
-              }}
-                InputLabelProps={{style: {fontSize: "1rem"}}} 
-
-                onChange={this.handleNameChange}
-                helperText={this.state.nameError ? "Name already in use" : ""}
-              />
-          </Grid>
-            <Grid container item xs={12}           
-                  spacing={2}
-                  direction="row"
-                  alignItems="center"
-                  justify="center">
-            <Grid item>
+          <Grid item xs={12}>
             <TextField
-              className={classes.input} 
-              error={this.state.roomError}
-              label="Code"
-              value={this.state.code}
+              className={classes.input}
+              error={this.state.nameError}
+              value={this.state.name}
               variant="outlined"
-              onChange={this.handleCodeChange}
-              helperText={this.state.roomError ? "Room doesn't exist" : ""}
-              style={{width:150}}
+              label="name"
               InputProps={{
-                style: {fontSize: "1rem", color: "#d0d0d0"},
+                style: { fontSize: "1rem", color: "#d0d0d0" },
               }}
-              InputLabelProps={{style: {fontSize: "1rem"}}} 
-              color="primary"
+              InputLabelProps={{ style: { fontSize: "1rem" } }}
+              onChange={this.handleNameChange}
+              helperText={this.state.nameError ? "Name already in use" : ""}
             />
-            </Grid>
-          <Grid item>
-            <Button variant="outlined" onClick={this.handleJoin} color="secondary">
-              Enter room
-            </Button>
           </Grid>
+          <Grid
+            container
+            item
+            xs={12}
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            justify="center"
+          >
+            <Grid item>
+              <TextField
+                className={classes.input}
+                error={this.state.roomError}
+                label="Code"
+                value={this.state.code}
+                variant="outlined"
+                onChange={this.handleCodeChange}
+                helperText={this.state.roomError ? "Room doesn't exist" : ""}
+                style={{ width: 150 }}
+                InputProps={{
+                  style: { fontSize: "1rem", color: "#d0d0d0" },
+                }}
+                InputLabelProps={{ style: { fontSize: "1rem" } }}
+                color="primary"
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                onClick={this.handleJoin}
+                color="secondary"
+              >
+                Enter room
+              </Button>
+            </Grid>
           </Grid>
 
           <Grid item>
-            <Typography variant="overline">
-              or
-            </Typography>
+            <Typography variant="overline">or</Typography>
           </Grid>
           <Grid item>
-            <Button variant="outlined" onClick={this.handleCreate} color="secondary">
+            <Button
+              variant="outlined"
+              onClick={this.handleCreate}
+              color="secondary"
+            >
               Create room
             </Button>
           </Grid>
