@@ -12,7 +12,7 @@ class App extends React.Component {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/room/*" component={withRouter(Room)} />
-        <Redirect from="/*" to={Home} />
+        <Redirect from="/*" to={"/"} />
       </Switch>
     );
   }

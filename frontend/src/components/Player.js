@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import Done from "@material-ui/icons/Done";
-import PlayerProgress from "components/PlayerProgress";
+import { PlayerProgress } from "components/";
 
 export default function Player(props) {
   return (

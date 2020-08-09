@@ -2,17 +2,11 @@ import axios from "axios";
 
 export async function makeGetRequest(location) {
   let res = await axios.get("http://192.168.1.144:8080/" + location);
-  let data = res.data;
-  return data;
+  return res.data;
 }
 
 export function joinRoom(roomCode, playerId, handleResponse, handleError) {
   const response = makeGetRequest(`joinRoom?id=${roomCode}&user=${playerId}`);
-  response.then(handleResponse).catch(handleError);
-}
-
-export function joinRoomDefaultName(roomCode, handleResponse, handleError) {
-  const response = makeGetRequest(`joinRoom?id=${roomCode}`);
   response.then(handleResponse).catch(handleError);
 }
 
@@ -50,5 +44,5 @@ export function leaveMessage(clientRef, roomId, playerId) {
 }
 
 export function updateRoomMessage(clientRef, roomId) {
-  sendMessage(clientRef, `/room/${roomId}/update`, "Hello");
+  sendMessage(clientRef, `/room/${roomId}/update`, "");
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { TextField, Button, Grid, Typography } from "@material-ui/core";
 import { joinRoom, createRoom } from "utils/ApiRequests";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom/";
 
 const styles = (theme) => ({
   input: {

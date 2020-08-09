@@ -2,17 +2,15 @@ import React from "react";
 import SockJsClient from "react-stomp";
 import { Typography, Button } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Game from "components/Game";
+import { Redirect } from "react-router-dom";
+
+import { Game, Standings, Results, Countdown } from "components/";
 import {
   resetMessage,
   leaveMessage,
   updateRoomMessage,
 } from "utils/ApiRequests";
-import Standings from "components/Standings";
 import GameState from "utils/GameState";
-import Results from "../components/Results";
-import Countdown from "components/Countdown";
-import { Redirect } from "react-router-dom";
 
 const styles = (theme) => ({
   root: {
@@ -63,7 +61,6 @@ class Room extends React.Component {
 
   componentWillUnmount() {
     if (this.props.location.state !== undefined) {
-      //this.clickReset()
       leaveMessage(
         this.clientRef,
         this.props.location.state.roomId,
@@ -83,12 +80,14 @@ class Room extends React.Component {
 
   handleMessage(msg) {
     console.log(msg);
-    // Reset the game state when a new game is starting
+
     if (msg === "") {
       this.clientRef.disconnect();
       this.goHome();
       return;
     }
+
+    // Reset the game state when a new game is starting
     if (msg.countdown > 0) {
       gameState.reset();
     }
