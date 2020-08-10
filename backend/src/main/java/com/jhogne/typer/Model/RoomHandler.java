@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A static class that contains all rooms and forwards requests to the proper room
@@ -45,6 +42,11 @@ public class RoomHandler {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Gets the time a room was created
+     * @param id The id of the room
+     * @return The time the room was created, or -1 if no room with the id
+     */
     public static long getCreatedTime(String id) {
         Pair<Room, Long> roomPair = rooms.get(id);
         if(roomPair != null) {
@@ -70,6 +72,7 @@ public class RoomHandler {
 
     /**
      * A player, given by it's player id, leaves a room, given by it's room id.
+     * If the player is the last in the room the room is deleted
      *
      * @param roomId   The id of the room to leave
      * @param playerId The id of the player to leave
@@ -83,6 +86,10 @@ public class RoomHandler {
         }
     }
 
+    /**
+     * Deletes a room
+     * @param roomId The room to be deleted
+     */
     public static void deleteRoom(String roomId) {
         if(rooms.containsKey(roomId)) {
             rooms.remove(roomId);
@@ -127,8 +134,12 @@ public class RoomHandler {
         return room.getUniqueId();
     }
 
-    public static Set<String> getAllIds() {
-        return rooms.keySet();
+    /**
+     * Returns all room ids
+     * @return A set with all room ids
+     */
+    public static List<String> getAllIds() {
+        return new ArrayList<>(rooms.keySet());
     }
 
     /**

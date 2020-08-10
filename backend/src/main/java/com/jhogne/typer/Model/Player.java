@@ -11,11 +11,12 @@ public class Player {
         this.id = id;
     }
 
-    public Player(String id, long progress, int wpm, boolean ready) {
+    public Player(String id, long progress, int wpm, boolean ready, long endTime) {
         this.id = id;
         this.progress = progress;
         this.wpm = wpm;
         this.ready = ready;
+        this.endTime = endTime;
     }
 
     public String getId() {

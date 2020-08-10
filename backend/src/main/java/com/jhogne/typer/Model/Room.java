@@ -50,7 +50,7 @@ public class Room {
     public List<Player> getPlayers() {
         List<Player> copy = new ArrayList<>();
         for (Player p : players.values()) {
-            copy.add(new Player(p.getId(), p.getProgress(), p.getWpm(), p.isReady()));
+            copy.add(new Player(p.getId(), p.getProgress(), p.getWpm(), p.isReady(), p.getEndTime()));
         }
         return copy;
     }
@@ -87,7 +87,7 @@ public class Room {
      * Gets the start time of the room
      * @return The time the game started for this room (in epoch time)
      */
-    public long getgameStart(){
+    public long getGameStart(){
         return gameStart;
     }
 
@@ -100,11 +100,14 @@ public class Room {
 
     /**
      * Decrements the countdown by 1, as long as it will remain positive
+     * @return True if countdown is decremented, else false
      */
-    public void decrementCountdown() {
+    public boolean decrementCountdown() {
         if(countdown > 0) {
             countdown--;
+            return true;
         }
+        return false;
     }
     /**
      * Adds a player to the room. Throws conflict exception if a player with the same name is already in the room

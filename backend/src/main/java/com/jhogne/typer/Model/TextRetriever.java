@@ -43,7 +43,7 @@ public class TextRetriever {
     }
 
     /**
-     * Gets an ordered prompt from the data.json file
+     * Gets an ordered prompt from the data.json file. Use for debugging/testing purposes
      * @return An ordered prompt
      */
     public static Prompt getOrderedText() {
@@ -53,7 +53,6 @@ public class TextRetriever {
 
             //convert Object to JSONObject
             JSONArray jsonArray = (JSONArray) object;
-            Random rand = new Random();
             JSONObject obj = (JSONObject) jsonArray.get(currentText);
             prompt.setText((String) obj.get("quote"));
             prompt.setSource((String) obj.get("source"));
