@@ -1,5 +1,13 @@
 export default class GameState {
-  constructor(wordStart = 0, idx = 0, error = false, errors = 0, acc = 1, input = "", lastInput = "") {
+  constructor(
+    wordStart = 0,
+    idx = 0,
+    error = false,
+    errors = 0,
+    acc = 1,
+    input = "",
+    lastInput = ""
+  ) {
     this._wordStart = wordStart;
     this._idx = idx;
     this._error = error;
@@ -59,7 +67,7 @@ export default class GameState {
       if (this.endWord()) {
         this.finishWord();
       }
-    } else if(!this._error){
+    } else if (!this._error) {
       this._error = true;
       this._errors += 1;
     }
@@ -80,6 +88,6 @@ export default class GameState {
   }
 
   setAccuracy() {
-    this._acc =  1 - (this._errors / this._idx);
+    this._acc = 1 - this._errors / this._idx;
   }
 }

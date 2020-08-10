@@ -34,8 +34,7 @@ const styles = (theme) => ({
       "&.Mui-disabled fieldset": {
         borderColor: theme.palette.primary.dark,
         borderWidth: 2,
-      }
-
+      },
     },
   },
   root: {
@@ -54,7 +53,7 @@ class Game extends React.Component {
   }
 
   handleChange(event) {
-    if(event.target.value.length > 20) { 
+    if (event.target.value.length > 20) {
       return;
     }
 
@@ -72,12 +71,11 @@ class Game extends React.Component {
 
     if (this.props.gameState.idx === this.props.prompt.text.length) {
       finishGame(this.props.clientRef, this.props.id, this.props.playerId);
-
     }
 
     this.setState({ currentWord: this.props.gameState.input });
   }
-  
+
   render() {
     const { classes } = this.props;
     return (
@@ -87,11 +85,11 @@ class Game extends React.Component {
           current={this.props.gameState.idx}
           error={this.props.gameState.error}
         />
-        {this.props.prompt.source && 
-        <Typography color="primary" variant="body2" align="right">
-          -{this.props.prompt.source}
-        </Typography>
-        }
+        {this.props.prompt.source && (
+          <Typography color="primary" variant="body2" align="right">
+            -{this.props.prompt.source}
+          </Typography>
+        )}
         <TextField
           color="primary"
           className={classes.input}
@@ -105,8 +103,8 @@ class Game extends React.Component {
           InputProps={{
             className: classes.input,
           }}
-          inputRef={input => input && input.focus()}
-          />
+          inputRef={(input) => input && input.focus()}
+        />
       </div>
     );
   }

@@ -7,8 +7,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 import App from "./App";
 
-import "fontsource-roboto-mono"
-import 'fontsource-roboto';
+import "fontsource-roboto-mono";
+import "fontsource-roboto";
 
 const theme = createMuiTheme({
   palette: {
@@ -30,24 +30,24 @@ const theme = createMuiTheme({
   },
   typography: {
     body1: {
-      fontSize: '1.5rem',
+      fontSize: "1.5rem",
       color: "#d0d0d0",
     },
     body2: {
-      fontSize: '2rem',
+      fontSize: "2rem",
       color: "#d0d0d0",
     },
     h4: {
       color: "#d0d0d0",
     },
     h1: {
-      fontFamily: 'Roboto Mono',
+      fontFamily: "Roboto Mono",
       fontWeight: 300,
     },
     overline: {
       color: "#d0d0d0",
-      fontSize: '0.75rem',
-    }
+      fontSize: "0.75rem",
+    },
   },
 });
 
