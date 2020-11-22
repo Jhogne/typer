@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function makeGetRequest(location) {
-  let res = await axios.get("http://192.168.1.144:8080/" + location);
+  let res = await axios.get("https://typer.jonashogne.se/api/" + location);
   return res.data;
 }
 
