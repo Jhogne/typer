@@ -79,8 +79,6 @@ class Room extends React.Component {
   };
 
   handleMessage(msg) {
-    console.log(msg);
-
     if (msg === "") {
       this.clientRef.disconnect();
       this.goHome();

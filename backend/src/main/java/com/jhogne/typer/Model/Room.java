@@ -2,6 +2,8 @@ package com.jhogne.typer.Model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.w3c.dom.Text;
+
 import java.time.Instant;
 import java.util.*;
 
@@ -15,6 +17,8 @@ public class Room {
     private List<String> standings;
     private int countdown;
     private long gameStart;
+
+    private TextRetriever textRetriever = new TextRetriever();
 
     public Room(String roomId) {
         this.roomId = roomId;
@@ -174,7 +178,7 @@ public class Room {
     public void reset() {
         standings = new ArrayList<>();
         countdown = 3;
-        prompt = TextRetriever.getRandomText();
+        prompt = textRetriever.getRandomText();
         for (Player p : players.values()) {
             p.setReady(false);
             p.setProgress(0);

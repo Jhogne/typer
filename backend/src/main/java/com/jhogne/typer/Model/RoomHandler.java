@@ -24,7 +24,6 @@ public class RoomHandler {
         }
         Room room = new Room(roomId);
         rooms.put(roomId, new Pair<>(room, Instant.now().toEpochMilli()));
-        System.out.println(rooms.keySet().size());
         return roomId;
     }
 
@@ -93,7 +92,6 @@ public class RoomHandler {
     public static void deleteRoom(String roomId) {
         if(rooms.containsKey(roomId)) {
             rooms.remove(roomId);
-            System.out.println(rooms.keySet().size());
         }
     }
 
