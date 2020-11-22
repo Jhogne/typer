@@ -4,7 +4,7 @@ from wikiquote import DisambiguationPageException, NoSuchPageException
 import wikiquote
 import json
 
-jsonfile = "backend/src/main/data/data.json"
+jsonfile = "backend/src/main/resources/data.json"
 
 @click.group()
 def cli():
