@@ -1,2 +1,5 @@
 # typer
-Typer is a multiplayer typing game that allows groups of people to join a room together and compete in who can type the prompt faster
+
+A typing race for 1 - 4 players. Join a room and compete to type the text faster than your opponents.
+
+ReactJS frontend with Spring Boot backend

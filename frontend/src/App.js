@@ -1,19 +1,18 @@
-import React from 'react';
-import {
-  Route,
-  Switch
-} from "react-router-dom";
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import Room from './Room';
-import Home from './Home';
-
+import Room from "screens/Room";
+import Home from "screens/Home";
+import "./App.css";
+import { withRouter } from "react-router-dom";
 
 class App extends React.Component {
   render() {
     return (
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/room' component={Room} />
+        <Route exact path="/" component={Home} />
+        <Route path="/room/*" component={withRouter(Room)} />
+        <Redirect from="/*" to={"/"} />
       </Switch>
     );
   }
