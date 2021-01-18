@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, Button, Grid, Typography } from "@material-ui/core";
+import { TextField, Button, Grid, Typography, Tooltip } from "@material-ui/core";
 import { joinRoom, createRoom } from "utils/ApiRequests";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { withRouter } from "react-router-dom/";
@@ -139,13 +139,15 @@ class RoomForm extends React.Component {
             />
           </Grid>
           <Grid item>
-            <Button
-              variant="outlined"
-              onClick={this.handleJoin}
-              color="secondary"
-            >
-              Enter room
-            </Button>
+            <Tooltip title="Enter existing room">
+              <Button
+                variant="outlined"
+                onClick={this.handleJoin}
+                color="secondary"
+              >
+                Enter room
+              </Button>
+            </Tooltip>
           </Grid>
         </Grid>
 
@@ -153,13 +155,15 @@ class RoomForm extends React.Component {
           <Typography variant="overline">or</Typography>
         </Grid>
         <Grid item>
-          <Button
-            variant="outlined"
-            onClick={this.handleCreate}
-            color="secondary"
-          >
-            Create room
-          </Button>
+          <Tooltip title="Create new room" arrow enterDelay={500} leaveDelay={100}>
+            <Button
+              variant="outlined"
+              onClick={this.handleCreate}
+              color="secondary"
+            >
+              Create room
+            </Button>
+          </Tooltip>
         </Grid>
       </Grid>
     );
