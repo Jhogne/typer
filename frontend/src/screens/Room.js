@@ -158,10 +158,12 @@ class Room extends React.Component {
     return (
       <div className={classes.root}>
         <div className={classes.content}>
-          <Countdown
-            value={this.state.countdown}
-            finished={this.hasFinished()}
-          />
+          {this.state.prompt !== null && (
+            <Countdown
+              value={this.state.countdown}
+              finished={this.hasFinished()}
+            />
+          )}
           <Standings
             style={classes.standings}
             players={this.state.players}
@@ -190,7 +192,7 @@ class Room extends React.Component {
               />
             </>
           )}
-          {this.betweenGames() && (
+          {this.state.prompt !== null && this.betweenGames() && (
             <Tooltip title="Ready to start" arrow>
               <Button
                 className={classes.reset}
@@ -202,10 +204,11 @@ class Room extends React.Component {
               </Button>
             </Tooltip>
           )}
-          <Typography variant="overline" className={classes.roomId}>
-            Room id: {this.props.location.state.roomId}
-          </Typography>
-
+          {this.state.prompt !== null && (
+            <Typography variant="overline" className={classes.roomId}>
+              Room id: {this.props.location.state.roomId}
+            </Typography>
+          )}
           <SockJsClient
             url={"https://typer.jonashogne.se/api/endpoint"}
             topics={[`/topic/room/${this.props.location.state.roomId}`]}
