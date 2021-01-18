@@ -1,6 +1,6 @@
 import React from "react";
 import SockJsClient from "react-stomp";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, Tooltip } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Redirect } from "react-router-dom";
 
@@ -191,14 +191,16 @@ class Room extends React.Component {
             </>
           )}
           {this.betweenGames() && (
-            <Button
-              className={classes.reset}
-              color="secondary"
-              variant="outlined"
-              onClick={this.clickReset}
-            >
-              Ready
-            </Button>
+            <Tooltip title="Ready to start" arrow>
+              <Button
+                className={classes.reset}
+                color="secondary"
+                variant="outlined"
+                onClick={this.clickReset}
+              >
+                Ready
+              </Button>
+            </Tooltip>
           )}
           <Typography variant="overline" className={classes.roomId}>
             Room id: {this.props.location.state.roomId}
